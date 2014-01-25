@@ -111,7 +111,7 @@ public class GLRenderer implements Renderer
 				{
 					gl.glPushMatrix();
 					float angle = cells[col][row].getFigure().getOrientation().getAngle();
-					gl.glRotatef(.3f, 0, 0, 0);
+					gl.glRotatef(angle, 0f, 0f, 1f);
 					triangle.setAlpha(.5f);
 					triangle.setColor(Colors.BLUE);
 					triangle.draw(gl);

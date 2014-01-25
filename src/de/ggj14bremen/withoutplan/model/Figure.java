@@ -11,15 +11,15 @@ public class Figure
 		LEFT,
 		RIGHT;
 		
-		public final float getAngle()
+		public final int getAngle()
 		{
 			switch (this)
 			{
-				case TOP: 		return 0f;
-				case BOTTOM: 	return .5f;
-				case LEFT: 		return .75f;
-				case RIGHT: 	return .25f;
-				default:		return 0f;
+				case TOP: 		return 0;
+				case BOTTOM: 	return 180;
+				case LEFT: 		return 270;
+				case RIGHT: 	return 90;
+				default:		return 0;
 			}
 		}
 	}
