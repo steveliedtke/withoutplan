@@ -61,7 +61,7 @@ public class GameThread extends Thread implements Game{
 		int index = 0;
 		final Set<Integer> alreadyInserted = new HashSet<Integer>();
 		while(index<settings.getAmountFigures()){
-			final int element = Generator.randomIntBetween(0, settings.getAmountFigures());
+			final int element = Generator.randomIntBetween(0, settings.getAmountFigures()-1);
 			if(!alreadyInserted.contains(Integer.valueOf(element))){
 				alreadyInserted.add(Integer.valueOf(element));
 				figureTurn[index] = element;
@@ -106,6 +106,7 @@ public class GameThread extends Thread implements Game{
 				break;
 			case SPAWN:
 				this.spawnEnemies(Generator.randomIntBetween(0, 2));
+				this.next = true;
 				break;
 			case END:
 				// TODO show end monitor
