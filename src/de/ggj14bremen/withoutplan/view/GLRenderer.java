@@ -13,6 +13,7 @@ import de.ggj14bremen.withoutplan.model.Cell;
 public class GLRenderer implements Renderer 
 {
 	private Square 		square;		// the square
+	private Triangle	triangle;
 	private Game 		game;
 	private float 		scale 	= 1f;
 	private float 		padding	= 1.1f;
@@ -25,6 +26,7 @@ public class GLRenderer implements Renderer
 	{
 		this.game		= game;
 		this.square		= new Square();
+		this.triangle	= new Triangle();
 	}
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) 
@@ -107,9 +109,13 @@ public class GLRenderer implements Renderer
 				}
 				if(cells[col][row].hasFigure()) 
 				{
-					square.setAlpha(.5f);
-					square.setColor(Colors.BLUE);
-					square.draw(gl);
+					gl.glPushMatrix();
+					float angle = cells[col][row].getFigure().getOrientation().getAngle();
+					gl.glRotatef(.3f, 0, 0, 0);
+					triangle.setAlpha(.5f);
+					triangle.setColor(Colors.BLUE);
+					triangle.draw(gl);
+					gl.glPopMatrix();					
 				}
 				//else if (cells[col][row].)
 				//else 							square.setColor(1f, 0f, 1f, 1f);
