@@ -1,23 +1,22 @@
 package de.ggj14bremen.withoutplan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
+import de.ggj14bremen.withoutplan.controller.Sounds;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
+import de.ggj14bremen.withoutplan.view.framents.GameFragment;
+import de.ggj14bremen.withoutplan.view.framents.SettingsFragment;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -25,14 +24,16 @@ public class MainActivity extends Activity implements OnClickListener
 	public static final String TAG = "NO_PLAN";
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
-	private GameThread gameThread;
-	private GameSettings gameSettings;
+	public GameThread gameThread;
+	public GameSettings gameSettings;
 	
+	//UI elements
+	private GameFragment gameFragment;
+	private SettingsFragment settingsFragment;
+
+	public Sounds sounds;
+
 	public static boolean DEBUG = true;
-	
-	private TextView textViewCountdown;
-	
-	private TextView infoTextView;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -44,68 +45,28 @@ public class MainActivity extends Activity implements OnClickListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// making it full screen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		gameSettings	= new GameSettings(this);
-		gameThread 		=  new GameThread(gameSettings);
-		
-		// Initiate the Open GL view and create an instance with this activity
-		glSurfaceView = new GLGameSurfaceView(this, gameThread);
-
 		// set our renderer to be the main renderer with the current activity context
 		setContentView(R.layout.main);
+		
+		settingsFragment = new SettingsFragment();
+		gameFragment = new GameFragment();
+		
+		findViewById(R.id.buttonGame).setOnClickListener(this);
+		findViewById(R.id.buttonSettings).setOnClickListener(this);	
+
+		//game stuff
+		gameSettings	= new GameSettings(this);
+
+		sounds 			= new Sounds(this);
+		gameThread 		=  new GameThread(gameSettings, sounds);
+	
+		// Initiate the Open GL view and create an instance with this activity
+		glSurfaceView = new GLGameSurfaceView(this, gameThread);
 		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
-		
-		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
-		infoTextView = (TextView) findViewById(R.id.infoTextView);
-		
-		findViewById(R.id.buttonReset).setOnClickListener(this);
+				
 	}
 	
-	private CountDownTimer timer;
-	private String lastInfoText = "";
-	private List<String> infoTextList = new ArrayList<String>(); 
-	
-	@Override
-	protected void onStart() {
-		startTimer();
-		super.onStart();
-	}
-	private void startTimer() {
-		
-		long time = 21000;
-		timer = new CountDownTimer(time, 500) {
 
-		     public void onTick(long millisUntilFinished) {
-		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
-		    		 textViewCountdown.setText(String.valueOf((gameThread.getTimeScoreInfo().getStepTime() / 1000)));
-		    	 }else{
-		    		 textViewCountdown.setText("");
-		    	 }
-		    	 final String infoText = gameThread.getTimeScoreInfo().getInfoText();
-		    	 if(!infoText.equals(lastInfoText)){
-		    		 if(infoTextList.size()>=7){
-		    			 infoTextList.remove(0);
-		    		 }
-		    		 infoTextList.add(infoText);
-		    		 this.displayInfoText();
-		    		 lastInfoText = infoText;
-		    	 }
-		     }
-
-		     private void displayInfoText() {
-				String text = "";
-		    	for(int i=0;i<infoTextList.size();i++){
-					text+=infoTextList.get(i)+"\n";
-				}
-		    	 infoTextView.setText(text);
-			}
-
-			public void onFinish() {
-		    	 startTimer();
-		     }
-		  }.start();
-	}
-	
 	/** Remember to resume the glSurface */
 	@Override
 	protected void onResume()
@@ -118,7 +79,6 @@ public class MainActivity extends Activity implements OnClickListener
 	@Override
 	protected void onPause()
 	{
-		timer.cancel();
 		super.onPause();
 		glSurfaceView.onPause();
 	}
@@ -141,11 +101,26 @@ public class MainActivity extends Activity implements OnClickListener
 				{
 					gameSettings = new GameSettings(MainActivity.this);
 					gameThread.reset(gameSettings);
-					MainActivity.this.infoTextList.clear();
 					return;
 				}
 			});
 			builder.create().show();
+		}
+		else if(v.getId() == R.id.buttonSettings)
+		{
+			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
+			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			fragmentTransaction.addToBackStack(null);
+			fragmentTransaction.replace(R.id.layoutRight, settingsFragment);
+			fragmentTransaction.commit();
+		}
+		else if(v.getId() == R.id.buttonGame)
+		{
+			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
+			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			fragmentTransaction.addToBackStack(null);
+			fragmentTransaction.replace(R.id.layoutRight, gameFragment);
+			fragmentTransaction.commit();
 		}
 	}
 }
