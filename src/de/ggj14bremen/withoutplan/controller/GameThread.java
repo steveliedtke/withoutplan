@@ -8,7 +8,6 @@ import java.util.Set;
 import android.os.SystemClock;
 import android.util.Log;
 import de.ggj14bremen.withoutplan.GameSettings;
-import de.ggj14bremen.withoutplan.MainActivity;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
@@ -37,6 +36,8 @@ public class GameThread extends Thread implements Game{
 	
 	private GameSettings newSettings;
 	
+	private Sounds sounds;
+	
 	private List<Figure> figures;
 	
 	private int[] figureTurn;
@@ -51,7 +52,8 @@ public class GameThread extends Thread implements Game{
 	 */
 	private boolean next;
 	
-	public GameThread(GameSettings gameSettings){
+	public GameThread(GameSettings gameSettings, Sounds sounds){
+		this.sounds = sounds;
 		settings = gameSettings;
 		running = true;
 		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());

@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
+import de.ggj14bremen.withoutplan.controller.Sounds;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 
 public class MainActivity extends Activity implements OnClickListener
@@ -27,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private GLSurfaceView glSurfaceView;
 	private GameThread gameThread;
 	private GameSettings gameSettings;
+	private Sounds sounds;
 	
 	public static boolean DEBUG = true;
 	
@@ -46,7 +48,8 @@ public class MainActivity extends Activity implements OnClickListener
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		gameSettings	= new GameSettings(this);
-		gameThread 		=  new GameThread(gameSettings);
+		sounds = new Sounds(this);
+		gameThread 		=  new GameThread(gameSettings, sounds);
 		
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
@@ -63,6 +66,7 @@ public class MainActivity extends Activity implements OnClickListener
 	
 	private CountDownTimer timer;
 	private String lastInfoText = "";
+	private long lastSecondsRemaining = 0L;
 	private List<String> infoTextList = new ArrayList<String>(); 
 	
 	@Override
@@ -77,7 +81,16 @@ public class MainActivity extends Activity implements OnClickListener
 
 		     public void onTick(long millisUntilFinished) {
 		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
-		    		 textViewCountdown.setText(String.valueOf((gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    		 final long secondsRemaining = gameThread.getTimeScoreInfo().getStepTime() / 1000;
+		    		 if(secondsRemaining!=lastSecondsRemaining){
+			    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
+			    		 if(secondsRemaining==0L){
+			    			 sounds.finalTick();
+			    		 }else if(secondsRemaining<=5L){
+			    			 sounds.tick();
+			    		 }
+			    		 lastSecondsRemaining = secondsRemaining;
+		    		 }
 		    	 }else{
 		    		 textViewCountdown.setText("");
 		    	 }
