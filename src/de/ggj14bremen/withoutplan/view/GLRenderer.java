@@ -2,6 +2,7 @@ package de.ggj14bremen.withoutplan.view;
 
 
 
+import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView.Renderer;
@@ -56,7 +57,7 @@ public class GLRenderer implements Renderer
 		gl.glTranslatef(0.0f, 0.0f, -5.0f);		// move 5 units INTO the screen
 												// is the same as moving the camera 5 units away
 		
-		game.getBoard().
+		game.getBoard().getCells();
 		
 		square.draw(gl);						// Draw the triangle
 
