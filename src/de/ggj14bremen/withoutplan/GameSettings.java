@@ -11,11 +11,16 @@ public class GameSettings {
 	
 	private int amountFigures;
 	
+	private long gameTime;
+	
+	private long stepTime;
+	
 	public GameSettings(final Context context){
 		SharedPreferences settings = context.getSharedPreferences("WithoutPlanPreferences", 0);
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
 		this.setBoardSizeY(settings.getInt("boardSizeY", 6));
 		this.setAmountFigures(settings.getInt("amountFigures", 3));
+		this.setGameTime(settings.getLong("gameTime", 10 * 60000));
 	}
 
 	public int getBoardSizeX() {
@@ -41,4 +46,22 @@ public class GameSettings {
 	public void setAmountFigures(int amountFigures) {
 		this.amountFigures = amountFigures;
 	}
+
+	public long getGameTime() {
+		return gameTime;
+	}
+
+	public void setGameTime(long gameTime) {
+		this.gameTime = gameTime;
+	}
+
+	public long getStepTime() {
+		return stepTime;
+	}
+
+	public void setStepTime(long stepTime) {
+		this.stepTime = stepTime;
+	}
+
+	
 }
