@@ -1,6 +1,6 @@
 package de.ggj14bremen.withoutplan.controller;
 
-import de.ggj14bremen.withoutplan.model.Board;
+import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
 
 public class GameThread extends Thread implements Game{
@@ -9,11 +9,11 @@ public class GameThread extends Thread implements Game{
 	
 	private GameState state;
 	
-	private Board board;
+	private GameBoard board;
 	
 	public GameThread(){
 		running = true;
-		board = new Board();
+		board = new GameBoard();
 	}
 	
 	@Override
@@ -40,6 +40,11 @@ public class GameThread extends Thread implements Game{
 				// TODO show end monitor
 			}
 		}
+	}
+
+	@Override
+	public Board getBoard() {
+		return board;
 	}
 	
 	//TODO event to stop thread
