@@ -64,7 +64,6 @@ public class MainActivity extends Activity implements OnClickListener
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
 		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
 				
-		findViewById(R.id.buttonReset).setOnClickListener(this);
 	}
 	
 

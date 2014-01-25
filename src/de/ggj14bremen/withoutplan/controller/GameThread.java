@@ -123,6 +123,7 @@ public class GameThread extends Thread implements Game{
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
 						this.timeScoreInfo.setInfoText("Figures created!");
+						this.sounds.start();
 						this.sleepFor(PAUSE_TIME);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
@@ -232,6 +233,7 @@ public class GameThread extends Thread implements Game{
 			this.timeScoreInfo.setTimeShowed(false);
 		}else{
 			this.state = GameState.MOVE;
+			this.sounds.nextPlayer();
 		}
 		this.timeScoreInfo.setStepTime(settings.getStepTime());
 	}
@@ -277,6 +279,7 @@ public class GameThread extends Thread implements Game{
 
 	private void checkPotentialKill(Cell[][] cells, int x, int y,
 			Set<WPColor> colors) {
+		boolean playSound = false;
 		for(int i=x-1;i<=x+1;i++){
 			for(int j=y-1;j<=y+1;j++){
 				if(this.lookForFigure(cells, i, j)){
@@ -284,10 +287,13 @@ public class GameThread extends Thread implements Game{
 					if(colors.contains(figure.getColor().getContrary())){
 						this.board.removeEnemy(i,j);
 						this.timeScoreInfo.addScore();
+						playSound = true;
 					}
 				}
 			}
 		}
+		if(playSound)
+			this.sounds.enemyDestroyed();
 	}
 	
 
@@ -302,6 +308,7 @@ public class GameThread extends Thread implements Game{
 	}
 
 	private void spawnEnemies(int amountEnemies) {
+		boolean soundForSpawn = false;
 		for(int i=0; i<amountEnemies;i++){
 			boolean cellNotFound = true;
 			while(cellNotFound){
@@ -313,6 +320,10 @@ public class GameThread extends Thread implements Game{
 					cellNotFound = false;
 				}
 			}
+			soundForSpawn = true;
+		}
+		if(soundForSpawn){
+			this.sounds.enemySpawned();
 		}
 	}
 
@@ -363,6 +374,4 @@ public class GameThread extends Thread implements Game{
 		reset = true;
 		newSettings = settings;
 	}
-	
-	//TODO event to stop thread
 }

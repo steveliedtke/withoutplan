@@ -22,7 +22,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	private String lastInfoText = "";
 	private TextView textViewCountdown;
 	private List<String> infoTextList = new ArrayList<String>(); 
-
+	private long lastSecondsRemaining;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -54,7 +54,7 @@ private void startTimer() {
 		long time = 21000;
 		timer = new CountDownTimer(time, 500) {
 
-		     private long lastSecondsRemaining;
+		     
 
 			public void onTick(long millisUntilFinished) {
 		    	 if(activity.gameThread.getTimeScoreInfo().isTimeShowed()){
