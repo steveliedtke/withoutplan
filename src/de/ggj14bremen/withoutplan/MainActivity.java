@@ -1,5 +1,8 @@
 package de.ggj14bremen.withoutplan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -60,6 +63,7 @@ public class MainActivity extends Activity implements OnClickListener
 	
 	private CountDownTimer timer;
 	private String lastInfoText = "";
+	private List<String> infoTextList = new ArrayList<String>(); 
 	
 	@Override
 	protected void onStart() {
@@ -79,12 +83,24 @@ public class MainActivity extends Activity implements OnClickListener
 		    	 }
 		    	 final String infoText = gameThread.getTimeScoreInfo().getInfoText();
 		    	 if(!infoText.equals(lastInfoText)){
-		    		 infoTextView.append("\n"+infoText);
+		    		 if(infoTextList.size()>=7){
+		    			 infoTextList.remove(0);
+		    		 }
+		    		 infoTextList.add(infoText);
+		    		 this.displayInfoText();
 		    		 lastInfoText = infoText;
 		    	 }
 		     }
 
-		     public void onFinish() {
+		     private void displayInfoText() {
+				String text = "";
+		    	for(int i=0;i<infoTextList.size();i++){
+					text+=infoTextList.get(i)+"\n";
+				}
+		    	 infoTextView.setText(text);
+			}
+
+			public void onFinish() {
 		    	 startTimer();
 		     }
 		  }.start();
@@ -123,7 +139,9 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameThread.reset();
+					gameSettings = new GameSettings(MainActivity.this);
+					gameThread.reset(gameSettings);
+					MainActivity.this.infoTextList.clear();
 					return;
 				}
 			});
