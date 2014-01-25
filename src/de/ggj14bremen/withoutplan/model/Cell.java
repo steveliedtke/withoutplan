@@ -16,6 +16,11 @@ public class Cell
 		this.watchingFigures = new HashSet<Figure>();
 	}
 	
+	public boolean hasFigure()
+	{
+		return figure != null;
+	}
+	
 	public boolean hasEnemy()
 	{
 		return enemy != null;
@@ -24,6 +29,17 @@ public class Cell
 	public boolean isAlive()
 	{
 		return enemy == null || enemy.isAlive(); 
+	}
+	
+	public float[] getColor()
+	{
+		// TODO
+		return new float[]{0,0,0,0};
+	}
+	
+	public boolean isVisible()
+	{
+		return orientationOption != null;
 	}
 	
 	public Figure getFigure()
