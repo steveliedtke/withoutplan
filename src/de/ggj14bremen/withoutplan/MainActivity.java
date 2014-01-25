@@ -25,6 +25,8 @@ public class MainActivity extends Activity
 	
 	private TextView textViewCountdown;
 	
+	private TextView infoTextView;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -47,6 +49,7 @@ public class MainActivity extends Activity
 		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
 		
 		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
+		infoTextView = (TextView) findViewById(R.id.infoTextView);
 	}
 	
 	private CountDownTimer timer;
@@ -63,7 +66,10 @@ public class MainActivity extends Activity
 		timer = new CountDownTimer(time, 500) {
 
 		     public void onTick(long millisUntilFinished) {
-		         textViewCountdown.setText(String.valueOf((gameThread.getTimeAndScore().getStepTime() / 1000)));
+		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
+		    		 textViewCountdown.setText(String.valueOf((gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    	 }
+		    	 infoTextView.setText(gameThread.getTimeScoreInfo().getInfoText());
 		     }
 
 		     public void onFinish() {

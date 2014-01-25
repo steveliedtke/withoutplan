@@ -20,6 +20,8 @@ import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
 
+	private static final int PAUSE_TIME = 3000;
+
 	private final long SLEEP_TIME = 100L;
 	
 	private boolean running;
@@ -36,7 +38,7 @@ public class GameThread extends Thread implements Game{
 	
 	private int figureStep;
 	
-	private TimeAndScore timeAndScore;
+	private TimeScoreInfo timeScoreInfo;
 	
 	/**
 	 * should be changed to true if end of state 
@@ -53,7 +55,7 @@ public class GameThread extends Thread implements Game{
 		figureStep = 0;
 		this.state = GameState.INIT;
 		figureTurn = new int[settings.getAmountFigures()];
-		this.timeAndScore = new TimeAndScore(settings.getStepTime(), 0);
+		this.timeScoreInfo = new TimeScoreInfo(settings.getStepTime(), 0);
 		this.start();
 	}
 
@@ -75,55 +77,77 @@ public class GameThread extends Thread implements Game{
 	@Override
 	public void run(){
 		this.randomizeFigureTurn();
-		time = SystemClock.elapsedRealtime();
 		while(running){
 			
-			long newTime = SystemClock.elapsedRealtime();
-			if((this.state == GameState.MOVE || this.state == GameState.ORIENTATE) 
-					&& this.timeAndScore.reduceStepTime(newTime-time)){
-				this.nextState(true);
-				continue;
-			}
-			time = newTime;
+			boolean skipSwitch = false;
 			
-			switch(this.state){
-			case INIT:
-				this.initFigures();
-				final int amountEnemies = Generator.randomIntBetween(1, 3);
-				this.spawnEnemies(amountEnemies);
-				this.next = true;
-				// TODO maybe implement small sleep for user
-				break;
-			case MOVE:
-				this.board.showMoveTarget(this.getCurrentFigure());
-				break;
-			case ORIENTATE:
-				this.board.showOrientation(this.getCurrentFigure());
-				break;
-			case ANALYSIS:
-				this.analyseRound();
-				this.next = true;
-				// TODO maybe implement small sleep for user
-				break;
-			case SPAWN:
-				this.spawnEnemies(Generator.randomIntBetween(0, 2));
-				this.next = true;
-				break;
-			case END:
-				// TODO show end monitor
-				this.running = false;
+			if(this.state == GameState.MOVE || this.state == GameState.ORIENTATE){
+				long newTime = SystemClock.elapsedRealtime();
+				if(this.timeScoreInfo.reduceStepTime(newTime-time)){
+					this.nextState(true);
+					skipSwitch = true;
+				}
+				time = newTime;
 			}
 			
-			if(next){
+			if(!skipSwitch){
+			
+				switch(this.state){
+				case INIT:
+					this.initFigures();
+					final int amountEnemies = Generator.randomIntBetween(1, 3);
+					// TODO show info: Figures were created 
+					this.timeScoreInfo.setInfoText("Figures created!");
+					this.sleepFor(PAUSE_TIME);
+					this.spawnEnemies(amountEnemies);
+					this.next = true;
+					// TODO show info: Enemies were created
+					this.timeScoreInfo.setInfoText("Enemies spawned");
+					this.sleepFor(PAUSE_TIME);
+					time = SystemClock.elapsedRealtime();
+					break;
+				case MOVE:
+					this.board.showMoveTarget(this.getCurrentFigure());
+					this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+					break;
+				case ORIENTATE:
+					this.board.showOrientation(this.getCurrentFigure());
+					break;
+				case ANALYSIS:
+					this.analyseRound();
+					this.next = true;
+					// TODO show info of analysis result
+					this.timeScoreInfo.setInfoText("Analysed board!");
+					this.sleepFor(PAUSE_TIME);
+					break;
+				case SPAWN:
+					this.spawnEnemies(Generator.randomIntBetween(0, 2));
+					// TODO show info of spawned enemies
+					this.timeScoreInfo.setInfoText("Enemies spawned");
+					this.sleepFor(PAUSE_TIME);
+					this.next = true;
+					break;
+				case END:
+					// TODO show end monitor
+					this.running = false;
+				}
+				
+			}
+			
+			sleepFor(SLEEP_TIME);
+			
+			if(!skipSwitch && next){
 				this.nextState(false);
 				this.next = false;
 			}
-			
-			try {
-				Thread.sleep(SLEEP_TIME);
-			} catch (InterruptedException e) {
-				Log.e("GameThread", e.getMessage());
-			}
+		}
+	}
+
+	private void sleepFor(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			Log.e("GameThread", e.getMessage());
 		}
 	}
 
@@ -149,6 +173,8 @@ public class GameThread extends Thread implements Game{
 		switch(this.state){
 		case INIT:
 			this.state = GameState.MOVE;
+			this.timeScoreInfo.setInfoText("");
+			this.timeScoreInfo.setTimeShowed(true);
 			break;
 		case MOVE:
 			if(timerFinished){
@@ -166,6 +192,8 @@ public class GameThread extends Thread implements Game{
 			break;
 		case SPAWN:
 			this.state = GameState.MOVE;
+			time = SystemClock.elapsedRealtime();
+			this.timeScoreInfo.setTimeShowed(true);
 			break;
 		case END:
 			// TODO show end monitor
@@ -177,10 +205,11 @@ public class GameThread extends Thread implements Game{
 		final boolean allFiguresMoved = nextFigure();
 		if(allFiguresMoved){
 			this.state= GameState.ANALYSIS;
+			this.timeScoreInfo.setTimeShowed(false);
 		}else{
 			this.state = GameState.MOVE;
 		}
-		this.timeAndScore.setStepTime(settings.getStepTime());
+		this.timeScoreInfo.setStepTime(settings.getStepTime());
 	}
 	
 	private Figure getCurrentFigure(){
@@ -229,8 +258,8 @@ public class GameThread extends Thread implements Game{
 	}
 
 	@Override
-	public TimeAndScore getTimeAndScore() {
-		return this.timeAndScore;
+	public TimeScoreInfo getTimeScoreInfo() {
+		return this.timeScoreInfo;
 	}
 
 	@Override

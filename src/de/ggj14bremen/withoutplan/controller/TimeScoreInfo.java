@@ -1,15 +1,21 @@
 package de.ggj14bremen.withoutplan.controller;
 
-public class TimeAndScore {
+public class TimeScoreInfo {
 
 	
 	private long stepTime;
 	
 	private int score;
 	
-	public TimeAndScore(long stepTime, int score){
+	private String infoText;
+	
+	private boolean timeShowed;
+	
+	public TimeScoreInfo(long stepTime, int score){
 		this.stepTime = stepTime;
 		this.score = score;
+		this.infoText = "";
+		this.timeShowed = false;
 	}
 	
 	public boolean reduceStepTime(long timeToReduce){
@@ -35,5 +41,21 @@ public class TimeAndScore {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public String getInfoText() {
+		return infoText;
+	}
+
+	public void setInfoText(String infoText) {
+		this.infoText = infoText;
+	}
+
+	public boolean isTimeShowed() {
+		return timeShowed;
+	}
+
+	public void setTimeShowed(boolean timeShowed) {
+		this.timeShowed = timeShowed;
 	}
 }

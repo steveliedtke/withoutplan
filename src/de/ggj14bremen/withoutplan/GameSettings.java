@@ -18,7 +18,7 @@ public class GameSettings {
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
 		this.setBoardSizeY(settings.getInt("boardSizeY", 6));
 		this.setAmountFigures(settings.getInt("amountFigures", 3));
-		this.setStepTime(settings.getLong("stepTime", 15000));
+		this.setStepTime(settings.getLong("stepTime", 10000));
 	}
 
 	public int getBoardSizeX() {
