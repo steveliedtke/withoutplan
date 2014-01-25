@@ -306,10 +306,10 @@ public class GameThread extends Thread implements Game{
 	public void dispatchEvent(CellClicked event) {
 		switch(this.state){
 		case MOVE:
-			//if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
 				this.nextState(false);
-			//}
+			}
 			break;
 		case ORIENTATE:
 			// TODO check if ok
