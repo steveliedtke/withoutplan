@@ -63,7 +63,9 @@ public class GLRenderer implements Renderer
 		gl.glMatrixMode(GL10.GL_MODELVIEW); 	//Select The Modelview Matrix
 		gl.glLoadIdentity(); 					//Reset The Modelview Matrix
 	}
-
+	/**
+	 * 
+	 */
 	@Override
 	public void onDrawFrame(GL10 gl) 
 	{
@@ -84,21 +86,26 @@ public class GLRenderer implements Renderer
 
 		drawBoard(gl);
 	}
+	/**
+	 * 
+	 * @param gl
+	 */
 	private void drawBoard(GL10 gl)
 	{
 		gl.glPushMatrix();
 		final Cell[][] cells = game.getBoard().getCells();
-
+		Cell cell;
 		for(int col = 0; col < cells.length; col++)
 		{
 			gl.glPushMatrix();
 			gl.glTranslatef(col + col * padding, 0, 0.0f);
 			for(int row = 0; row < cells[col].length; row++)
 			{
+				cell = cells[col][row];
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
 				//draw basic color			
-				square.setColor(1f, 1f, 1f, 1f);
+				square.setColor(cell.getColor());
 				square.draw(gl);
 				
 				if(cells[col][row].hasEnemy()) 
@@ -110,7 +117,7 @@ public class GLRenderer implements Renderer
 				if(cells[col][row].hasFigure()) 
 				{
 					gl.glPushMatrix();
-					float angle = cells[col][row].getFigure().getOrientation().getAngle();
+					float angle = cell.getFigure().getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
 					triangle.setAlpha(.5f);
 					triangle.setColor(Colors.BLUE);
