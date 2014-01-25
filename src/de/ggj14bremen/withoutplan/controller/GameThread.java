@@ -197,7 +197,6 @@ public class GameThread extends Thread implements Game{
 		}
 		
 		return allFiguresMoved;
-		
 	}
 
 	private void analyseRound() {
@@ -223,7 +222,7 @@ public class GameThread extends Thread implements Game{
 
 	@Override
 	public Board getBoard() {
-		return board;
+		return this.board;
 	}
 
 	@Override
