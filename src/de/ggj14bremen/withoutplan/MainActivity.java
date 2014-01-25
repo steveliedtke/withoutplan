@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.view.GLRenderer;
 
 public class MainActivity extends Activity
@@ -12,7 +13,10 @@ public class MainActivity extends Activity
 
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
-
+	private GameThread gameThread;
+	private GameSettings gameSettings;
+	
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -24,14 +28,19 @@ public class MainActivity extends Activity
 		// making it full screen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+		gameSettings	= new GameSettings(this);
+		gameThread =  new GameThread(gameSettings);
+		
 		// Initiate the Open GL view and
 		// create an instance with this activity
 		glSurfaceView = new GLSurfaceView(this);
 
 		// set our renderer to be the main renderer with
 		// the current activity context
-		glSurfaceView.setRenderer(new GLRenderer());
+		glSurfaceView.setRenderer(new GLRenderer(gameThread));
 		setContentView(glSurfaceView);
+		
+		
 	}
 
 	/** Remember to resume the glSurface */

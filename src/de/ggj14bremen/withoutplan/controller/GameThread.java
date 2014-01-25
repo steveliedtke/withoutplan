@@ -1,5 +1,6 @@
 package de.ggj14bremen.withoutplan.controller;
 
+import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
@@ -12,7 +13,7 @@ public class GameThread extends Thread implements Game{
 	
 	private GameBoard board;
 	
-	public GameThread(){
+	public GameThread(GameSettings gameSettings){
 		running = true;
 		board = new GameBoard();
 	}
