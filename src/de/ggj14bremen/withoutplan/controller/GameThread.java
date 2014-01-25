@@ -10,6 +10,7 @@ import android.util.Log;
 import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
+import de.ggj14bremen.withoutplan.model.Cell;
 import de.ggj14bremen.withoutplan.model.Figure;
 import de.ggj14bremen.withoutplan.model.Figure.Orientation;
 import de.ggj14bremen.withoutplan.model.GameBoard;
@@ -50,8 +51,10 @@ public class GameThread extends Thread implements Game{
 		next = false;
 		figures = new ArrayList<Figure>(settings.getAmountFigures());
 		figureStep = 0;
+		this.state = GameState.INIT;
 		figureTurn = new int[settings.getAmountFigures()];
 		this.timeAndScore = new TimeAndScore(settings.getStepTime(), 0);
+		this.start();
 	}
 
 	private void randomizeFigureTurn() {
@@ -143,7 +146,6 @@ public class GameThread extends Thread implements Game{
 		switch(this.state){
 		case INIT:
 			this.state = GameState.MOVE;
-			// TODO start timer
 			break;
 		case MOVE:
 			if(timerFinished){
@@ -187,7 +189,7 @@ public class GameThread extends Thread implements Game{
 		final boolean allFiguresMoved;
 		if(figureStep+1>=settings.getAmountFigures()){
 			figureStep = 0;
-			// TODO maybe randomize figureTurn here
+			randomizeFigureTurn();
 			allFiguresMoved = true;
 		}else{
 			figureStep++;
@@ -206,10 +208,16 @@ public class GameThread extends Thread implements Game{
 
 	private void spawnEnemies(int amountEnemies) {
 		for(int i=0; i<amountEnemies;i++){
-			final int x = Generator.randomIntBetween(0, this.settings.getBoardSizeX()-1);
-			final int y = Generator.randomIntBetween(0, this.settings.getBoardSizeY()-1);
-			// TODO check if cell has already an enemy or figure
-			this.board.spawnEnemy(x, y);
+			boolean cellNotFound = true;
+			while(cellNotFound){
+				final int x = Generator.randomIntBetween(0, this.settings.getBoardSizeX()-1);
+				final int y = Generator.randomIntBetween(0, this.settings.getBoardSizeY()-1);
+				final Cell cell = this.board.getCell(x, y);
+				if(cell.getFigure()== null && cell.getEnemy()==null){
+					this.board.spawnEnemy(x, y);
+					cellNotFound = false;
+				}
+			}
 		}
 	}
 
@@ -225,8 +233,16 @@ public class GameThread extends Thread implements Game{
 
 	@Override
 	public void dispatchEvent(CellClicked event) {
-		// TODO Auto-generated method stub
-		
+		switch(this.state){
+		case MOVE:
+			// TODO check if ok
+			break;
+		case ORIENTATE:
+			// TODO check if ok
+			break;
+			default:
+				// not allowed
+		}
 	}
 	
 	//TODO event to stop thread
