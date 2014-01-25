@@ -75,7 +75,7 @@ public class Cell
 	
 	private void addColorPart(float[] color, float[] colorPart, float weight)
 	{
-		for (int i = 0; i < color.length; i++)
+		for (int i = 0; i < color.length && i < colorPart.length; i++)
 		{
 			color[i] += colorPart[i] * weight;
 		}
