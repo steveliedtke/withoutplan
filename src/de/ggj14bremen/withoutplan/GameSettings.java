@@ -9,10 +9,13 @@ public class GameSettings {
 	
 	private int boardSizeY;
 	
+	private int amountFigures;
+	
 	public GameSettings(final Context context){
 		SharedPreferences settings = context.getSharedPreferences("WithoutPlanPreferences", 0);
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
 		this.setBoardSizeY(settings.getInt("boardSizeY", 6));
+		this.setAmountFigures(settings.getInt("amountFigures", 3));
 	}
 
 	public int getBoardSizeX() {
@@ -29,5 +32,13 @@ public class GameSettings {
 
 	public void setBoardSizeY(int boardSizeY) {
 		this.boardSizeY = boardSizeY;
+	}
+
+	public int getAmountFigures() {
+		return amountFigures;
+	}
+
+	public void setAmountFigures(int amountFigures) {
+		this.amountFigures = amountFigures;
 	}
 }

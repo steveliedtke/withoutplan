@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import de.ggj14bremen.withoutplan.controller.GameThread;
-import de.ggj14bremen.withoutplan.view.GLRenderer;
+import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 
 public class MainActivity extends Activity
 {
 
+	public static final String TAG = "NO_PLAN";
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
 	private GameThread gameThread;
 	private GameSettings gameSettings;
+	
+	public static boolean DEBUG = true;
 	
 	
 	/** Called when the activity is first created. */
@@ -33,11 +36,10 @@ public class MainActivity extends Activity
 		
 		// Initiate the Open GL view and
 		// create an instance with this activity
-		glSurfaceView = new GLSurfaceView(this);
+		glSurfaceView = new GLGameSurfaceView(this, gameThread);
 
 		// set our renderer to be the main renderer with
 		// the current activity context
-		glSurfaceView.setRenderer(new GLRenderer(gameThread));
 		setContentView(glSurfaceView);
 		
 		
