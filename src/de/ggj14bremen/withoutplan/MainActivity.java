@@ -139,7 +139,9 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameThread.reset();
+					gameSettings = new GameSettings(MainActivity.this);
+					gameThread.reset(gameSettings);
+					MainActivity.this.infoTextList.clear();
 					return;
 				}
 			});
