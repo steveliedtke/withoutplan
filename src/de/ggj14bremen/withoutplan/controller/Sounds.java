@@ -22,4 +22,20 @@ public class Sounds {
 	public void finalTick(){
 		finalTick.start();
 	}
+	
+	public void enemySpawned(){
+		
+	}
+	
+	public void start(){
+		
+	}
+	
+	public void enemyDestroyed(){
+		
+	}
+	
+	public void nextPlayer(){
+		
+	}
 }
