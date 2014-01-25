@@ -11,8 +11,10 @@ import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Figure;
+import de.ggj14bremen.withoutplan.model.Figure.Orientation;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
+import de.ggj14bremen.withoutplan.model.WPColor;
 import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
@@ -49,7 +51,7 @@ public class GameThread extends Thread implements Game{
 		figures = new ArrayList<Figure>(settings.getAmountFigures());
 		figureStep = 0;
 		figureTurn = new int[settings.getAmountFigures()];
-		this.timeAndScore = new TimeAndScore(settings.getGameTime(), settings.getStepTime(), 0);
+		this.timeAndScore = new TimeAndScore(settings.getStepTime(), 0);
 	}
 
 	private void randomizeFigureTurn() {
@@ -72,6 +74,13 @@ public class GameThread extends Thread implements Game{
 		this.randomizeFigureTurn();
 		time = SystemClock.elapsedRealtime();
 		while(running){
+			
+			long newTime = SystemClock.elapsedRealtime();
+			if((this.state == GameState.MOVE || this.state == GameState.ORIENTATE) 
+					&& this.timeAndScore.reduceStepTime(newTime-time)){
+				this.nextState(true);
+			}
+			time = newTime;
 			
 			switch(this.state){
 			case INIT:
@@ -101,7 +110,7 @@ public class GameThread extends Thread implements Game{
 			}
 			
 			if(next){
-				this.nextState();
+				this.nextState(false);
 			}
 			
 			try {
@@ -109,45 +118,42 @@ public class GameThread extends Thread implements Game{
 			} catch (InterruptedException e) {
 				Log.e("GameThread", e.getMessage());
 			}
-			
-			long newTime = SystemClock.elapsedRealtime();
-			this.timeAndScore.reduceGameTime(newTime-time);
-			this.timeAndScore.reduceStepTime(newTime-time);		
-			time = newTime;
 		}
 	}
 
 	private void initFigures() {
 		for(int i=0; i<settings.getAmountFigures(); i++){
 			final Figure figure = new Figure();
-			// TODO set color
-			// TODO set other attributes ?!
+			figure.setColor(WPColor.values()[i%3]);
+			figure.setOrientation(Orientation.values()[Generator.randomIntBetween(0, 3)]);
 			figures.add(figure);
-			final int x = Generator.randomIntBetween(0, settings.getBoardSizeX()-1);
-			final int y = Generator.randomIntBetween(0, settings.getBoardSizeY()-1);
-			// TODO check if cell already has a figure
-			this.board.moveFigure(figure, x, y);
+			boolean cellNotFound = true;
+			while(cellNotFound){
+				final int x = Generator.randomIntBetween(0, settings.getBoardSizeX()-1);
+				final int y = Generator.randomIntBetween(0, settings.getBoardSizeY()-1);
+				if(this.board.getCell(x, y).getFigure()==null){
+					this.board.moveFigure(figure, x, y);
+					cellNotFound = false;
+				}
+			}
 		}
 	}
 
-	private void nextState() {
+	private void nextState(boolean timerFinished) {
 		switch(this.state){
 		case INIT:
 			this.state = GameState.MOVE;
 			// TODO start timer
 			break;
 		case MOVE:
-			this.state = GameState.ORIENTATE;
+			if(timerFinished){
+				afterOrientate();
+			}else{
+				this.state = GameState.ORIENTATE;
+			}
 			break;
 		case ORIENTATE:
-			final boolean allFiguresMoved = nextFigure();
-			if(allFiguresMoved){
-				this.state= GameState.ANALYSIS;
-				// TODO stop timer
-			}else{
-				this.state = GameState.MOVE;
-				// TODO restart timer
-			}
+			afterOrientate();
 			break;
 		case ANALYSIS:
 			this.state = GameState.SPAWN;
@@ -160,6 +166,16 @@ public class GameThread extends Thread implements Game{
 			// TODO show end monitor
 			this.running = false;
 		}
+	}
+
+	private void afterOrientate() {
+		final boolean allFiguresMoved = nextFigure();
+		if(allFiguresMoved){
+			this.state= GameState.ANALYSIS;
+		}else{
+			this.state = GameState.MOVE;
+		}
+		this.timeAndScore.setStepTime(settings.getStepTime());
 	}
 	
 	private Figure getCurrentFigure(){

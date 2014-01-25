@@ -2,21 +2,14 @@ package de.ggj14bremen.withoutplan.controller;
 
 public class TimeAndScore {
 
-	private long gameTime;
 	
 	private long stepTime;
 	
 	private int score;
 	
-	public TimeAndScore(long gameTime, long stepTime, int score){
-		this.gameTime = gameTime;
+	public TimeAndScore(long stepTime, int score){
 		this.stepTime = stepTime;
 		this.score = score;
-	}
-	
-	public boolean reduceGameTime(long timeToReduce){
-		gameTime -= timeToReduce;
-		return gameTime < 0L;
 	}
 	
 	public boolean reduceStepTime(long timeToReduce){
@@ -26,14 +19,6 @@ public class TimeAndScore {
 	
 	public void addScore(int scoreToAdd){
 		score += scoreToAdd;
-	}
-	
-	public long getGameTime() {
-		return gameTime;
-	}
-
-	public void setGameTime(long gameTime) {
-		this.gameTime = gameTime;
 	}
 
 	public long getStepTime() {
