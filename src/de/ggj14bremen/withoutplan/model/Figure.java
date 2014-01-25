@@ -12,22 +12,57 @@ public class Figure
 		RIGHT;
 	}
 	
+	private int x;
+	private int y;
 	private Orientation orientation;
 	private WPColor color;
 	
-	public Orientation getOrientation() {
+	public Figure()
+	{
+		this.x = -1;
+		this.y = -1;
+	}
+	
+	public boolean hasValidPosition()
+	{
+		return x >= 0;
+	}
+	
+	public int getX()
+	{
+		return x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public Orientation getOrientation()
+	{
 		return orientation;
 	}
 	
-	public void setOrientation(Orientation orientation) {
+	public void setOrientation(Orientation orientation)
+	{
 		this.orientation = orientation;
 	}
 	
-	public WPColor getColor() {
+	public WPColor getColor()
+	{
 		return color;
 	}
 	
-	public void setColor(WPColor color) {
+	public void setColor(WPColor color)
+	{
 		this.color = color;
 	}
+	
+	public void setPosition(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	
+	
 }
