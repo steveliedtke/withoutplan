@@ -59,7 +59,6 @@ public class MainActivity extends Activity
 		startTimer();
 		super.onStart();
 	}
-	
 	private void startTimer() {
 		
 		long time = 21000;

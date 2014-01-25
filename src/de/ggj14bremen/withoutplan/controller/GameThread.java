@@ -108,7 +108,7 @@ public class GameThread extends Thread implements Game{
 					break;
 				case MOVE:
 					this.board.showMoveTarget(this.getCurrentFigure());
-					this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+					//this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
 					break;
 				case ORIENTATE:
 					this.board.showOrientation(this.getCurrentFigure());

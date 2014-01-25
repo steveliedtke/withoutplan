@@ -34,7 +34,7 @@ public class Cell
 	public float[] getColor()
 	{
 		// TODO
-		return new float[]{0,0,0,0};
+		return new float[]{1f, 1f, 1f, 1f};
 	}
 	
 	public boolean isVisible()
@@ -92,8 +92,4 @@ public class Cell
 		this.orientationOption = orientationOption;
 	}
 
-	public boolean hasFigure()
-	{
-		return figure != null;
-	}
 }
