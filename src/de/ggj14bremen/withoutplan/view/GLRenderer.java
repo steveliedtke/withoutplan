@@ -125,7 +125,7 @@ public class GLRenderer implements Renderer
 					triangle.draw(gl);
 					gl.glPopMatrix();					
 				}
-				if(cell.isWalkable()) //walkable
+				if(cell.isWalkable())
 				{
 					gl.glPushMatrix();
 					square.setAlpha(.3f);
@@ -133,7 +133,7 @@ public class GLRenderer implements Renderer
 					square.draw(gl);
 					gl.glPopMatrix();
 				}
-				if(cell.isVisible()) //walkable
+				if(cell.isVisible())
 				{
 					gl.glPushMatrix();
 					square.setAlpha(.3f);
