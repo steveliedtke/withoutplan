@@ -1,6 +1,6 @@
 package de.ggj14bremen.withoutplan.model;
 
-public class GameBoard {
+public class GameBoard implements Board{
 
 	private Cell[][] cells;
 	

@@ -1,5 +1,6 @@
 package de.ggj14bremen.withoutplan.controller;
 
+import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
 
