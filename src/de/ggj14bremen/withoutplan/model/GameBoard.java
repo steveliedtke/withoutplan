@@ -4,7 +4,7 @@ public class GameBoard implements Board{
 
 	private Cell[][] cells;
 	
-	public void init(){
+	public void init(int x, int y){
 		// TODO create cell array
 	}
 	
@@ -17,7 +17,7 @@ public class GameBoard implements Board{
 		// TODO
 	}
 	
-	public void movePlayer(int x, int y){
+	public void moveFigure(Figure figure, int x, int y){
 		// TODO
 	}
 
@@ -25,5 +25,13 @@ public class GameBoard implements Board{
 	public Cell[][] getCells() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void showOrientation(Figure figure){
+		// TODO
+	}
+	
+	public void showMoveTarget(Figure figure){
+		// TODO
 	}
 }
