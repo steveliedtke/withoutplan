@@ -1,5 +1,7 @@
 package de.ggj14bremen.withoutplan.model;
 
+import de.ggj14bremen.withoutplan.view.Colors;
+
 
 
 public class Figure
@@ -76,5 +78,14 @@ public class Figure
 		this.y = y;
 	}
 	
-	
+	public float[] getColorArray()
+	{
+		switch (color)
+		{
+			case RED: return Colors.RED;
+			case GREEN: return Colors.GREEN;
+			case BLUE: return Colors.BLUE;
+			default: return Colors.RED; // TODO log/exception
+		}
+	}
 }

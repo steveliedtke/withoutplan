@@ -3,22 +3,22 @@ package de.ggj14bremen.withoutplan.model;
 public class Enemy
 {
 	private int age;
-	private int maxAge;
+	private int killAge;
 	
-	public Enemy(int maxAge)
+	public Enemy(int killAge)
 	{
 		this.age = 0;
-		this.maxAge = age;
+		this.killAge = killAge;
 	}
 
 	public void increaseAge()
 	{
-		age++;
+		if (age < killAge) age++;
 	}
 	
 	public boolean isAlive()
 	{
-		return age <= maxAge;
+		return age < killAge;
 	}
 	
 	public int getAge()
@@ -28,6 +28,12 @@ public class Enemy
 
 	public int getMaxAge()
 	{
-		return maxAge;
+		return killAge;
+	}
+	
+	public float[] getColorArray()
+	{
+		float color = 1.0f - ((float)age) / killAge;
+		return new float[]{color, color, color, 1.0f};
 	}
 }

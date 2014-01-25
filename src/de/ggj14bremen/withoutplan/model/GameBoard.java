@@ -128,7 +128,7 @@ public class GameBoard implements Board
 	private void setOrientationOptions(Figure figure, boolean add, Figure.Orientation orientation)
 	{
 		int stepX = 0;
-		int stepY = -1;
+		int stepY = 0;
 		
 		switch(orientation)
 		{

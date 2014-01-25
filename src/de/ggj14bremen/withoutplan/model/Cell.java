@@ -34,7 +34,20 @@ public class Cell
 	public float[] getColor()
 	{
 		// TODO
-		return new float[]{1f, 1f, 1f, 1f};
+		
+		if (!isAlive())
+		{
+			return enemy.getColorArray();
+		}
+		
+		float[] colorArray =  new float[]{1f, 1f, 1f, 1f};
+		
+		if (hasEnemy())
+		{
+			colorArray = enemy.getColorArray();
+		}
+		
+		return colorArray;
 	}
 	
 	public boolean isVisible()
@@ -91,5 +104,4 @@ public class Cell
 	{
 		this.orientationOption = orientationOption;
 	}
-
 }
