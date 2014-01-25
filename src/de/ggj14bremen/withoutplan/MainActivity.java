@@ -1,9 +1,13 @@
 package de.ggj14bremen.withoutplan;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,7 +16,7 @@ import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements OnClickListener
 {
 
 	public static final String TAG = "NO_PLAN";
@@ -50,9 +54,12 @@ public class MainActivity extends Activity
 		
 		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
 		infoTextView = (TextView) findViewById(R.id.infoTextView);
+		
+		findViewById(R.id.buttonReset).setOnClickListener(this);
 	}
 	
 	private CountDownTimer timer;
+	private String lastInfoText = "";
 	
 	@Override
 	protected void onStart() {
@@ -67,8 +74,14 @@ public class MainActivity extends Activity
 		     public void onTick(long millisUntilFinished) {
 		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
 		    		 textViewCountdown.setText(String.valueOf((gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    	 }else{
+		    		 textViewCountdown.setText("");
 		    	 }
-		    	 infoTextView.setText(gameThread.getTimeScoreInfo().getInfoText());
+		    	 final String infoText = gameThread.getTimeScoreInfo().getInfoText();
+		    	 if(!infoText.equals(lastInfoText)){
+		    		 infoTextView.append("\n"+infoText);
+		    		 lastInfoText = infoText;
+		    	 }
 		     }
 
 		     public void onFinish() {
@@ -97,5 +110,24 @@ public class MainActivity extends Activity
 	public void showDebugToast(String string)
 	{
 		Toast.makeText(this, string, Toast.LENGTH_SHORT).show();		
+	}
+	@Override
+	public void onClick(View v)
+	{
+		if(v.getId() == R.id.buttonReset)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Reset game?");
+			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int id)
+				{
+					gameThread.reset();
+					return;
+				}
+			});
+			builder.create().show();
+		}
 	}
 }

@@ -104,8 +104,9 @@ public class GLRenderer implements Renderer
 				cell = cells[col][row];
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
-				//draw basic color			
+				//draw basic color	
 				square.setColor(cell.getColor());
+				square.setAlpha(1f);
 				square.draw(gl);
 				
 				if(cells[col][row].hasEnemy()) 
@@ -114,7 +115,7 @@ public class GLRenderer implements Renderer
 					square.setColor(Colors.RED);
 					square.draw(gl);
 				}
-				if(cells[col][row].hasFigure()) 
+				if(cell.hasFigure()) 
 				{
 					gl.glPushMatrix();
 					float angle = cell.getFigure().getOrientation().getAngle();
@@ -123,6 +124,22 @@ public class GLRenderer implements Renderer
 					triangle.setColor(Colors.BLUE);
 					triangle.draw(gl);
 					gl.glPopMatrix();					
+				}
+				if(cell.isWalkable())
+				{
+					gl.glPushMatrix();
+					square.setAlpha(.3f);
+					square.setColor(Colors.GREEN);
+					square.draw(gl);
+					gl.glPopMatrix();
+				}
+				if(cell.isVisible())
+				{
+					gl.glPushMatrix();
+					square.setAlpha(.3f);
+					square.setColor(Colors.YELLOW);
+					square.draw(gl);
+					gl.glPopMatrix();
 				}
 				//else if (cells[col][row].)
 				//else 							square.setColor(1f, 0f, 1f, 1f);

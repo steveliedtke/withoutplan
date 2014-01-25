@@ -48,7 +48,7 @@ public class TimeScoreInfo {
 	}
 
 	public void setInfoText(String infoText) {
-		this.infoText += infoText+"\n";
+		this.infoText = infoText;
 	}
 
 	public boolean isTimeShowed() {
