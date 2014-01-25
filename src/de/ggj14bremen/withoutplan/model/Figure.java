@@ -82,10 +82,10 @@ public class Figure
 	{
 		switch (color)
 		{
-			case RED: return Colors.RED;
-			case GREEN: return Colors.GREEN;
-			case BLUE: return Colors.BLUE;
-			default: return Colors.RED; // TODO log/exception
+			case RED: return Colors.getColorWithAlpha(Colors.RED, 1.0f);
+			case GREEN: return Colors.getColorWithAlpha(Colors.GREEN, 1.0f);
+			case BLUE: return Colors.getColorWithAlpha(Colors.BLUE, 1.0f);
+			default: return Colors.getColorWithAlpha(Colors.RED, 1.0f); // TODO log/exception
 		}
 	}
 }

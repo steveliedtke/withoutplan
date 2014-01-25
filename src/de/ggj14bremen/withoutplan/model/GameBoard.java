@@ -181,11 +181,16 @@ public class GameBoard implements Board
 		
 	private void setWalkable(Figure figure, boolean walkable)
 	{
+		Cell cell;
 		for (int x = 0; x < cells.length; x++)
 		{
 			for (int y = 0; y < cells[x].length; y++)
 			{
-				cells[x][y].setWalkable(walkable && Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= 2);
+				cell = cells[x][y];
+				cell.setWalkable(walkable &&
+						!cell.hasEnemy() &&
+						(!cell.hasFigure() || figure.equals(cell.getFigure())) &&
+						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= 2);
 			}
 		}
 	}
