@@ -37,6 +37,11 @@ public class GameBoard implements Board
 		cells[x][y].setEnemy(new Enemy(2));
 	}
 	
+	public void removeEnemy(int x, int y)
+	{
+		cells[x][y].setEnemy(null);
+	}
+	
 	public void moveFigure(Figure figure, int x, int y)
 	{
 		if (figure.hasValidPosition())
