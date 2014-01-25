@@ -104,8 +104,9 @@ public class GLRenderer implements Renderer
 				cell = cells[col][row];
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
-				//draw basic color			
+				//draw basic color	
 				square.setColor(cell.getColor());
+				square.setAlpha(1f);
 				square.draw(gl);
 				
 				if(cells[col][row].hasEnemy()) 
@@ -123,6 +124,22 @@ public class GLRenderer implements Renderer
 					triangle.setColor(Colors.BLUE);
 					triangle.draw(gl);
 					gl.glPopMatrix();					
+				}
+				if(cell.isWalkable()) //walkable
+				{
+					gl.glPushMatrix();
+					square.setAlpha(.2f);
+					square.setColor(Colors.GREEN);
+					square.draw(gl);
+					gl.glPopMatrix();
+				}
+				if(cell.isVisible()) //walkable
+				{
+					gl.glPushMatrix();
+					square.setAlpha(.2f);
+					square.setColor(Colors.YELLOW);
+					square.draw(gl);
+					gl.glPopMatrix();
 				}
 				//else if (cells[col][row].)
 				//else 							square.setColor(1f, 0f, 1f, 1f);
