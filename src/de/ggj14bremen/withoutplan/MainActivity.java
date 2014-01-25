@@ -53,6 +53,7 @@ public class MainActivity extends Activity
 	}
 	
 	private CountDownTimer timer;
+	private String lastInfoText = "";
 	
 	@Override
 	protected void onStart() {
@@ -70,7 +71,11 @@ public class MainActivity extends Activity
 		    	 }else{
 		    		 textViewCountdown.setText("");
 		    	 }
-		    	 infoTextView.setText(gameThread.getTimeScoreInfo().getInfoText());
+		    	 final String infoText = gameThread.getTimeScoreInfo().getInfoText();
+		    	 if(!infoText.equals(lastInfoText)){
+		    		 infoTextView.append("\n"+infoText);
+		    		 lastInfoText = infoText;
+		    	 }
 		     }
 
 		     public void onFinish() {

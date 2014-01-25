@@ -106,7 +106,7 @@ public class GameThread extends Thread implements Game{
 					break;
 				case MOVE:
 					this.board.showMoveTarget(this.getCurrentFigure());
-					//this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+					this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
 					break;
 				case ORIENTATE:
 					this.board.showOrientation(this.getCurrentFigure());
@@ -233,7 +233,7 @@ public class GameThread extends Thread implements Game{
 		final Cell[][] cells = this.board.getCells();
 		
 		for(int i=0;i<cells.length;i++){
-			for(int j=0;j<cells[i].length;i++){
+			for(int j=0;j<cells[i].length;j++){
 				final Cell cell = cells[i][j];
 				if(cell.hasEnemy()){
 					if(!cell.getWatchingFigures().isEmpty()){
