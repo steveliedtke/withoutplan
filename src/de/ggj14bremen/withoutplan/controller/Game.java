@@ -7,7 +7,7 @@ public interface Game {
 
 	Board getBoard();
 	
-	TimeAndScore getTimeAndScore();
+	TimeScoreInfo getTimeScoreInfo();
 	
 	void dispatchEvent(CellClicked event);
 }

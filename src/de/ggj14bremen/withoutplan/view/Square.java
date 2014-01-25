@@ -6,9 +6,9 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Square
+public class Square extends Shape
 {
-	private float[] color = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
+
 	private FloatBuffer vertexBuffer; // buffer holding the vertices
 
 	private float vertices[] =
@@ -50,18 +50,5 @@ public class Square
 
 		// Disable the client state before leaving
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-	}
-
-	public float[] getColor()
-	{
-		return color;
-	}
-
-	public void setColor(float r, float g, float b, float a)
-	{
-		this.color[0] = r;
-		this.color[1] = g;
-		this.color[2] = b;
-		this.color[3] = a;
 	}
 }

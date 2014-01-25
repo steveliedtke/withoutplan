@@ -11,7 +11,6 @@ public class GameSettings {
 	
 	private int amountFigures;
 	
-	
 	private long stepTime;
 	
 	public GameSettings(final Context context){
@@ -19,6 +18,7 @@ public class GameSettings {
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
 		this.setBoardSizeY(settings.getInt("boardSizeY", 6));
 		this.setAmountFigures(settings.getInt("amountFigures", 3));
+		this.setStepTime(settings.getLong("stepTime", 10000));
 	}
 
 	public int getBoardSizeX() {

@@ -91,4 +91,9 @@ public class Cell
 	{
 		this.orientationOption = orientationOption;
 	}
+
+	public boolean hasFigure()
+	{
+		return figure != null;
+	}
 }

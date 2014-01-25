@@ -10,6 +10,18 @@ public class Figure
 		BOTTOM,
 		LEFT,
 		RIGHT;
+		
+		public final int getAngle()
+		{
+			switch (this)
+			{
+				case TOP: 		return 0;
+				case BOTTOM: 	return 180;
+				case LEFT: 		return 270;
+				case RIGHT: 	return 90;
+				default:		return 0;
+			}
+		}
 	}
 	
 	private int x;
