@@ -11,6 +11,9 @@ public class GameSettings {
 	
 	private int amountFigures;
 	
+	
+	private long stepTime;
+	
 	public GameSettings(final Context context){
 		SharedPreferences settings = context.getSharedPreferences("WithoutPlanPreferences", 0);
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
@@ -41,4 +44,14 @@ public class GameSettings {
 	public void setAmountFigures(int amountFigures) {
 		this.amountFigures = amountFigures;
 	}
+
+	public long getStepTime() {
+		return stepTime;
+	}
+
+	public void setStepTime(long stepTime) {
+		this.stepTime = stepTime;
+	}
+
+	
 }
