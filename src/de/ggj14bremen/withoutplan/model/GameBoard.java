@@ -20,4 +20,10 @@ public class GameBoard implements Board{
 	public void movePlayer(int x, int y){
 		// TODO
 	}
+
+	@Override
+	public Cell[][] getCells() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
