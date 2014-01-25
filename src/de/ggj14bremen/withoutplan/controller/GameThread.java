@@ -82,6 +82,7 @@ public class GameThread extends Thread implements Game{
 			if((this.state == GameState.MOVE || this.state == GameState.ORIENTATE) 
 					&& this.timeAndScore.reduceStepTime(newTime-time)){
 				this.nextState(true);
+				continue;
 			}
 			time = newTime;
 			
@@ -115,6 +116,7 @@ public class GameThread extends Thread implements Game{
 			
 			if(next){
 				this.nextState(false);
+				this.next = false;
 			}
 			
 			try {
@@ -235,7 +237,10 @@ public class GameThread extends Thread implements Game{
 	public void dispatchEvent(CellClicked event) {
 		switch(this.state){
 		case MOVE:
-			// TODO check if ok
+			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
+				this.nextState(false);
+			}
 			break;
 		case ORIENTATE:
 			// TODO check if ok

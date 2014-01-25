@@ -3,12 +3,12 @@ package de.ggj14bremen.withoutplan;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.ggj14bremen.withoutplan.controller.Game;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 
@@ -48,10 +48,28 @@ public class MainActivity extends Activity
 		
 		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
 	}
+	
+	private CountDownTimer timer;
+	
+	@Override
+	protected void onStart() {
+		startTimer();
+		super.onStart();
+	}
+	
+	private void startTimer() {
+		
+		long time = 21000;
+		timer = new CountDownTimer(time, 500) {
 
-	public void update(Game game)
-	{
-		//textViewCountdown.setText(game.);
+		     public void onTick(long millisUntilFinished) {
+		         textViewCountdown.setText(String.valueOf((gameThread.getTimeAndScore().getStepTime() / 1000)));
+		     }
+
+		     public void onFinish() {
+		    	 startTimer();
+		     }
+		  }.start();
 	}
 	
 	/** Remember to resume the glSurface */
@@ -66,6 +84,7 @@ public class MainActivity extends Activity
 	@Override
 	protected void onPause()
 	{
+		timer.cancel();
 		super.onPause();
 		glSurfaceView.onPause();
 	}
