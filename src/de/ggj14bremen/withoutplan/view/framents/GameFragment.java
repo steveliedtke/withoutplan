@@ -1,5 +1,8 @@
 package de.ggj14bremen.withoutplan.view.framents;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	private CountDownTimer timer;
 	private String lastInfoText = "";
 	private TextView textViewCountdown;
+	private List<String> infoTextList = new ArrayList<String>(); 
 
 
 	@Override
@@ -50,29 +54,35 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		long time = 21000;
 		timer = new CountDownTimer(time, 500)
 		{
-			public void onTick(long millisUntilFinished)
-			{
-				if (activity.gameThread.getTimeScoreInfo().isTimeShowed())
-				{
-					textViewCountdown.setText(String.valueOf((activity.gameThread.getTimeScoreInfo().getStepTime() / 1000)));
-				} 
-				else
-				{
-					textViewCountdown.setText("");
+			 public void onTick(long millisUntilFinished) {
+		    	 if(activity.gameThread.getTimeScoreInfo().isTimeShowed()){
+		    		 textViewCountdown.setText(String.valueOf((activity.gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    	 }else{
+		    		 textViewCountdown.setText("");
+		    	 }
+		    	 final String infoText = activity.gameThread.getTimeScoreInfo().getInfoText();
+		    	 if(!infoText.equals(lastInfoText)){
+		    		 if(infoTextList.size()>=7){
+		    			 infoTextList.remove(0);
+		    		 }
+		    		 infoTextList.add(infoText);
+		    		 this.displayInfoText();
+		    		 lastInfoText = infoText;
+		    	 }
+		     }
+
+		     private void displayInfoText() {
+				String text = "";
+		    	for(int i=0;i<infoTextList.size();i++){
+					text+=infoTextList.get(i)+"\n";
 				}
-				final String infoText = activity.gameThread.getTimeScoreInfo().getInfoText();
-				if (!infoText.equals(lastInfoText) || lastInfoText.length()<=0)
-				{
-					infoTextView.append("\n" + infoText);
-					lastInfoText = infoText;
-				}
+		    	 infoTextView.setText(text);
 			}
 
-			public void onFinish()
-			{
-				startTimer();
-			}
-		}.start();
+			public void onFinish() {
+		    	 startTimer();
+		     }
+		  }.start();
 	}
 
 	@Override
@@ -87,7 +97,8 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					activity.gameThread.reset();
+					activity.gameThread.reset(activity.gameSettings);
+					infoTextList.clear();
 					return;
 				}
 			});

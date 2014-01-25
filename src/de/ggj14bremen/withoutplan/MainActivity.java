@@ -61,14 +61,6 @@ public class MainActivity extends Activity implements OnClickListener
 		
 
 	}
-
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-
-	
 	/** Remember to resume the glSurface */
 	@Override
 	protected void onResume()
@@ -101,7 +93,8 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameThread.reset();
+					gameSettings = new GameSettings(MainActivity.this);
+					gameThread.reset(gameSettings);
 					return;
 				}
 			});

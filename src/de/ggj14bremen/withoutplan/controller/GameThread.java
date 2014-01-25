@@ -8,6 +8,7 @@ import java.util.Set;
 import android.os.SystemClock;
 import android.util.Log;
 import de.ggj14bremen.withoutplan.GameSettings;
+import de.ggj14bremen.withoutplan.MainActivity;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
@@ -30,7 +31,11 @@ public class GameThread extends Thread implements Game{
 	
 	private GameBoard board;
 	
+	private boolean reset = false;
+	
 	private GameSettings settings;
+	
+	private GameSettings newSettings;
 	
 	private List<Figure> figures;
 	
@@ -58,6 +63,20 @@ public class GameThread extends Thread implements Game{
 		this.timeScoreInfo = new TimeScoreInfo(settings.getStepTime(), 0);
 		this.start();
 	}
+	
+	private void reinit(){
+		this.settings = newSettings;
+		this.reset = false;
+		running = true;
+		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
+		next = false;
+		figures = new ArrayList<Figure>(settings.getAmountFigures());
+		figureStep = 0;
+		this.state = GameState.INIT;
+		figureTurn = new int[settings.getAmountFigures()];
+		this.timeScoreInfo = new TimeScoreInfo(settings.getStepTime(), 0);
+		this.randomizeFigureTurn();
+	}
 
 	private void randomizeFigureTurn() {
 		int index = 0;
@@ -81,59 +100,62 @@ public class GameThread extends Thread implements Game{
 			
 			boolean skipSwitch = false;
 			
-			if(this.state == GameState.MOVE || this.state == GameState.ORIENTATE){
-				long newTime = SystemClock.elapsedRealtime();
-				if(this.timeScoreInfo.reduceStepTime(newTime-time)){
-					this.nextState(true);
-					skipSwitch = true;
-					this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
-					this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
-				}
-				time = newTime;
-			}
-			
-			if(!skipSwitch){
-			
-				switch(this.state){
-				case INIT:
-					this.initFigures();
-					final int amountEnemies = Generator.randomIntBetween(1, 3);
-					this.timeScoreInfo.setInfoText("Figures created!");
-					this.sleepFor(PAUSE_TIME);
-					this.spawnEnemies(amountEnemies);
-					this.next = true;
-					this.timeScoreInfo.setInfoText("Enemies spawned");
-					this.sleepFor(PAUSE_TIME);
-					time = SystemClock.elapsedRealtime();
-					break;
-				case MOVE:
-					this.board.showMoveTarget(this.getCurrentFigure());
-					this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
-					break;
-				case ORIENTATE:
-					this.board.showOrientation(this.getCurrentFigure());
-					break;
-				case ANALYSIS:
-					this.analyseRound();
-					this.next = true;
-					// TODO show info of analysis result
-					this.timeScoreInfo.setInfoText("Analysed board!");
-					this.sleepFor(PAUSE_TIME);
-					break;
-				case SPAWN:
-					this.spawnEnemies(Generator.randomIntBetween(0, 2));
-					// TODO show info of spawned enemies
-					this.timeScoreInfo.setInfoText("Enemies spawned");
-					this.sleepFor(PAUSE_TIME);
-					this.next = true;
-					break;
-				case END:
-					// TODO show end monitor
-					this.running = false;
+			if(reset){
+				this.reinit();
+			}else{
+				if(this.state == GameState.MOVE || this.state == GameState.ORIENTATE){
+					long newTime = SystemClock.elapsedRealtime();
+					if(this.timeScoreInfo.reduceStepTime(newTime-time)){
+						this.nextState(true);
+						skipSwitch = true;
+						this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
+						this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
+					}
+					time = newTime;
 				}
 				
+				if(!skipSwitch){
+				
+					switch(this.state){
+					case INIT:
+						this.initFigures();
+						final int amountEnemies = Generator.randomIntBetween(1, 3);
+						this.timeScoreInfo.setInfoText("Figures created!");
+						this.sleepFor(PAUSE_TIME);
+						this.spawnEnemies(amountEnemies);
+						this.next = true;
+						this.timeScoreInfo.setInfoText("Enemies spawned");
+						this.sleepFor(PAUSE_TIME);
+						time = SystemClock.elapsedRealtime();
+						break;
+					case MOVE:
+						this.board.showMoveTarget(this.getCurrentFigure());
+						this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+						break;
+					case ORIENTATE:
+						this.board.showOrientation(this.getCurrentFigure());
+						break;
+					case ANALYSIS:
+						this.analyseRound();
+						this.next = true;
+						// TODO show info of analysis result
+						this.timeScoreInfo.setInfoText("Analysed board!");
+						this.sleepFor(PAUSE_TIME);
+						break;
+					case SPAWN:
+						this.spawnEnemies(Generator.randomIntBetween(0, 2));
+						// TODO show info of spawned enemies
+						this.timeScoreInfo.setInfoText("Enemies spawned");
+						this.sleepFor(PAUSE_TIME);
+						this.next = true;
+						break;
+					case END:
+						// TODO show end monitor
+						this.running = false;
+					}
+					
+				}
 			}
-			
 			sleepFor(SLEEP_TIME);
 			
 			if(!skipSwitch && next){
@@ -249,9 +271,6 @@ public class GameThread extends Thread implements Game{
 				}
 			}
 		}
-		// TODO analyse if enemy gets removed
-		// if yes this.timeAndScore.addScore(enemyAmount)
-		// TODO check if game is over
 	}
 
 	private void checkPotentialKill(Cell[][] cells, int x, int y,
@@ -261,7 +280,8 @@ public class GameThread extends Thread implements Game{
 				if(this.lookForFigure(cells, i, j)){
 					final Figure figure = cells[i][j].getFigure();
 					if(colors.contains(figure.getColor().getContrary())){
-						// TODO
+						this.board.removeEnemy(i,j);
+						this.timeScoreInfo.addScore();
 					}
 				}
 			}
@@ -308,13 +328,13 @@ public class GameThread extends Thread implements Game{
 	public void dispatchEvent(CellClicked event) {
 		switch(this.state){
 		case MOVE:
-			//if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
 				this.nextState(false);
-			//}
+			}
 			break;
 		case ORIENTATE:
-			//if(this.board.getCell(event.getX(), event.getY()).isVisible()){
+			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
 				final Orientation orientation;
 				if(event.getX()<this.getCurrentFigure().getX()){
 					orientation = Orientation.RIGHT;
@@ -322,22 +342,24 @@ public class GameThread extends Thread implements Game{
 					orientation = Orientation.LEFT;
 				}else if(event.getY()<this.getCurrentFigure().getY()){
 					orientation = Orientation.BOTTOM;
-				}else{
+				}else if(event.getY()>this.getCurrentFigure().getY()){
 					orientation = Orientation.TOP;
+				}else{
+					orientation = this.getCurrentFigure().getOrientation();
 				}
 				this.board.orientateFigure(this.getCurrentFigure(), orientation);
 				this.nextState(false);
-			//}
+			}
 			break;
 			default:
 				// not allowed
 		}
 	}
 
-	public void reset()
+	public void reset(final GameSettings settings)
 	{
-		// TODO Auto-generated method stub
-		
+		reset = true;
+		newSettings = settings;
 	}
 	
 	//TODO event to stop thread

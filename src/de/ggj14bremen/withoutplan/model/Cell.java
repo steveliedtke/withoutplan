@@ -3,6 +3,8 @@ package de.ggj14bremen.withoutplan.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.ggj14bremen.withoutplan.view.Colors;
+
 public class Cell
 {
 	private Figure figure;
@@ -33,21 +35,50 @@ public class Cell
 	
 	public float[] getColor()
 	{
-		// TODO
+		// TODO aura
 		
 		if (!isAlive())
 		{
 			return enemy.getColorArray();
 		}
 		
-		float[] colorArray =  new float[]{1f, 1f, 1f, 1f};
+		if (hasFigure())
+		{
+			return figure.getColorArray();
+		}
+		
+		float[] colorArray =  new float[]{0f, 0f, 0f, 0f};
+
+		int colorCount = 1 + watchingFigures.size();
+		float weight = 1.0f / colorCount;
+		float[] colorPart;
 		
 		if (hasEnemy())
 		{
-			colorArray = enemy.getColorArray();
+			colorPart =  enemy.getColorArray();
+			addColorPart(colorArray, colorPart, weight);
+		}
+		else
+		{
+			colorPart = Colors.WHITE;
+			addColorPart(colorArray, colorPart, weight);
+		}
+		
+		for (Figure figure: watchingFigures)
+		{
+			colorPart = figure.getColorArray();
+			addColorPart(colorArray, colorPart, weight);
 		}
 		
 		return colorArray;
+	}
+	
+	private void addColorPart(float[] color, float[] colorPart, float weight)
+	{
+		for (int i = 0; i < color.length; i++)
+		{
+			color[i] += colorPart[i] * weight;
+		}
 	}
 	
 	public boolean isVisible()
