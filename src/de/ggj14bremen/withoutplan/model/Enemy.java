@@ -33,7 +33,7 @@ public class Enemy
 	
 	public float[] getColorArray()
 	{
-		float color = 1.0f - ((float)age) / killAge;
+		float color = 1.0f - ((float)age + 1) / (killAge + 1);
 		return new float[]{color, color, color, 1.0f};
 	}
 }
