@@ -321,6 +321,12 @@ public class GameThread extends Thread implements Game{
 				// not allowed
 		}
 	}
+
+	public void reset()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 	//TODO event to stop thread
 }
