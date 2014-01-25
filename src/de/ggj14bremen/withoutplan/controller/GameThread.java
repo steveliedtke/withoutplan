@@ -314,9 +314,20 @@ public class GameThread extends Thread implements Game{
 			//}
 			break;
 		case ORIENTATE:
-			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
-//				TODO this.board.orientateFigure(this.getCurrentFigure(), orientation);
-			}
+			//if(this.board.getCell(event.getX(), event.getY()).isVisible()){
+				final Orientation orientation;
+				if(event.getX()<this.getCurrentFigure().getX()){
+					orientation = Orientation.RIGHT;
+				}else if(event.getX()>this.getCurrentFigure().getX()){
+					orientation = Orientation.LEFT;
+				}else if(event.getY()<this.getCurrentFigure().getY()){
+					orientation = Orientation.BOTTOM;
+				}else{
+					orientation = Orientation.TOP;
+				}
+				this.board.orientateFigure(this.getCurrentFigure(), orientation);
+				this.nextState(false);
+			//}
 			break;
 			default:
 				// not allowed
