@@ -24,19 +24,15 @@ public class MainActivity extends Activity implements OnClickListener
 	public static final String TAG = "NO_PLAN";
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
-<<<<<<< HEAD
 	public GameThread gameThread;
 	public GameSettings gameSettings;
 	
 	//UI elements
 	private GameFragment gameFragment;
 	private SettingsFragment settingsFragment;
-=======
-	private GameThread gameThread;
-	private GameSettings gameSettings;
-	private Sounds sounds;
->>>>>>> branch 'master' of https://github.com/dragondagda/withoutplan.git
-	
+
+	public Sounds sounds;
+
 	public static boolean DEBUG = true;
 	
 	/** Called when the activity is first created. */
@@ -60,83 +56,18 @@ public class MainActivity extends Activity implements OnClickListener
 
 		//game stuff
 		gameSettings	= new GameSettings(this);
-<<<<<<< HEAD
-		gameThread 		= new GameThread(gameSettings);
-=======
-		sounds = new Sounds(this);
+
+		sounds 			= new Sounds(this);
 		gameThread 		=  new GameThread(gameSettings, sounds);
->>>>>>> branch 'master' of https://github.com/dragondagda/withoutplan.git
-		
+	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
 		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
-		
-<<<<<<< HEAD
-=======
-		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
-		infoTextView = (TextView) findViewById(R.id.infoTextView);
-		
+				
 		findViewById(R.id.buttonReset).setOnClickListener(this);
 	}
 	
-	private CountDownTimer timer;
-	private String lastInfoText = "";
-	private long lastSecondsRemaining = 0L;
-	private List<String> infoTextList = new ArrayList<String>(); 
-	
-	@Override
-	protected void onStart() {
-		startTimer();
-		super.onStart();
-	}
-	private void startTimer() {
-		
-		long time = 21000;
-		timer = new CountDownTimer(time, 500) {
->>>>>>> branch 'master' of https://github.com/dragondagda/withoutplan.git
 
-<<<<<<< HEAD
-=======
-		     public void onTick(long millisUntilFinished) {
-		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
-		    		 final long secondsRemaining = gameThread.getTimeScoreInfo().getStepTime() / 1000;
-		    		 if(secondsRemaining!=lastSecondsRemaining){
-			    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
-			    		 if(secondsRemaining==0L){
-			    			 sounds.finalTick();
-			    		 }else if(secondsRemaining<=5L){
-			    			 sounds.tick();
-			    		 }
-			    		 lastSecondsRemaining = secondsRemaining;
-		    		 }
-		    	 }else{
-		    		 textViewCountdown.setText("");
-		    	 }
-		    	 final String infoText = gameThread.getTimeScoreInfo().getInfoText();
-		    	 if(!infoText.equals(lastInfoText)){
-		    		 if(infoTextList.size()>=7){
-		    			 infoTextList.remove(0);
-		    		 }
-		    		 infoTextList.add(infoText);
-		    		 this.displayInfoText();
-		    		 lastInfoText = infoText;
-		    	 }
-		     }
-
-		     private void displayInfoText() {
-				String text = "";
-		    	for(int i=0;i<infoTextList.size();i++){
-					text+=infoTextList.get(i)+"\n";
-				}
-		    	 infoTextView.setText(text);
-			}
-
-			public void onFinish() {
-		    	 startTimer();
-		     }
-		  }.start();
->>>>>>> branch 'master' of https://github.com/dragondagda/withoutplan.git
-	}
 	/** Remember to resume the glSurface */
 	@Override
 	protected void onResume()

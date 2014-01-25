@@ -49,14 +49,25 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		timer.cancel();
 	}
 
-	private void startTimer()
-	{
+private void startTimer() {
+		
 		long time = 21000;
-		timer = new CountDownTimer(time, 500)
-		{
-			 public void onTick(long millisUntilFinished) {
+		timer = new CountDownTimer(time, 500) {
+
+		     private long lastSecondsRemaining;
+
+			public void onTick(long millisUntilFinished) {
 		    	 if(activity.gameThread.getTimeScoreInfo().isTimeShowed()){
-		    		 textViewCountdown.setText(String.valueOf((activity.gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    		 final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
+		    		 if(secondsRemaining!=lastSecondsRemaining){
+			    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
+			    		 if(secondsRemaining==0L){
+			    			 activity.sounds.finalTick();
+			    		 }else if(secondsRemaining<=5L){
+			    			activity.sounds.tick();
+			    		 }
+			    		 lastSecondsRemaining = secondsRemaining;
+		    		 }
 		    	 }else{
 		    		 textViewCountdown.setText("");
 		    	 }
