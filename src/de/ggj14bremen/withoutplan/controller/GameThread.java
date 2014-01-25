@@ -256,14 +256,20 @@ public class GameThread extends Thread implements Game{
 
 	private void checkPotentialKill(Cell[][] cells, int x, int y,
 			Set<WPColor> colors) {
+		boolean found = false;
 		for(int i=x-1;i<=x+1;i++){
 			for(int j=y-1;j<=y+1;j++){
 				if(this.lookForFigure(cells, i, j)){
 					final Figure figure = cells[i][j].getFigure();
 					if(colors.contains(figure.getColor().getContrary())){
-						// TODO
+						//this.board.removeEnemy(i,j);
+						found = true;
+						break;
 					}
 				}
+			}
+			if(found){
+				break;
 			}
 		}
 	}
