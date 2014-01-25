@@ -17,7 +17,7 @@ public class GLRenderer implements Renderer
 	private float 		scale 	= 1f;
 	private float 		padding	= 1.1f;
 	private int 		widht, height;
-	int nrOfCells = 10;
+	private float 		cellSize;
 	
 	/** Constructor to set the handed over context 
 	 * @param gameThread */
@@ -71,39 +71,34 @@ public class GLRenderer implements Renderer
 		// Reset the Modelview Matrix
 		gl.glLoadIdentity();
 
-		// Drawing
-		//gl.glTranslatef(0.0f, 0.0f, -50.0f);		// move 5 units INTO the screen
-												// is the same as moving the camera 5 units away
+		int nrOfCells = game.getBoard().getCells().length;
+		scale = height/(nrOfCells + nrOfCells*padding);
+		
+		cellSize = height/nrOfCells;
 
-		
-		scale = height/(nrOfCells+nrOfCells*padding);
-	
-		//cellWidth = 
-		
 		gl.glScalef(scale, scale, scale);
 		
 		gl.glTranslatef(1, 1, 0.0f);
 
-	
-		square.setColor(0f, 1.0f, 1f, .8f);
 		drawBoard(gl);
-
-		//square.setColor(1f, 0f, 0f, .6f);
-		//drawBoard(gl);
 	}
 	private void drawBoard(GL10 gl)
 	{
 		gl.glPushMatrix();
 		final Cell[][] cells = game.getBoard().getCells();
 
-		for(int col = 0; col < nrOfCells; col++)// Cell[] column : cells)
+		for(int col = 0; col < cells.length; col++)
 		{
 			gl.glPushMatrix();
 			gl.glTranslatef(col + col * padding, 0, 0.0f);
-			for(int row = 0; row < nrOfCells; row++)//Cell cell : column)
+			for(int row = 0; row < cells[col].length; row++)
 			{
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
+				//TODO 
+				if(cells[col][row].hasEnemy()) 	square.setColor(0f, 1.0f, 1f, 1f);
+				//else if (cells[col][row].)
+				else 							square.setColor(1f, 0f, 1f, 1f);
 				square.draw(gl);
 				gl.glPopMatrix();
 			}
@@ -118,7 +113,10 @@ public class GLRenderer implements Renderer
 	}
 	public float getScale()
 	{
-		// TODO Auto-generated method stub
 		return scale;
+	}
+	public float getCellSize()
+	{
+		return cellSize;
 	}
 }
