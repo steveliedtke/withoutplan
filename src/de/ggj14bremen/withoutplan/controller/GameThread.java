@@ -249,27 +249,19 @@ public class GameThread extends Thread implements Game{
 				}
 			}
 		}
-		// TODO analyse if enemy gets removed
-		// if yes this.timeAndScore.addScore(enemyAmount)
-		// TODO check if game is over
 	}
 
 	private void checkPotentialKill(Cell[][] cells, int x, int y,
 			Set<WPColor> colors) {
-		boolean found = false;
 		for(int i=x-1;i<=x+1;i++){
 			for(int j=y-1;j<=y+1;j++){
 				if(this.lookForFigure(cells, i, j)){
 					final Figure figure = cells[i][j].getFigure();
 					if(colors.contains(figure.getColor().getContrary())){
-						//this.board.removeEnemy(i,j);
-						found = true;
-						break;
+						this.board.removeEnemy(i,j);
+						this.timeScoreInfo.addScore();
 					}
 				}
-			}
-			if(found){
-				break;
 			}
 		}
 	}
@@ -314,13 +306,13 @@ public class GameThread extends Thread implements Game{
 	public void dispatchEvent(CellClicked event) {
 		switch(this.state){
 		case MOVE:
-			//if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
 				this.nextState(false);
-			//}
+			}
 			break;
 		case ORIENTATE:
-			//if(this.board.getCell(event.getX(), event.getY()).isVisible()){
+			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
 				final Orientation orientation;
 				if(event.getX()<this.getCurrentFigure().getX()){
 					orientation = Orientation.RIGHT;
@@ -328,12 +320,14 @@ public class GameThread extends Thread implements Game{
 					orientation = Orientation.LEFT;
 				}else if(event.getY()<this.getCurrentFigure().getY()){
 					orientation = Orientation.BOTTOM;
-				}else{
+				}else if(event.getY()>this.getCurrentFigure().getY()){
 					orientation = Orientation.TOP;
+				}else{
+					orientation = this.getCurrentFigure().getOrientation();
 				}
 				this.board.orientateFigure(this.getCurrentFigure(), orientation);
 				this.nextState(false);
-			//}
+			}
 			break;
 			default:
 				// not allowed

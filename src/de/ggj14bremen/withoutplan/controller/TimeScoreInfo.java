@@ -23,8 +23,8 @@ public class TimeScoreInfo {
 		return stepTime < 0L;
 	}
 	
-	public void addScore(int scoreToAdd){
-		score += scoreToAdd;
+	public void addScore(){
+		score++;
 	}
 
 	public long getStepTime() {
