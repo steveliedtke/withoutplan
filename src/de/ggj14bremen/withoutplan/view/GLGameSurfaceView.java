@@ -57,7 +57,7 @@ public class GLGameSurfaceView extends GLSurfaceView
 		public boolean onDown(MotionEvent e) 
 		{
 			final int x = (int) e.getX();
-			final int y = (int) e.getY();
+			final int y = (int) (GLGameSurfaceView.this.getHeight()-(e.getY()));
 			
 			if(MainActivity.DEBUG) Log.d(MainActivity.TAG, getClass().getSimpleName()+".onDown() raw: "+x+"/"+y+" scale: "+glRenderer.getScale());
 

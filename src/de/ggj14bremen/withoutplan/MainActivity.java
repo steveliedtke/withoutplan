@@ -1,9 +1,13 @@
 package de.ggj14bremen.withoutplan;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,7 +16,7 @@ import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements OnClickListener
 {
 
 	public static final String TAG = "NO_PLAN";
@@ -50,6 +54,8 @@ public class MainActivity extends Activity
 		
 		textViewCountdown = (TextView) findViewById(R.id.textViewCountdown);
 		infoTextView = (TextView) findViewById(R.id.infoTextView);
+		
+		findViewById(R.id.buttonReset).setOnClickListener(this);
 	}
 	
 	private CountDownTimer timer;
@@ -104,5 +110,24 @@ public class MainActivity extends Activity
 	public void showDebugToast(String string)
 	{
 		Toast.makeText(this, string, Toast.LENGTH_SHORT).show();		
+	}
+	@Override
+	public void onClick(View v)
+	{
+		if(v.getId() == R.id.buttonReset)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Reset game?");
+			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int id)
+				{
+					gameThread.reset();
+					return;
+				}
+			});
+			builder.create().show();
+		}
 	}
 }

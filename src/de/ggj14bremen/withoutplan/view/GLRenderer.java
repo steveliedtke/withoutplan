@@ -115,7 +115,7 @@ public class GLRenderer implements Renderer
 					square.setColor(Colors.RED);
 					square.draw(gl);
 				}
-				if(cells[col][row].hasFigure()) 
+				if(cell.hasFigure()) 
 				{
 					gl.glPushMatrix();
 					float angle = cell.getFigure().getOrientation().getAngle();
@@ -128,7 +128,7 @@ public class GLRenderer implements Renderer
 				if(cell.isWalkable()) //walkable
 				{
 					gl.glPushMatrix();
-					square.setAlpha(.2f);
+					square.setAlpha(.3f);
 					square.setColor(Colors.GREEN);
 					square.draw(gl);
 					gl.glPopMatrix();
@@ -136,7 +136,7 @@ public class GLRenderer implements Renderer
 				if(cell.isVisible()) //walkable
 				{
 					gl.glPushMatrix();
-					square.setAlpha(.2f);
+					square.setAlpha(.3f);
 					square.setColor(Colors.YELLOW);
 					square.draw(gl);
 					gl.glPopMatrix();

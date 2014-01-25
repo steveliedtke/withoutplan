@@ -16,7 +16,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
         <TextView
@@ -27,9 +28,16 @@
         
         <TextView
             android:id="@+id/infoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="left"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/buttonReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Reset" />
 
     </LinearLayout>
 
