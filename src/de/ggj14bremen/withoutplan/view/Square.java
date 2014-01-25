@@ -51,17 +51,28 @@ public class Square
 		// Disable the client state before leaving
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
-
-	public float[] getColor()
-	{
-		return color;
-	}
-
-	public void setColor(float r, float g, float b, float a)
+	public void setColor(float r, float g, float b)
 	{
 		this.color[0] = r;
 		this.color[1] = g;
 		this.color[2] = b;
-		this.color[3] = a;
+	}
+	public void setColor(float r, float g, float b, float alpha)
+	{
+		this.color[0] = r;
+		this.color[1] = g;
+		this.color[2] = b;
+		this.color[3] = alpha;
+	}
+
+	public void setColor(float[] ccolor)
+	{
+		this.color[0] = ccolor[0];
+		this.color[1] = ccolor[1];
+		this.color[2] = ccolor[2];
+	}
+	public void setAlpha(float alpha)
+	{
+		this.color[3] = alpha;
 	}
 }

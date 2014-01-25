@@ -95,11 +95,25 @@ public class GLRenderer implements Renderer
 			{
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
-				//TODO 
-				if(cells[col][row].hasEnemy()) 	square.setColor(0f, 1.0f, 1f, 1f);
-				//else if (cells[col][row].)
-				else 							square.setColor(1f, 0f, 1f, 1f);
+				//draw basic color			
+				square.setColor(1f, 1f, 1f, 1f);
 				square.draw(gl);
+				
+				if(cells[col][row].hasEnemy()) 
+				{
+					square.setAlpha(.5f);
+					square.setColor(Colors.RED);
+					square.draw(gl);
+				}
+				if(cells[col][row].hasFigure()) 
+				{
+					square.setAlpha(.5f);
+					square.setColor(Colors.BLUE);
+					square.draw(gl);
+				}
+				//else if (cells[col][row].)
+				//else 							square.setColor(1f, 0f, 1f, 1f);
+
 				gl.glPopMatrix();
 			}
 			gl.glPopMatrix();

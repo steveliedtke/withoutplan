@@ -64,7 +64,7 @@ public class GLGameSurfaceView extends GLSurfaceView
 			int cellX = (int) (x / glRenderer.getCellSize());
 			int cellY = (int) (y / glRenderer.getCellSize());
 			
-			if(MainActivity.DEBUG) Log.d(MainActivity.TAG, getClass().getSimpleName()+"Cell: "+cellX+"/"+cellY);
+			if(MainActivity.DEBUG) Log.v(MainActivity.TAG, getClass().getSimpleName()+"Cell: "+cellX+"/"+cellY);
 			if(MainActivity.DEBUG) activity.showDebugToast("Cell: "+cellX+"/"+cellY);
 			
 			gameThread.dispatchEvent(new CellClicked(cellX, cellY));
