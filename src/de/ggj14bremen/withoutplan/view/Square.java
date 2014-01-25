@@ -8,11 +8,11 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Square
 {
-
+	private float[] color = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
 	private FloatBuffer vertexBuffer; // buffer holding the vertices
 
 	private float vertices[] =
-	{ -1.0f, -1.0f, 0.0f, // V1 - bottom left
+	{ 		-1.0f, -1.0f, 0.0f, // V1 - bottom left
 			-1.0f, 1.0f, 0.0f, // V2 - top left
 			1.0f, -1.0f, 0.0f, // V3 - bottom right
 			1.0f, 1.0f, 0.0f // V4 - top right
@@ -40,7 +40,7 @@ public class Square
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
 		// set the colour for the square
-		gl.glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+		gl.glColor4f(color[0],color[1],color[2],color[3]);
 
 		// Point to our vertex buffer
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
@@ -50,5 +50,18 @@ public class Square
 
 		// Disable the client state before leaving
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+	}
+
+	public float[] getColor()
+	{
+		return color;
+	}
+
+	public void setColor(float r, float g, float b, float a)
+	{
+		this.color[0] = r;
+		this.color[1] = g;
+		this.color[2] = b;
+		this.color[3] = a;
 	}
 }
