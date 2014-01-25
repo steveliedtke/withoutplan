@@ -86,6 +86,8 @@ public class GameThread extends Thread implements Game{
 				if(this.timeScoreInfo.reduceStepTime(newTime-time)){
 					this.nextState(true);
 					skipSwitch = true;
+					this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
+					this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
 				}
 				time = newTime;
 			}
@@ -313,9 +315,8 @@ public class GameThread extends Thread implements Game{
 			break;
 		case ORIENTATE:
 			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
-				//this.board.
+//				TODO this.board.orientateFigure(this.getCurrentFigure(), orientation);
 			}
-			// TODO check if ok
 			break;
 			default:
 				// not allowed
