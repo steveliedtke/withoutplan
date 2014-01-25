@@ -68,6 +68,8 @@ public class MainActivity extends Activity
 		     public void onTick(long millisUntilFinished) {
 		    	 if(gameThread.getTimeScoreInfo().isTimeShowed()){
 		    		 textViewCountdown.setText(String.valueOf((gameThread.getTimeScoreInfo().getStepTime() / 1000)));
+		    	 }else{
+		    		 textViewCountdown.setText("");
 		    	 }
 		    	 infoTextView.setText(gameThread.getTimeScoreInfo().getInfoText());
 		     }

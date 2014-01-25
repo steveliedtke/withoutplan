@@ -96,12 +96,10 @@ public class GameThread extends Thread implements Game{
 				case INIT:
 					this.initFigures();
 					final int amountEnemies = Generator.randomIntBetween(1, 3);
-					// TODO show info: Figures were created 
 					this.timeScoreInfo.setInfoText("Figures created!");
 					this.sleepFor(PAUSE_TIME);
 					this.spawnEnemies(amountEnemies);
 					this.next = true;
-					// TODO show info: Enemies were created
 					this.timeScoreInfo.setInfoText("Enemies spawned");
 					this.sleepFor(PAUSE_TIME);
 					time = SystemClock.elapsedRealtime();
@@ -232,9 +230,51 @@ public class GameThread extends Thread implements Game{
 	}
 
 	private void analyseRound() {
+		final Cell[][] cells = this.board.getCells();
+		
+		for(int i=0;i<cells.length;i++){
+			for(int j=0;j<cells[i].length;i++){
+				final Cell cell = cells[i][j];
+				if(cell.hasEnemy()){
+					if(!cell.getWatchingFigures().isEmpty()){
+						final Set<WPColor> colors = new HashSet<WPColor>();
+						for(final Figure figure : cell.getWatchingFigures()){
+							colors.add(figure.getColor());
+						}
+						
+						this.checkPotentialKill(cells, i, j, colors);
+					}
+				}
+			}
+		}
 		// TODO analyse if enemy gets removed
 		// if yes this.timeAndScore.addScore(enemyAmount)
 		// TODO check if game is over
+	}
+
+	private void checkPotentialKill(Cell[][] cells, int x, int y,
+			Set<WPColor> colors) {
+		for(int i=x-1;i<=x+1;i++){
+			for(int j=y-1;j<=y+1;j++){
+				if(this.lookForFigure(cells, i, j)){
+					final Figure figure = cells[i][j].getFigure();
+					if(colors.contains(figure.getColor().getContrary())){
+						// TODO
+					}
+				}
+			}
+		}
+	}
+	
+
+	private boolean lookForFigure(Cell[][] cells, int x, int y) {
+		final boolean result;
+		if(x<0 || x>=settings.getBoardSizeX() || y<0 || y>=settings.getBoardSizeY()){
+			result = false;
+		}else{
+			result = (cells[x][y].getFigure() != null);
+		}
+		return result;
 	}
 
 	private void spawnEnemies(int amountEnemies) {
@@ -266,10 +306,10 @@ public class GameThread extends Thread implements Game{
 	public void dispatchEvent(CellClicked event) {
 		switch(this.state){
 		case MOVE:
-			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+			//if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
 				this.nextState(false);
-			}
+			//}
 			break;
 		case ORIENTATE:
 			// TODO check if ok
