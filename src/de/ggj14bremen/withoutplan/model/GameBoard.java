@@ -1,16 +1,23 @@
 package de.ggj14bremen.withoutplan.model;
 
-public class GameBoard implements Board{
-
+public class GameBoard implements Board
+{
 	private Cell[][] cells;
-	
-	public void init(int x, int y){
-		// TODO create cell array
+
+	public GameBoard(int width, int height)
+	{
+		cells = new Cell[width][height];
 	}
 	
-	public Cell getCell(int x, int y){
-		// TODO return cell x,y
-		return null;
+	@Override
+	public Cell[][] getCells()
+	{
+		return cells;
+	}
+	
+	public Cell getCell(int x, int y)
+	{
+		return cells[x][y];
 	}
 	
 	public void spawnEnemy(int x, int y){
@@ -21,10 +28,9 @@ public class GameBoard implements Board{
 		// TODO
 	}
 
-	@Override
-	public Cell[][] getCells() {
-		// TODO Auto-generated method stub
-		return null;
+	public void orientateFigure(Figure figure, Figure.Orientation orientation)
+	{
+		// TODO
 	}
 	
 	public void showOrientation(Figure figure){
