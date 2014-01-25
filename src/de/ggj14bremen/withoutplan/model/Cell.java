@@ -60,7 +60,7 @@ public class Cell
 		}
 		else
 		{
-			colorPart = Colors.WHITE;
+			colorPart = Colors.getColorWithAlpha(Colors.WHITE, 1.0f);
 			addColorPart(colorArray, colorPart, weight);
 		}
 		
