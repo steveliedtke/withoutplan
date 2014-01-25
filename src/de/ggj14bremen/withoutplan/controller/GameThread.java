@@ -23,7 +23,7 @@ public class GameThread extends Thread implements Game{
 		
 			switch(this.state){
 			case INIT:
-				// TODO Init Board
+				this.board.init();
 				break;
 			case MOVE:
 				// TODO show move options
@@ -35,7 +35,7 @@ public class GameThread extends Thread implements Game{
 				// TODO analyse board
 				break;
 			case SPAWN:
-				// TODO spawn new 'enemies'
+				
 				break;
 			case END:
 				// TODO show end monitor
