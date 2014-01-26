@@ -1,6 +1,6 @@
 package de.ggj14bremen.withoutplan.model;
 
-public class Figure extends ColoredItem
+public class Figure extends ColoredItem implements Comparable<Figure>
 {
 	public enum Orientation
 	{
@@ -126,6 +126,20 @@ public class Figure extends ColoredItem
 			case BLUE: return "BLUE";
 			default: return "DEFAULT";
 		}
+	}
+
+	
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		return o != null && getClass().equals(o.getClass()) && compareTo((Figure) o) == 0;
+	}
+
+	@Override
+	public int compareTo(Figure another)
+	{
+		return getColor().toString().compareTo(another.getColor().toString());
 	}
 	
 }

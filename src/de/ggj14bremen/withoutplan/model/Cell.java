@@ -1,8 +1,7 @@
 package de.ggj14bremen.withoutplan.model;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Cell extends ColoredItem
 {
@@ -16,7 +15,9 @@ public class Cell extends ColoredItem
 	public Cell()
 	{
 		super(1f, 1f, 1f, 1f);
-		this.watchingFigures = Collections.synchronizedSet(new HashSet<Figure>());
+		//this.watchingFigures = Collections.synchronizedSet(new HashSet<Figure>());
+		//this.watchingFigures = new HashSet<Figure>();
+		this.watchingFigures = new ConcurrentSkipListSet<Figure>(); // TODO remove get calls inside cell
 	}
 	
 	public boolean hasFigure()
@@ -73,7 +74,7 @@ public class Cell extends ColoredItem
 //			return;
 //		}
 		
-		int colorCount = 1 + watchingFigures.size();
+		int colorCount = 1 + getWatchingFigures().size();
 		float alpha = 1.0f / colorCount;
 		float[] colorPart;
 		
@@ -88,7 +89,7 @@ public class Cell extends ColoredItem
 			setColorArray(1f * alpha, 1f * alpha, 1f * alpha, alpha);
 		}
 		
-		for (Figure figure: watchingFigures)
+		for (Figure figure: getWatchingFigures())
 		{
 			colorPart = figure.getColorArray();
 			addColorPart(colorPart, alpha);
@@ -139,13 +140,13 @@ public class Cell extends ColoredItem
 	
 	public void addWatchingFigure(Figure figure)
 	{
-		watchingFigures.add(figure);
+		getWatchingFigures().add(figure);
 		updateColorArray();
 	}
 	
 	public void removeWatchingFigure(Figure figure)
 	{
-		watchingFigures.remove(figure);
+		getWatchingFigures().remove(figure);
 		updateColorArray();
 	}
 	
