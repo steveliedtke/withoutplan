@@ -1,12 +1,9 @@
 package de.ggj14bremen.withoutplan;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -108,25 +105,7 @@ public class MainActivity extends Activity implements OnClickListener
 	}
 	public void onBackPressed() 
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		// builder.setMessage("Reset game?");
-		View v = View.inflate(this, R.layout.dialog_layout, null);
-		TextView tv = (TextView) v.findViewById(R.id.textViewDialog);
-		tv.setText("Quit game?");
-		tv.setGravity(Gravity.CENTER);
-		FontHelper.setFont(tv);
-		builder.setView(tv);
-		builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int id)
-			{
-				MainActivity.this.finish();
-				return;
-			}
-		});
-		builder.setNegativeButton(android.R.string.no, null);
-		builder.create().show();
+		finish();
 	};
 	public void showDebugToast(String string)
 	{
