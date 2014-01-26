@@ -76,7 +76,7 @@ public class GameBoard implements Board
 	private void setFigureOrientation(Figure figure, boolean add)
 	{
 		int stepX = 0;
-		int stepY = -1;
+		int stepY = 0;
 		
 		switch(figure.getOrientation())
 		{

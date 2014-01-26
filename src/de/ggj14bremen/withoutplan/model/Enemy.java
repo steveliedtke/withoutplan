@@ -1,14 +1,16 @@
 package de.ggj14bremen.withoutplan.model;
 
-public class Enemy
+public class Enemy extends ColoredItem
 {
 	private int age;
 	private int killAge;
 	
 	public Enemy(int killAge)
 	{
+		super(0f, 0f, 0f, 0f);
 		this.age = 0;
 		this.killAge = killAge;
+		updateColorArray();
 	}
 
 	public void increaseAge()
@@ -33,7 +35,12 @@ public class Enemy
 	
 	public float[] getColorArray()
 	{
+		return colorArray;
+	}
+	
+	private void updateColorArray()
+	{
 		float color = 1.0f - ((float)age + 1) / (killAge + 1);
-		return new float[]{color, color, color, 1.0f};
+		setColorArray(color, color, color, 1.0f);
 	}
 }

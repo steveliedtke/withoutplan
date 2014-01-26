@@ -3,18 +3,18 @@ package de.ggj14bremen.withoutplan.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.ggj14bremen.withoutplan.view.Colors;
-
-public class Cell
+public class Cell extends ColoredItem
 {
 	private Figure figure;
 	private Enemy enemy;
 	private Set<Figure> watchingFigures;
 	private boolean walkable;
 	private Figure orientationOption;
+	//private float[] colorArray;
 	
 	public Cell()
 	{
+		super(1f, 1f, 1f, 1f);
 		this.watchingFigures = new HashSet<Figure>();
 	}
 	
@@ -35,6 +35,11 @@ public class Cell
 	
 	public float[] getColor()
 	{
+		return getColorArray();
+	}
+	
+	public float[] getColorArray()
+	{
 		// TODO aura
 		
 		if (!isAlive())
@@ -47,37 +52,43 @@ public class Cell
 			return figure.getColorArray();
 		}
 		
-		float[] colorArray =  new float[]{0f, 0f, 0f, 0f};
-
 		int colorCount = 1 + watchingFigures.size();
-		float weight = 1.0f / colorCount;
+		float alpha = 1.0f / colorCount;
 		float[] colorPart;
 		
 		if (hasEnemy())
 		{
+			setColorArray(0f, 0f, 0f, 0f);
 			colorPart =  enemy.getColorArray();
-			addColorPart(colorArray, colorPart, weight);
+			addColorPart(colorPart, alpha);
 		}
 		else
 		{
-			colorPart = Colors.getColorWithAlpha(Colors.WHITE, 1.0f);
-			addColorPart(colorArray, colorPart, weight);
+			setColorArray(1f, 1f, 1f, alpha);
 		}
 		
 		for (Figure figure: watchingFigures)
 		{
 			colorPart = figure.getColorArray();
-			addColorPart(colorArray, colorPart, weight);
+			addColorPart(colorPart, alpha);
 		}
 		
 		return colorArray;
 	}
 	
-	private void addColorPart(float[] color, float[] colorPart, float weight)
+//	private void setColor(float r, float g, float b, float a)
+//	{
+//		colorArray[0] = r;
+//		colorArray[1] = g;
+//		colorArray[2] = b;
+//		colorArray[3] = a;
+//	}
+		
+	private void addColorPart(float[] colorPart, float alpha)
 	{
-		for (int i = 0; i < color.length && i < colorPart.length; i++)
+		for (int i = 0; i < colorArray.length && i < colorPart.length; i++)
 		{
-			color[i] += colorPart[i] * weight;
+			colorArray[i] += colorPart[i] * alpha;
 		}
 	}
 	

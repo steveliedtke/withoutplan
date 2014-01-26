@@ -1,10 +1,6 @@
 package de.ggj14bremen.withoutplan.model;
 
-import de.ggj14bremen.withoutplan.view.Colors;
-
-
-
-public class Figure
+public class Figure extends ColoredItem
 {
 	public enum Orientation
 	{
@@ -33,6 +29,7 @@ public class Figure
 	
 	public Figure()
 	{
+		super(1f, 0f, 0f, 1f);
 		this.x = -1;
 		this.y = -1;
 	}
@@ -70,6 +67,13 @@ public class Figure
 	public void setColor(WPColor color)
 	{
 		this.color = color;
+		switch (color)
+		{
+			case RED: setColorArray(1f, 0f, 0f, 1f); break;
+			case GREEN: setColorArray(0f, 1f, 0f, 1f); break;
+			case BLUE: setColorArray(0f, 0f, 1f, 1f); break;
+			default: setColorArray(1f, 0f, 0f, 1f); break; // TODO log/exception
+		}
 	}
 	
 	public void setPosition(int x, int y)
@@ -80,12 +84,6 @@ public class Figure
 	
 	public float[] getColorArray()
 	{
-		switch (color)
-		{
-			case RED: return Colors.getColorWithAlpha(Colors.RED, 1.0f);
-			case GREEN: return Colors.getColorWithAlpha(Colors.GREEN, 1.0f);
-			case BLUE: return Colors.getColorWithAlpha(Colors.BLUE, 1.0f);
-			default: return Colors.getColorWithAlpha(Colors.RED, 1.0f); // TODO log/exception
-		}
+		return colorArray;
 	}
 }
