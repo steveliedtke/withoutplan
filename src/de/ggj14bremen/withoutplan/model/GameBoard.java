@@ -166,12 +166,12 @@ public class GameBoard implements Board
 			{
 				Cell cell = cells[x][y];
 
-				if (cell.hasFigure()) break;
 				
 				if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.setFigureOrientation(add %s %d, %d)", getClass().getSimpleName(), figure.getColorString(), x, y));
 				
 				cell.addWatchingFigure(figure);
 				
+				if (cell.hasFigure()) break;
 				if (cell.hasEnemy()) break;
 			}
 			else
@@ -228,10 +228,11 @@ public class GameBoard implements Board
 				Cell cell = cells[x][y];
 
 				if (!cell.isAlive()) break;
-				if (cell.hasFigure()) break;
+//				if (cell.hasFigure()) break;
 				
 				cell.setOrientationOption(figure);
-				
+
+				if (cell.hasFigure()) break;
 				if (cell.hasEnemy()) break;
 			}
 			else
@@ -252,16 +253,22 @@ public class GameBoard implements Board
 			for (int y = 0; y < cells[x].length; y++)
 			{
 				cell = cells[x][y];
-				cell.setWalkable(walkable &&
+//				cell.setWalkable(walkable &&
+//						!cell.hasEnemy() &&
+//						(!cell.hasFigure() || figure.equals(cell.getFigure())) &&
+//						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= MOVE_RANGE);
+				cell.setMoveOption(walkable &&
 						!cell.hasEnemy() &&
 						(!cell.hasFigure() || figure.equals(cell.getFigure())) &&
-						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= 2);
+						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= MOVE_RANGE ? figure : null);
 			}
 		}
 	}
 	
-	private void setWalkable2(Figure figure, boolean walkable)
-	{
-		
-	}
+//	private void setWalkable2(Figure figure, boolean walkable)
+//	{
+//		// TODO avoid jump - use steps
+//	}
+	
+	//private void makeStep(Figure figure, Cell cell, )
 }

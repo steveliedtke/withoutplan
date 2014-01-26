@@ -238,8 +238,13 @@ public class GameThread extends Thread implements Game
 						this.timeScoreInfo.addToLog("Analysed board!");
 						break;
 					case SPAWN:
+						final int additionalEnemies = this.round / roundsAfterSpeedup;
 						this.timeScoreInfo.addToLog("- ROUND " + ++round + " -");
-						this.spawnEnemies(Generator.randomIntBetween(0, 2));
+						if(this.noEnemiesExist()){
+							this.spawnEnemies(Generator.randomIntBetween(1+additionalEnemies, 2+additionalEnemies));
+						}else{
+							this.spawnEnemies(Generator.randomIntBetween(0+additionalEnemies, 2+additionalEnemies));
+						}
 						this.timeScoreInfo.addToLog("Enemies spawned");
 						this.next = true;
 						break;
@@ -259,6 +264,23 @@ public class GameThread extends Thread implements Game
 		}
 	}
 
+	private boolean noEnemiesExist() {
+		final Cell[][] cells = this.board.getCells();
+		boolean enemyExist = false;
+		for(int i=0;i<cells.length;i++){
+			for(int j=0;j<cells[i].length;j++){
+				final Cell cell = cells[i][j];
+				if(cell.hasEnemy() && cell.isAlive()){
+					enemyExist = true;
+					break;
+				}
+			}
+			if(enemyExist){
+				break;
+			}
+		}
+		return enemyExist;
+	}
 	private void sleepFor(long time)
 	{
 		try
@@ -417,7 +439,7 @@ public class GameThread extends Thread implements Game
 			}
 		}
 
-		if(blackedOutCells>=2)
+		if(blackedOutCells>=3)
 		{
 			this.state = GameState.END;
 		}if (blackoutSound)
