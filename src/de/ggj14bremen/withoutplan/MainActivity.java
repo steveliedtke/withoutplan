@@ -31,8 +31,6 @@ public class MainActivity extends Activity implements OnClickListener
 	private GameFragment gameFragment;
 	private SettingsFragment settingsFragment;
 
-	public Sounds sounds;
-
 	public static boolean DEBUG = true;
 	
 	/** Called when the activity is first created. */
@@ -55,10 +53,10 @@ public class MainActivity extends Activity implements OnClickListener
 		findViewById(R.id.buttonSettings).setOnClickListener(this);	
 
 		//game stuff
+		Sounds.init(this);
 		gameSettings	= new GameSettings(this);
 
-		sounds 			= new Sounds(this);
-		gameThread 		=  new GameThread(gameSettings, sounds);
+		gameThread 		=  new GameThread(gameSettings);
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);

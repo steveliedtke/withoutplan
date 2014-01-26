@@ -8,6 +8,7 @@ import java.util.Set;
 import android.os.SystemClock;
 import android.util.Log;
 import de.ggj14bremen.withoutplan.GameSettings;
+import de.ggj14bremen.withoutplan.R;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
@@ -36,8 +37,6 @@ public class GameThread extends Thread implements Game{
 	
 	private GameSettings newSettings;
 	
-	private Sounds sounds;
-	
 	private List<Figure> figures;
 	
 	private int[] figureTurn;
@@ -52,8 +51,7 @@ public class GameThread extends Thread implements Game{
 	 */
 	private boolean next;
 	
-	public GameThread(GameSettings gameSettings, Sounds sounds){
-		this.sounds = sounds;
+	public GameThread(GameSettings gameSettings){
 		settings = gameSettings;
 		running = true;
 		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
@@ -123,7 +121,7 @@ public class GameThread extends Thread implements Game{
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
 						this.timeScoreInfo.setInfoText("Figures created!");
-						this.sounds.start();
+						Sounds.playSound(R.raw.beep);
 						this.sleepFor(PAUSE_TIME);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
@@ -233,7 +231,7 @@ public class GameThread extends Thread implements Game{
 			this.timeScoreInfo.setTimeShowed(false);
 		}else{
 			this.state = GameState.MOVE;
-			this.sounds.nextFigure();
+			Sounds.playSound(R.raw.beep);
 		}
 		this.timeScoreInfo.setStepTime(settings.getStepTime());
 	}
@@ -293,9 +291,9 @@ public class GameThread extends Thread implements Game{
 		}
 		
 		if(blackoutSound){
-			sounds.blackout();
+			Sounds.playSound(R.raw.beep);
 		}else if(darkerSound){
-			sounds.darker();
+			Sounds.playSound(R.raw.beep);
 		}
 	}
 
@@ -315,7 +313,7 @@ public class GameThread extends Thread implements Game{
 			}
 		}
 		if(playSound)
-			this.sounds.enemyDestroyed();
+			Sounds.playSound(R.raw.beep);
 	}
 	
 
@@ -345,7 +343,7 @@ public class GameThread extends Thread implements Game{
 			soundForSpawn = true;
 		}
 		if(soundForSpawn){
-			this.sounds.enemySpawned();
+			Sounds.playSound(R.raw.beep);
 		}
 	}
 

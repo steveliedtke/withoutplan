@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.controller.Sounds;
 
 public class GameFragment extends BaseFragment implements OnClickListener
 {
@@ -62,9 +63,9 @@ private void startTimer() {
 		    		 if(secondsRemaining!=lastSecondsRemaining){
 			    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
 			    		 if(secondsRemaining==0L){
-			    			 activity.sounds.finalTick();
+			    			 Sounds.playSound(R.raw.beep);
 			    		 }else if(secondsRemaining<=5L){
-			    			activity.sounds.tick();
+			    			 Sounds.playSound(R.raw.beep);
 			    		 }
 			    		 lastSecondsRemaining = secondsRemaining;
 		    		 }

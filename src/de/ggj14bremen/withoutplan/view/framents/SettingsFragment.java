@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import de.ggj14bremen.withoutplan.R;
 
 public class SettingsFragment extends BaseFragment implements OnClickListener
@@ -29,6 +30,7 @@ public class SettingsFragment extends BaseFragment implements OnClickListener
 		activity.gameSettings.setBoardSizeX(cols);
 		activity.gameSettings.setBoardSizeX(rows);
 		activity.gameSettings.setAmountFigures(nrOfFigures);
+		activity.gameSettings.setVolume(((SeekBar)getView().findViewById(R.id.seekBarVolume)).getProgress()/100f);
 		// TODO set in game settings
 		
 	}
