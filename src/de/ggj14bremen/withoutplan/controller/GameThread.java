@@ -72,7 +72,6 @@ public class GameThread extends Thread implements Game
 	
 	public GameThread()
 	{
-		running = true;
 		boardSizeX = Settings.getBoardSizeX();
 		boardSizeY = Settings.getBoardSizeY();
 		enemyLife = Settings.getEnemyLife();
@@ -89,7 +88,12 @@ public class GameThread extends Thread implements Game
 		round = 0;
 		showedMoveTarget = false;
 		showedOrientation = false;
-		start();
+	}
+	@Override
+	public synchronized void start()
+	{
+		running = true;
+		super.start();
 	}
 
 	private void reinit()
@@ -493,14 +497,14 @@ public class GameThread extends Thread implements Game
 	@Override
 	public void dispatchEvent(CellClicked event)
 	{
-		events.add(event);
+		if(!paused) events.add(event);
 	}
 	/**
 	 * 
 	 */
 	private void processEvents()
 	{	
-		CellClicked event = events.poll();
+		final CellClicked event = events.poll();
 		if(event != null)
 		{
 			switch (this.state)
@@ -561,5 +565,15 @@ public class GameThread extends Thread implements Game
 	{
 		this.paused = pause;
 
+	}
+
+	public boolean isPaused()
+	{
+		return paused;
+	}
+
+	public boolean isRunning()
+	{
+		return running;
 	}
 }

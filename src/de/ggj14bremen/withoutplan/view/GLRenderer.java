@@ -9,6 +9,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import de.ggj14bremen.withoutplan.controller.Game;
 import de.ggj14bremen.withoutplan.model.Cell;
+import de.ggj14bremen.withoutplan.model.Figure;
 
 public class GLRenderer implements Renderer 
 {
@@ -141,7 +142,8 @@ public class GLRenderer implements Renderer
 					float scale = 0.9f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
-					square.setColor(cell.getOrientationOption().getColorArray());
+					Figure figure = cell.getOrientationOption();
+					if(figure != null) square.setColor(figure.getColorArray());
 					square.draw(gl);
 					gl.glPopMatrix();
 				}
