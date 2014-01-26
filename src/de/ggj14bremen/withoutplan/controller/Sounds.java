@@ -55,6 +55,7 @@ public class Sounds
     	sounds.put(R.raw.fail, soundPool.load(context, R.raw.fail, 1));
     	sounds.put(R.raw.counter_fade, soundPool.load(context, R.raw.counter_fade, 1));
     	sounds.put(R.raw.movement_5, soundPool.load(context, R.raw.movement_5, 1));
+    	sounds.put(R.raw.orientation_3, soundPool.load(context, R.raw.orientation_3, 1));
 	}
 	public static final void destroy()
 	{

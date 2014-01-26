@@ -109,7 +109,16 @@ public class GLRenderer implements Renderer
 				square.setColor(cell.getColorArray());
 				square.setAlpha(1f);
 				square.draw(gl);
-				
+				if(cell.isWalkable())
+				{
+					gl.glPushMatrix();
+					float scale = 1f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(.3f);
+					square.setColor(Colors.YELLOW);
+					square.draw(gl);
+					gl.glPopMatrix();
+				}
 				if(cells[col][row].hasEnemy()) 
 				{
 					gl.glPushMatrix();
@@ -122,30 +131,32 @@ public class GLRenderer implements Renderer
 				}
 				if(cell.hasFigure()) 
 				{
+					final Figure figure = cell.getFigure();
+					
 					gl.glPushMatrix();
-					float angle = cell.getFigure().getOrientation().getAngle();
+					float scale = 1f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(1f);
+					square.setColor(figure.getAuraColorArray());
+					square.draw(gl);
+					gl.glPopMatrix();
+					
+					gl.glPushMatrix();
+					float angle = figure.getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
-					triangle.setAlpha(.6f);
-					triangle.setColor(Colors.WHITE);
+					triangle.setAlpha(1f);
+					triangle.setColor(figure.getColorArray());
 					triangle.draw(gl);
 					gl.glPopMatrix();
 				}
-				if(cell.isWalkable())
-				{
-					gl.glPushMatrix();
-					float scale = 0.9f;
-					gl.glScalef(scale, scale, scale);
-					square.setAlpha(.3f);
-					square.setColor(Colors.YELLOW);
-					square.draw(gl);
-					gl.glPopMatrix();
-				}
+
 				if(cell.isVisible())
 				{
 					gl.glPushMatrix();
-					float scale = 0.9f;
+					float scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
+					//FIXME
 					Figure figure = cell.getOrientationOption();
 					if(figure != null) square.setColor(figure.getColorArray());
 					square.draw(gl);
