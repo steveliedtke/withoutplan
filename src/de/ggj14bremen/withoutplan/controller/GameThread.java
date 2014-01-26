@@ -172,10 +172,10 @@ public class GameThread extends Thread implements Game
 
 					if (this.timeScoreInfo.reduceStepTime(dt))
 					{
-						this.nextState(true);
-						skipSwitch = true;
 						this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
 						this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
+						this.nextState(true);
+						skipSwitch = true;
 					}
 					final long secondsRemaining = timeScoreInfo.getStepTime() / 1000;
 					if (secondsRemaining != lastSecondsRemaining)

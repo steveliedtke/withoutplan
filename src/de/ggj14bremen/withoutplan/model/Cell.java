@@ -84,7 +84,7 @@ public class Cell extends ColoredItem
 		}
 		else
 		{
-			setColorArray(1f, 1f, 1f, alpha);
+			setColorArray(1f * alpha, 1f * alpha, 1f * alpha, alpha);
 		}
 		
 		for (Figure figure: watchingFigures)
@@ -133,6 +133,7 @@ public class Cell extends ColoredItem
 	public void setEnemy(Enemy enemy)
 	{
 		this.enemy = enemy;
+		updateColorArray();
 	}
 	
 	public void addWatchingFigure(Figure figure)

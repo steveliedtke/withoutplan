@@ -35,12 +35,12 @@ public class GameBoard implements Board
 		return cells[x][y];
 	}
 	
-	// TODO add timeToKill param
-	
 	public void spawnEnemy(int x, int y, int timeToKill)
 	{
 		Cell cell = cells[x][y];
-		cell.setEnemy(new Enemy(timeToKill, cell));
+		Enemy enemy = new Enemy(timeToKill, cell);
+		cell.setEnemy(enemy);
+		enemy.updateColorArray();
 	}
 	
 	@Deprecated
@@ -179,10 +179,10 @@ public class GameBoard implements Board
 		switch(orientation)
 		{
 			case TOP:
-				stepY = -1;
+				stepY = 1;
 				break;
 			case BOTTOM:
-				stepY = 1;
+				stepY = -1;
 				break;
 			case LEFT:
 				stepX = -1;

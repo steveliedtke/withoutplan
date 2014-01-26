@@ -12,7 +12,6 @@ public class Enemy extends ColoredItem
 		this.age = 0;
 		this.timeToKill = killAge;
 		this.cell = cell;
-		updateColorArray();
 	}
 
 	public void increaseAge()
