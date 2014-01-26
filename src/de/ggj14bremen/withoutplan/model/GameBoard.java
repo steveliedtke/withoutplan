@@ -71,7 +71,7 @@ public class GameBoard implements Board
 		
 		if (figure.hasValidPosition())
 		{
-			setWalkable2(figure, false);
+			setWalkableStepping(figure, false);
 			setFigureOrientation(figure, false);
 			cell = cells[figure.getX()][figure.getY()];
 			cell.setFigure(null);
@@ -128,7 +128,7 @@ public class GameBoard implements Board
 	
 	public void showMoveTarget(Figure figure)
 	{
-		setWalkable2(figure, true);
+		setWalkableStepping(figure, true);
 	}
 	
 	private void setFigureOrientation(Figure figure, boolean add)
@@ -245,7 +245,7 @@ public class GameBoard implements Board
 		}				
 	}
 		
-	private void setWalkable(Figure figure, boolean walkable)
+	private void setWalkableJumping(Figure figure, boolean walkable)
 	{
 		Cell cell;
 		for (int x = 0; x < cells.length; x++)
@@ -261,7 +261,7 @@ public class GameBoard implements Board
 		}
 	}
 	
-	private void setWalkable2(Figure figure, boolean walkable)
+	private void setWalkableStepping(Figure figure, boolean walkable)
 	{
 		if (walkable)
 		{
@@ -291,14 +291,10 @@ public class GameBoard implements Board
 		
 		if (steps > 0 && cell.isWalkable())
 		{
-			makeStep(figure, x - 1, y + 1, steps - 1);
 			makeStep(figure, x, y + 1, steps - 1);
-			makeStep(figure, x + 1, y + 1, steps - 1);
 			makeStep(figure, x - 1, y, steps - 1);
 			makeStep(figure, x + 1, y, steps - 1);
-			makeStep(figure, x - 1, y - 1, steps - 1);
 			makeStep(figure, x, y - 1, steps - 1);
-			makeStep(figure, x + 1, y - 1, steps - 1);
 		}
 	}
 }
