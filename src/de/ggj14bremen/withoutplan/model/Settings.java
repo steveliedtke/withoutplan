@@ -19,6 +19,8 @@ public class Settings {
 	
 	private static float volume = 1f;
 	
+	private static int roundsAfterSpeedUp = 10;
+	
 	private Settings()
 	{
 		// private
@@ -83,6 +85,14 @@ public class Settings {
 
 	public static void setEnemyLife(int enemyLife) {
 		Settings.enemyLife = enemyLife;
+	}
+
+	public static int getRoundsAfterSpeedUp() {
+		return roundsAfterSpeedUp;
+	}
+
+	public static void setRoundsAfterSpeedUp(int roundsAfterSpeedUp) {
+		Settings.roundsAfterSpeedUp = roundsAfterSpeedUp;
 	}
 
 	

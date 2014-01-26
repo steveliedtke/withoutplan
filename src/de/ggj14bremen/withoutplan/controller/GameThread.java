@@ -63,11 +63,14 @@ public class GameThread extends Thread implements Game{
 	
 	private int round;
 	
+	private int roundsAfterSpeedup;
+	
 	public GameThread(){
 		running = true;
 		boardSizeX = Settings.getBoardSizeX();
 		boardSizeY = Settings.getBoardSizeY();
 		enemyLife = Settings.getEnemyLife();
+		roundsAfterSpeedup = Settings.getRoundsAfterSpeedUp();
 		amountFigures = Settings.getAmountFigures();
 		stepTime = Settings.getStepTime();
 		board = new GameBoard(boardSizeX, boardSizeY);
@@ -91,6 +94,7 @@ public class GameThread extends Thread implements Game{
 		amountFigures = Settings.getAmountFigures();
 		stepTime = Settings.getStepTime();
 		enemyLife = Settings.getEnemyLife();
+		roundsAfterSpeedup = Settings.getRoundsAfterSpeedUp();
 		board = new GameBoard(boardSizeX, boardSizeY);
 		next = false;
 		figures = new ArrayList<Figure>();
@@ -237,6 +241,7 @@ public class GameThread extends Thread implements Game{
 					cellNotFound = false;
 				}
 			}
+			Log.i("FigureINFO", "color: " + figure.getColor() + "; orientation: " + figure.getOrientation() + "; x: " + figure.getX() + "; y: " + figure.getY());
 		}
 	}
 
@@ -283,7 +288,8 @@ public class GameThread extends Thread implements Game{
 		}else{
 			this.state = GameState.MOVE;
 		}
-		this.timeScoreInfo.setStepTime(stepTime);
+		final int subtractedTime = this.round/roundsAfterSpeedup;
+		this.timeScoreInfo.setStepTime(stepTime - (subtractedTime*1000));
 	}
 	
 	private Figure getCurrentFigure(){
@@ -317,7 +323,7 @@ public class GameThread extends Thread implements Game{
 						for(final Figure figure : cell.getWatchingFigures()){
 							colors.add(figure.getColor());
 						}
-						
+						Log.i("ANALYZE", "checkPotentialKill - x:" + i +";y:"+j);
 						this.checkPotentialKill(cells, i, j, colors);
 					}
 				}
@@ -349,12 +355,17 @@ public class GameThread extends Thread implements Game{
 
 	private void checkPotentialKill(Cell[][] cells, int x, int y,
 			Set<WPColor> colors) {
+		for(final WPColor color : colors){
+			Log.i("ANALYZE", x+"/"+y+" Color: " + color);
+		}
 		boolean playSound = false;
 		for(int i=x-1;i<=x+1;i++){
 			for(int j=y-1;j<=y+1;j++){
 				if(this.lookForFigure(cells, i, j)){
+					Log.i("ANALYZE", "Figur - x:" + i + ", y: " + j);
 					final Figure figure = cells[i][j].getFigure();
 					if(colors.contains(figure.getColor().getContrary())){
+						Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
 						this.board.removeEnemy(i,j);
 						this.timeScoreInfo.addScore();
 						playSound = true;
