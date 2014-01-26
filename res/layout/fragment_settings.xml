@@ -6,6 +6,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        style="@style/Row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -43,12 +44,13 @@
 
         <TableRow
             android:id="@+id/tableRow1"
+            style="@style/Row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/textViewAmountFigures"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="AmountFigures"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -63,12 +65,13 @@
 
         <TableRow
             android:id="@+id/tableRow2"
+            style="@style/Row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Volume"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
