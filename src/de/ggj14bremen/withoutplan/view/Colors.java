@@ -7,6 +7,7 @@ public class Colors
 	public static final float[] GREEN 	= {0,1f,0};
 	public static final float[] BLUE 	= {0,0,1f};
 	public static final float[] YELLOW 	= {1f,0.5f,0f};
+	public static final float[] BLACK 	= {0f,0f,0f};
 	
 //	public static final float[] getColorWithAlpha(float[] color, float alpha)
 //	{

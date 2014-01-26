@@ -34,9 +34,9 @@ public class SettingsFragment extends BaseFragment implements OnClickListener
 	public void onClick(View v)
 	{
 		//FIXME handle invalid input
-		int nrOfFigures = Integer.valueOf(etAmount.getText().toString());
-		int cols 		= Integer.valueOf(etCols.getText().toString());
-		int rows 		= Integer.valueOf(etRows.getText().toString());
+		int nrOfFigures = Integer.valueOf(etAmount.getText().toString().trim());
+		int cols 		= Integer.valueOf(etCols.getText().toString().trim());
+		int rows 		= Integer.valueOf(etRows.getText().toString().trim());
 		Settings.setBoardSizeX(cols);
 		Settings.setBoardSizeX(rows);
 		Settings.setAmountFigures(nrOfFigures);

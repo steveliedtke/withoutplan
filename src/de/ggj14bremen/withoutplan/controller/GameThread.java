@@ -99,7 +99,6 @@ public class GameThread extends Thread implements Game
 	private void reinit()
 	{
 		this.reset = false;
-		running = true;
 		boardSizeX = Settings.getBoardSizeX();
 		boardSizeY = Settings.getBoardSizeY();
 		amountFigures = Settings.getAmountFigures();
@@ -117,6 +116,7 @@ public class GameThread extends Thread implements Game
 		showedOrientation = false;
 		round = 0;
 		this.randomizeFigureTurn();
+		setPause(true);
 	}
 
 	private void randomizeFigureTurn()
