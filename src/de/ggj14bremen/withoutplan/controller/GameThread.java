@@ -395,7 +395,7 @@ public class GameThread extends Thread implements Game
 			for (int j = 0; j < cells[i].length; j++)
 			{
 				final Cell cell = cells[i][j];
-				if(!cell.getEnemy().isAlive()){
+				if(cell.hasEnemy() && !cell.getEnemy().isAlive()){
 					blackedOutCells++;
 				}
 				if (cell.hasEnemy() && cell.getEnemy().isAlive())
@@ -529,10 +529,20 @@ public class GameThread extends Thread implements Game
 				}
 				break;
 			case ORIENTATE:
-				if (this.board.getCell(event.getX(), event.getY()).isVisible())
+				final Orientation orientation;
+				boolean soundOrientate = true;
+				if(this.getCurrentFigure().getX()==event.getX() && this.getCurrentFigure().getY()==event.getY()){
+					orientation = this.getCurrentFigure().getOrientation();
+					soundOrientate = false;
+					this.board.orientateFigure(this.getCurrentFigure(), orientation);
+					if (soundOrientate)
+					{
+						Sounds.playSound(R.raw.orientation_3);
+					}
+					this.nextState(false);
+				}
+				else if (this.board.getCell(event.getX(), event.getY()).isVisible())
 				{
-					final Orientation orientation;
-					boolean soundOrientate = true;
 					if(event.getX()<this.getCurrentFigure().getX()){
 						orientation = Orientation.LEFT;
 					}else if(event.getX()>this.getCurrentFigure().getX()){
