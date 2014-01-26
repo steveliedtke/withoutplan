@@ -19,12 +19,15 @@ public class TimeScoreInfo {
 	
 	private boolean timeShowed;
 	
+	private WPColor color;
+	
 	public TimeScoreInfo(long stepTime){
 		this.stepTime 	= stepTime;
 		this.score 		= 0;
 		blueScore = 0;
 		redScore = 0;
 		greenScore = 0;
+		color = null;
 		this.log 		= "";
 		this.timeShowed = false;
 	}
@@ -100,5 +103,13 @@ public class TimeScoreInfo {
 	public void addToLog(String string)
 	{
 		log = string+"\n"+log;
+	}
+
+	public void setCurrentColor(WPColor color) {
+		this.color = color;
+	}
+	
+	public WPColor getCurrentColor(){
+		return this.color;
 	}
 }

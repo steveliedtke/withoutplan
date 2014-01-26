@@ -220,7 +220,8 @@ public class GameThread extends Thread implements Game
 						if (!showedMoveTarget)
 						{
 							this.board.showMoveTarget(this.getCurrentFigure());
-							this.timeScoreInfo.addToLog("Turn of " + this.getCurrentFigure().getColor());
+							//this.timeScoreInfo.addToLog("Turn of " + this.getCurrentFigure().getColor());
+							this.timeScoreInfo.setCurrentColor(this.getCurrentFigure().getColor());
 							showedMoveTarget = true;
 						}
 						break;
@@ -235,7 +236,7 @@ public class GameThread extends Thread implements Game
 						this.analyseRound();
 						this.next = true;
 						// TODO show info of analysis result
-						this.timeScoreInfo.addToLog("Analysed board!");
+						//this.timeScoreInfo.addToLog("Analysed board!");
 						break;
 					case SPAWN:
 						final int additionalEnemies = this.round / roundsAfterSpeedup;
