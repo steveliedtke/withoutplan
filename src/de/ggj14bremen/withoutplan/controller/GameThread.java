@@ -215,6 +215,7 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						timeScoreInfo.addToLog("Enemies spawned");
 						timeScoreInfo.addToLog("- ROUND " + ++round + " -");
+						timeScoreInfo.setRound(round);
 						break;
 					case MOVE:
 						if (!showedMoveTarget)
@@ -241,6 +242,7 @@ public class GameThread extends Thread implements Game
 					case SPAWN:
 						final int additionalEnemies = this.round / roundsAfterSpeedup;
 						this.timeScoreInfo.addToLog("- ROUND " + ++round + " -");
+						timeScoreInfo.setRound(round);
 						if(this.noEnemiesExist()){
 							this.spawnEnemies(Generator.randomIntBetween(1+additionalEnemies, 2+additionalEnemies));
 						}else{

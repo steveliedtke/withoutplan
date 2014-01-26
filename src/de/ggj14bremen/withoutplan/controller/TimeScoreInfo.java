@@ -23,6 +23,8 @@ public class TimeScoreInfo {
 	
 	private boolean gameEnded;
 	
+	private int round;
+	
 	public TimeScoreInfo(long stepTime){
 		this.stepTime 	= stepTime;
 		this.score 		= 0;
@@ -33,6 +35,7 @@ public class TimeScoreInfo {
 		this.log 		= "";
 		this.timeShowed = false;
 		this.setGameEnded(false);
+		setRound(0);
 	}
 	
 	public boolean reduceStepTime(long timeToReduce){
@@ -122,5 +125,13 @@ public class TimeScoreInfo {
 
 	public void setGameEnded(boolean gameEnded) {
 		this.gameEnded = gameEnded;
+	}
+
+	public int getRound() {
+		return round;
+	}
+
+	public void setRound(int round) {
+		this.round = round;
 	}
 }
