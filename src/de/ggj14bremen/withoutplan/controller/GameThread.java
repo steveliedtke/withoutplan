@@ -19,53 +19,55 @@ import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.model.WPColor;
 import de.ggj14bremen.withoutplan.util.Generator;
 
-public class GameThread extends Thread implements Game{
+public class GameThread extends Thread implements Game
+{
 
 	private static final int PAUSE_TIME = 1500;
 
 	private final long SLEEP_TIME = 100L;
-	
+
 	private boolean running, paused;
-	
+
 	private GameState state;
-	
+
 	private GameBoard board;
-	
+
 	private boolean reset = false;
-	
+
 	private List<Figure> figures;
-	
+
 	private int[] figureTurn;
-	
+
 	private int figureStep;
-	
+
 	private TimeScoreInfo timeScoreInfo;
-	
+
 	private int boardSizeX;
-	
+
 	private int boardSizeY;
-	
+
 	private int amountFigures;
-	
+
 	private long stepTime;
-	
+
 	private int enemyLife;
-	
+
 	private boolean showedMoveTarget;
-	
+
 	private boolean showedOrientation;
-	
+
 	/**
-	 * should be changed to true if end of state 
-	 * is reached through timer or through event.
+	 * should be changed to true if end of state is reached through timer or
+	 * through event.
 	 */
 	private boolean next;
-	
+
 	private int round;
-	
+
 	private int roundsAfterSpeedup;
-	
-	public GameThread(){
+
+	public GameThread()
+	{
 		running = true;
 		boardSizeX = Settings.getBoardSizeX();
 		boardSizeY = Settings.getBoardSizeY();
@@ -85,8 +87,9 @@ public class GameThread extends Thread implements Game{
 		showedOrientation = false;
 		this.start();
 	}
-	
-	private void reinit(){
+
+	private void reinit()
+	{
 		this.reset = false;
 		running = true;
 		boardSizeX = Settings.getBoardSizeX();
@@ -108,59 +111,81 @@ public class GameThread extends Thread implements Game{
 		this.randomizeFigureTurn();
 	}
 
-	private void randomizeFigureTurn() {
+	private void randomizeFigureTurn()
+	{
 		int index = 0;
 		final Set<Integer> alreadyInserted = new HashSet<Integer>();
-		while(index<amountFigures){
-			final int element = Generator.randomIntBetween(0, amountFigures-1);
-			if(!alreadyInserted.contains(Integer.valueOf(element))){
+		while (index < amountFigures)
+		{
+			final int element = Generator.randomIntBetween(0, amountFigures - 1);
+			if (!alreadyInserted.contains(Integer.valueOf(element)))
+			{
 				alreadyInserted.add(Integer.valueOf(element));
 				figureTurn[index] = element;
 				index++;
 			}
 		}
 	}
-	
-	private long time;
+
 	private long lastSecondsRemaining = 0L;
-	
+
 	@Override
-	public void run(){
+	public void run()
+	{
 		this.randomizeFigureTurn();
-		while(running){
+		
+		long lastUpdate = SystemClock.elapsedRealtime();
+		long time, dt;
+		
+		while (running)
+		{
+			time 		= SystemClock.elapsedRealtime();
+			dt 			= time - lastUpdate;
+			lastUpdate 	= time;
 			
-			boolean skipSwitch = false;
-			while(paused)
+			while (paused)
 			{
 				sleepFor(SLEEP_TIME);
+				lastUpdate = SystemClock.elapsedRealtime();
 			};
 			
-			if(reset){
+			boolean skipSwitch = false;
+
+
+			if (reset)
+			{
 				this.reinit();
-			}else{
-				if(this.state == GameState.MOVE || this.state == GameState.ORIENTATE){
-					long newTime = SystemClock.elapsedRealtime();
-					if(this.timeScoreInfo.reduceStepTime(newTime-time)){
+			} else
+			{
+				if (this.state == GameState.MOVE || this.state == GameState.ORIENTATE)
+				{
+
+					if (this.timeScoreInfo.reduceStepTime(dt))
+					{
 						this.nextState(true);
 						skipSwitch = true;
 						this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
 						this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
 					}
-					final long secondsRemaining = timeScoreInfo.getStepTime()/1000;
-					if(secondsRemaining!=lastSecondsRemaining){
-						if(secondsRemaining==0L){
-			    			 Sounds.playSound(R.raw.timer);
-			    		 }else if(secondsRemaining<=3L){
-			    			 Sounds.playSound(R.raw.timer_2);
-			    		 }
-			    		 lastSecondsRemaining = secondsRemaining;
+					final long secondsRemaining = timeScoreInfo.getStepTime() / 1000;
+					if (secondsRemaining != lastSecondsRemaining)
+					{
+						if (secondsRemaining == 0L)
+						{
+							Sounds.playSound(R.raw.timer);
+						} else if (secondsRemaining <= 3L)
+						{
+							Sounds.playSound(R.raw.timer_2);
+						}
+						lastSecondsRemaining = secondsRemaining;
 					}
-					time = newTime;
 				}
-				
-				if(!skipSwitch){
-				
-					switch(this.state){
+
+				if (!skipSwitch)
+				{
+
+					switch (this.state)
+					{
 					case INIT:
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
@@ -171,18 +196,20 @@ public class GameThread extends Thread implements Game{
 						this.next = true;
 						this.timeScoreInfo.setInfoText("Enemies spawned");
 						this.sleepFor(PAUSE_TIME);
-						this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
+						this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
 						time = SystemClock.elapsedRealtime();
 						break;
 					case MOVE:
-						if(!showedMoveTarget){
+						if (!showedMoveTarget)
+						{
 							this.board.showMoveTarget(this.getCurrentFigure());
-							this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+							this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep] + 1));
 							showedMoveTarget = true;
 						}
 						break;
 					case ORIENTATE:
-						if(!showedOrientation){
+						if (!showedOrientation)
+						{
 							this.board.showOrientation(this.getCurrentFigure());
 							showedOrientation = true;
 						}
@@ -197,46 +224,54 @@ public class GameThread extends Thread implements Game{
 					case SPAWN:
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
 						// TODO show info of spawned enemies
-						this.sleepFor(PAUSE_TIME/2);
+						this.sleepFor(PAUSE_TIME / 2);
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME/2);
+						this.sleepFor(PAUSE_TIME / 2);
 						this.next = true;
 						break;
 					case END:
 						// TODO show end monitor
 						this.running = false;
 					}
-					
+
 				}
 			}
 			sleepFor(SLEEP_TIME);
-			
-			if(!skipSwitch && next){
+
+			if (!skipSwitch && next)
+			{
 				this.nextState(false);
 				this.next = false;
 			}
 		}
 	}
 
-	private void sleepFor(long time) {
-		try {
+	private void sleepFor(long time)
+	{
+		try
+		{
 			Thread.sleep(time);
-		} catch (InterruptedException e) {
+		} catch (InterruptedException e)
+		{
 			Log.e("GameThread", e.getMessage());
 		}
 	}
 
-	private void initFigures() {
-		for(int i=0; i<amountFigures; i++){
+	private void initFigures()
+	{
+		for (int i = 0; i < amountFigures; i++)
+		{
 			final Figure figure = new Figure();
-			figure.setColor(WPColor.values()[i%3]);
+			figure.setColor(WPColor.values()[i % 3]);
 			figure.setOrientation(Orientation.values()[Generator.randomIntBetween(0, 3)]);
 			figures.add(figure);
 			boolean cellNotFound = true;
-			while(cellNotFound){
-				final int x = Generator.randomIntBetween(0, boardSizeX-1);
-				final int y = Generator.randomIntBetween(0, boardSizeY-1);
-				if(this.board.getCell(x, y).getFigure()==null){
+			while (cellNotFound)
+			{
+				final int x = Generator.randomIntBetween(0, boardSizeX - 1);
+				final int y = Generator.randomIntBetween(0, boardSizeY - 1);
+				if (this.board.getCell(x, y).getFigure() == null)
+				{
 					this.board.moveFigure(figure, x, y);
 					cellNotFound = false;
 				}
@@ -245,17 +280,21 @@ public class GameThread extends Thread implements Game{
 		}
 	}
 
-	private void nextState(boolean timerFinished) {
-		switch(this.state){
+	private void nextState(boolean timerFinished)
+	{
+		switch (this.state)
+		{
 		case INIT:
 			this.state = GameState.MOVE;
 			this.timeScoreInfo.setInfoText("");
 			this.timeScoreInfo.setTimeShowed(true);
 			break;
 		case MOVE:
-			if(timerFinished){
+			if (timerFinished)
+			{
 				afterOrientate();
-			}else{
+			} else
+			{
 				this.state = GameState.ORIENTATE;
 			}
 			this.showedMoveTarget = false;
@@ -266,12 +305,11 @@ public class GameThread extends Thread implements Game{
 			break;
 		case ANALYSIS:
 			this.state = GameState.SPAWN;
-			this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
+			this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
 			// TODO if game ended this.state = GameState.END
 			break;
 		case SPAWN:
 			this.state = GameState.MOVE;
-			time = SystemClock.elapsedRealtime();
 			this.timeScoreInfo.setTimeShowed(true);
 			break;
 		case END:
@@ -280,179 +318,223 @@ public class GameThread extends Thread implements Game{
 		}
 	}
 
-	private void afterOrientate() {
+	private void afterOrientate()
+	{
 		final boolean allFiguresMoved = nextFigure();
-		if(allFiguresMoved){
-			this.state= GameState.ANALYSIS;
+		if (allFiguresMoved)
+		{
+			this.state = GameState.ANALYSIS;
 			this.timeScoreInfo.setTimeShowed(false);
-		}else{
+		} else
+		{
 			this.state = GameState.MOVE;
 		}
-		final int subtractedTime = this.round/roundsAfterSpeedup;
-		this.timeScoreInfo.setStepTime(stepTime - (subtractedTime*1000));
+		final int subtractedTime = this.round / roundsAfterSpeedup;
+		this.timeScoreInfo.setStepTime(stepTime - (subtractedTime * 1000));
 	}
-	
-	private Figure getCurrentFigure(){
+
+	private Figure getCurrentFigure()
+	{
 		final int index = figureTurn[figureStep];
 		return figures.get(index);
 	}
-	
-	private boolean nextFigure(){
+
+	private boolean nextFigure()
+	{
 		final boolean allFiguresMoved;
-		if(figureStep+1>=amountFigures){
+		if (figureStep + 1 >= amountFigures)
+		{
 			figureStep = 0;
 			randomizeFigureTurn();
 			allFiguresMoved = true;
-		}else{
+		} else
+		{
 			figureStep++;
 			allFiguresMoved = false;
 		}
-		
+
 		return allFiguresMoved;
 	}
 
-	private void analyseRound() {
+	private void analyseRound()
+	{
 		final Cell[][] cells = this.board.getCells();
-		
-		for(int i=0;i<cells.length;i++){
-			for(int j=0;j<cells[i].length;j++){
+
+		for (int i = 0; i < cells.length; i++)
+		{
+			for (int j = 0; j < cells[i].length; j++)
+			{
 				final Cell cell = cells[i][j];
-				if(cell.hasEnemy()){
-					if(!cell.getWatchingFigures().isEmpty()){
+				if (cell.hasEnemy())
+				{
+					if (!cell.getWatchingFigures().isEmpty())
+					{
 						final Set<WPColor> colors = new HashSet<WPColor>();
-						for(final Figure figure : cell.getWatchingFigures()){
+						for (final Figure figure : cell.getWatchingFigures())
+						{
 							colors.add(figure.getColor());
 						}
-						Log.i("ANALYZE", "checkPotentialKill - x:" + i +";y:"+j);
+						Log.i("ANALYZE", "checkPotentialKill - x:" + i + ";y:" + j);
 						this.checkPotentialKill(cells, i, j, colors);
 					}
 				}
 			}
 		}
-		
+
 		boolean darkerSound = false;
 		boolean blackoutSound = false;
-		for(int i=0;i<cells.length;i++){
-			for(int j=0;j<cells[i].length;j++){
+		for (int i = 0; i < cells.length; i++)
+		{
+			for (int j = 0; j < cells[i].length; j++)
+			{
 				final Cell cell = cells[i][j];
-				if(cell.hasEnemy() && cell.getEnemy().isAlive()){
+				if (cell.hasEnemy() && cell.getEnemy().isAlive())
+				{
 					cell.getEnemy().increaseAge();
-					if(cell.getEnemy().isAlive()){
+					if (cell.getEnemy().isAlive())
+					{
 						darkerSound = true;
-					}else{
+					} else
+					{
 						blackoutSound = true;
 					}
 				}
 			}
 		}
-		
-		if(blackoutSound){
+
+		if (blackoutSound)
+		{
 			Sounds.playSound(R.raw.fail);
-		}else if(darkerSound){
+		} else if (darkerSound)
+		{
 			Sounds.playSound(R.raw.counter_fade);
 		}
 	}
 
-	private void checkPotentialKill(Cell[][] cells, int x, int y,
-			Set<WPColor> colors) {
-		for(final WPColor color : colors){
-			Log.i("ANALYZE", x+"/"+y+" Color: " + color);
+	private void checkPotentialKill(Cell[][] cells, int x, int y, Set<WPColor> colors)
+	{
+		for (final WPColor color : colors)
+		{
+			Log.i("ANALYZE", x + "/" + y + " Color: " + color);
 		}
 		boolean playSound = false;
-		for(int i=x-1;i<=x+1;i++){
-			for(int j=y-1;j<=y+1;j++){
-				if(this.lookForFigure(cells, i, j)){
+		for (int i = x - 1; i <= x + 1; i++)
+		{
+			for (int j = y - 1; j <= y + 1; j++)
+			{
+				if (this.lookForFigure(cells, i, j))
+				{
 					Log.i("ANALYZE", "Figur - x:" + i + ", y: " + j);
 					final Figure figure = cells[i][j].getFigure();
-					if(colors.contains(figure.getColor().getContrary())){
+					if (colors.contains(figure.getColor().getContrary()))
+					{
 						Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
-						this.board.removeEnemy(i,j);
+						this.board.removeEnemy(i, j);
 						this.timeScoreInfo.addScore();
 						playSound = true;
 					}
 				}
 			}
 		}
-		if(playSound)
+		if (playSound)
 			Sounds.playSound(R.raw.destroy);
 	}
-	
 
-	private boolean lookForFigure(Cell[][] cells, int x, int y) {
+	private boolean lookForFigure(Cell[][] cells, int x, int y)
+	{
 		final boolean result;
-		if(x<0 || x>=boardSizeX || y<0 || y>=boardSizeY){
+		if (x < 0 || x >= boardSizeX || y < 0 || y >= boardSizeY)
+		{
 			result = false;
-		}else{
+		} else
+		{
 			result = (cells[x][y].getFigure() != null);
 		}
 		return result;
 	}
 
-	private void spawnEnemies(int amountEnemies) {
+	private void spawnEnemies(int amountEnemies)
+	{
 		boolean soundForSpawn = false;
-		for(int i=0; i<amountEnemies;i++){
+		for (int i = 0; i < amountEnemies; i++)
+		{
 			boolean cellNotFound = true;
-			while(cellNotFound){
-				final int x = Generator.randomIntBetween(0, boardSizeX-1);
-				final int y = Generator.randomIntBetween(0, boardSizeY-1);
+			while (cellNotFound)
+			{
+				final int x = Generator.randomIntBetween(0, boardSizeX - 1);
+				final int y = Generator.randomIntBetween(0, boardSizeY - 1);
 				final Cell cell = this.board.getCell(x, y);
-				if(cell.getFigure()== null && cell.getEnemy()==null){
+				if (cell.getFigure() == null && cell.getEnemy() == null)
+				{
 					this.board.spawnEnemy(x, y, enemyLife);
 					cellNotFound = false;
 				}
 			}
 			soundForSpawn = true;
 		}
-		if(soundForSpawn){
+		if (soundForSpawn)
+		{
 			Sounds.playSound(R.raw.spawn);
 		}
 	}
 
 	@Override
-	public Board getBoard() {
+	public Board getBoard()
+	{
 		return this.board;
 	}
 
 	@Override
-	public TimeScoreInfo getTimeScoreInfo() {
+	public TimeScoreInfo getTimeScoreInfo()
+	{
 		return this.timeScoreInfo;
 	}
 
 	@Override
-	public void dispatchEvent(CellClicked event) {
-		switch(this.state){
+	public void dispatchEvent(CellClicked event)
+	{
+		switch (this.state)
+		{
 		case MOVE:
-			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
+			if (this.board.getCell(event.getX(), event.getY()).isWalkable())
+			{
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
 				Sounds.playSound(R.raw.movement_5);
 				this.nextState(false);
 			}
 			break;
 		case ORIENTATE:
-			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
+			if (this.board.getCell(event.getX(), event.getY()).isVisible())
+			{
 				final Orientation orientation;
 				boolean soundOrientate = true;
-				if(event.getX()<this.getCurrentFigure().getX()){
+				if (event.getX() < this.getCurrentFigure().getX())
+				{
 					orientation = Orientation.RIGHT;
-				}else if(event.getX()>this.getCurrentFigure().getX()){
+				} else if (event.getX() > this.getCurrentFigure().getX())
+				{
 					orientation = Orientation.LEFT;
-				}else if(event.getY()<this.getCurrentFigure().getY()){
+				} else if (event.getY() < this.getCurrentFigure().getY())
+				{
 					orientation = Orientation.BOTTOM;
-				}else if(event.getY()>this.getCurrentFigure().getY()){
+				} else if (event.getY() > this.getCurrentFigure().getY())
+				{
 					orientation = Orientation.TOP;
-				}else{
+				} else
+				{
 					orientation = this.getCurrentFigure().getOrientation();
 					soundOrientate = false;
 				}
 				this.board.orientateFigure(this.getCurrentFigure(), orientation);
-				if(soundOrientate){
+				if (soundOrientate)
+				{
 					Sounds.playSound(R.raw.orientation_3);
 				}
 				this.nextState(false);
 			}
 			break;
-			default:
-				// not allowed
+		default:
+			// not allowed
 		}
 	}
 
@@ -464,7 +546,7 @@ public class GameThread extends Thread implements Game{
 	public void togglePause()
 	{
 		this.paused = !paused;
-		
+
 	}
 
 	public void setPause(boolean pause)
