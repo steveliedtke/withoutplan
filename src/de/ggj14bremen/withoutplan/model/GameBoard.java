@@ -63,6 +63,8 @@ public class GameBoard implements Board
 	
 	public void moveFigure(Figure figure, int x, int y)
 	{
+		if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.moveFigure(%s %d, %d to %d, %d)", getClass().getSimpleName(), figure.getColorString(), figure.getX(), figure.getY(), x, y));
+		
 		if (figure.hasValidPosition())
 		{
 			setWalkable(figure, false);
