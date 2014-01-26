@@ -90,10 +90,10 @@ public class MainActivity extends Activity implements OnClickListener
 		Settings.setMuted(true);
 		gameThread.setPause(true);
 	}
-	public void onBackPressed() 
+	/*public void onBackPressed() 
 	{
 		this.finish();
-	};
+	};*/
 	public void showDebugToast(String string)
 	{
 		Toast.makeText(this, string, Toast.LENGTH_LONG).show();
@@ -128,6 +128,7 @@ public class MainActivity extends Activity implements OnClickListener
 		else if(v.getId() == R.id.layoutSplashScreen)
 		{
 			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
+			gameThread.start();
 		}
 	}
 	private final void showFragment(BaseFragment fragment)
