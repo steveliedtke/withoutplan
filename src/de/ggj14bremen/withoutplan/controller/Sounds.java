@@ -1,6 +1,5 @@
 package de.ggj14bremen.withoutplan.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import android.content.Context;
@@ -17,6 +16,9 @@ public class Sounds
 	private static MediaPlayer mediaPlayer;
 
 	private static SoundPool soundPool;
+	
+
+	private static boolean muted = false;
 
 	private static HashMap<Integer, Integer> sounds = new HashMap<Integer, Integer>();
 	
@@ -27,21 +29,8 @@ public class Sounds
 	
 	public static void init(Context context)
 	{
-		mediaPlayer = new MediaPlayer();
-		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		
-		try
-		{
-			mediaPlayer.prepare();
-		} catch (IllegalStateException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		mediaPlayer = MediaPlayer.create(context, R.raw.ambient_2);
+		//mediaPlayer.setVolume(Settings.getVolume(), Settings.getVolume());
 		mediaPlayer.start();
 		
     	soundPool 	= new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
@@ -67,8 +56,26 @@ public class Sounds
 		Integer soundID = sounds.get(resID);
 		if(soundID != null) 
 		{
-			if(!Settings.isMuted())	soundPool.play(soundID, Settings.getVolume(),  Settings.getVolume(), 1, 0, 1f);
+			if(!muted)	soundPool.play(soundID, Settings.getVolume(),  Settings.getVolume(), 1, 0, 1f);
 		}
 		else if(MainActivity.DEBUG) Log.e(MainActivity.TAG, "Error loading sound.");
+	}
+	public static void playMusic()
+	{
+		if(!mediaPlayer.isPlaying() && !muted) mediaPlayer.start();
+	}
+	public static void pauseMusic()
+	{
+		mediaPlayer.pause();
+	}
+	public static boolean isMuted()
+	{
+		return muted;
+	}
+
+	public static void setMuted(boolean b)
+	{
+		Sounds.muted = b;	
+		if(muted) pauseMusic();
 	}
 }

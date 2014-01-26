@@ -85,7 +85,7 @@ public class GLRenderer implements Renderer
 		
 		gl.glTranslatef(1, 1, 0.0f);
 
-		drawBoard(gl);
+		if(!game.isPaused()) drawBoard(gl);
 	}
 	/**
 	 * 
@@ -135,6 +135,14 @@ public class GLRenderer implements Renderer
 					
 					gl.glPushMatrix();
 					float scale = 1f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(1f);
+					square.setColor(figure.getAuraColorArray());
+					square.draw(gl);
+					gl.glPopMatrix();
+					
+					gl.glPushMatrix();
+					scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(1f);
 					square.setColor(figure.getAuraColorArray());

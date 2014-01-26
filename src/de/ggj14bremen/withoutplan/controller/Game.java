@@ -10,4 +10,6 @@ public interface Game {
 	TimeScoreInfo getTimeScoreInfo();
 	
 	void dispatchEvent(CellClicked event);
+	
+	abstract boolean isPaused();
 }

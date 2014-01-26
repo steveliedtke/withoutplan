@@ -232,14 +232,18 @@ public class GameThread extends Thread implements Game
 						this.timeScoreInfo.addToLog("Analysed board!");
 						break;
 					case SPAWN:
+						final int additionalEnemies = this.round / roundsAfterSpeedup;
 						this.timeScoreInfo.addToLog("- ROUND " + ++round + " -");
-						this.spawnEnemies(Generator.randomIntBetween(0, 2));
+						if(this.noEnemiesExist()){
+							this.spawnEnemies(Generator.randomIntBetween(1+additionalEnemies, 2+additionalEnemies));
+						}else{
+							this.spawnEnemies(Generator.randomIntBetween(0+additionalEnemies, 2+additionalEnemies));
+						}
 						this.timeScoreInfo.addToLog("Enemies spawned");
 						this.next = true;
 						break;
 					case END:
-						// TODO show end monitor
-						this.running = false;
+
 					}
 
 				}
@@ -254,6 +258,23 @@ public class GameThread extends Thread implements Game
 		}
 	}
 
+	private boolean noEnemiesExist() {
+		final Cell[][] cells = this.board.getCells();
+		boolean enemyExist = false;
+		for(int i=0;i<cells.length;i++){
+			for(int j=0;j<cells[i].length;j++){
+				final Cell cell = cells[i][j];
+				if(cell.hasEnemy() && cell.isAlive()){
+					enemyExist = true;
+					break;
+				}
+			}
+			if(enemyExist){
+				break;
+			}
+		}
+		return enemyExist;
+	}
 	private void sleepFor(long time)
 	{
 		try
@@ -395,7 +416,7 @@ public class GameThread extends Thread implements Game
 			for (int j = 0; j < cells[i].length; j++)
 			{
 				final Cell cell = cells[i][j];
-				if(!cell.getEnemy().isAlive()){
+				if(cell.hasEnemy() && !cell.getEnemy().isAlive()){
 					blackedOutCells++;
 				}
 				if (cell.hasEnemy() && cell.getEnemy().isAlive())
@@ -412,7 +433,8 @@ public class GameThread extends Thread implements Game
 			}
 		}
 
-		if(blackedOutCells>=2){
+		if(blackedOutCells>=3)
+		{
 			this.state = GameState.END;
 		}if (blackoutSound)
 		{
@@ -529,10 +551,20 @@ public class GameThread extends Thread implements Game
 				}
 				break;
 			case ORIENTATE:
-				if (this.board.getCell(event.getX(), event.getY()).isVisible())
+				final Orientation orientation;
+				boolean soundOrientate = true;
+				if(this.getCurrentFigure().getX()==event.getX() && this.getCurrentFigure().getY()==event.getY()){
+					orientation = this.getCurrentFigure().getOrientation();
+					soundOrientate = false;
+					this.board.orientateFigure(this.getCurrentFigure(), orientation);
+					if (soundOrientate)
+					{
+						Sounds.playSound(R.raw.orientation_3);
+					}
+					this.nextState(false);
+				}
+				else if (this.board.getCell(event.getX(), event.getY()).isVisible())
 				{
-					final Orientation orientation;
-					boolean soundOrientate = true;
 					if(event.getX()<this.getCurrentFigure().getX()){
 						orientation = Orientation.LEFT;
 					}else if(event.getX()>this.getCurrentFigure().getX()){
@@ -568,14 +600,14 @@ public class GameThread extends Thread implements Game
 
 	public void togglePause()
 	{
-		this.paused = !paused;
-
+		setPause(!paused);
 	}
 
 	public void setPause(boolean pause)
 	{
 		this.paused = pause;
-
+		if(paused) 	Sounds.playMusic();
+		else		Sounds.pauseMusic();
 	}
 
 	public boolean isPaused()

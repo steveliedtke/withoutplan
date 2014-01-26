@@ -77,7 +77,8 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onResume();
 		glSurfaceView.onResume();
-		Settings.setMuted(false);
+		Sounds.setMuted(false);
+		Sounds.playMusic();
 		showFragment(gameFragment);
 		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
 	}
@@ -88,7 +89,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onPause();
 		glSurfaceView.onPause();
-		Settings.setMuted(true);
+		Sounds.setMuted(true);
 		gameThread.setPause(true);
 	}
 	public void onBackPressed() 
