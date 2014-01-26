@@ -26,7 +26,7 @@ public class GameThread extends Thread implements Game
 
 	private final long SLEEP_TIME = 100L;
 
-	private boolean running, paused;
+	private boolean running, paused = true;
 
 	private GameState state;
 
@@ -85,6 +85,7 @@ public class GameThread extends Thread implements Game
 		round = 0;
 		showedMoveTarget = false;
 		showedOrientation = false;
+		start();
 	}
 
 	private void reinit()

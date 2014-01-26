@@ -78,7 +78,8 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onResume();
 		glSurfaceView.onResume();
 		Settings.setMuted(false);
-		gameThread.setPause(false);
+		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
+		//gameThread.setPause(false);
 	}
 
 	/** Also pause the glSurface */
@@ -128,7 +129,7 @@ public class MainActivity extends Activity implements OnClickListener
 		else if(v.getId() == R.id.layoutSplashScreen)
 		{
 			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
-			gameThread.start();
+			gameThread.setPause(false);
 		}
 	}
 	private final void showFragment(BaseFragment fragment)

@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:id="@+id/layoutSidebar"
-        android:layout_width="400dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:orientation="vertical" >
