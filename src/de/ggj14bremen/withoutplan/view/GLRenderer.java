@@ -123,7 +123,7 @@ public class GLRenderer implements Renderer
 				if(cells[col][row].hasEnemy()) 
 				{
 					gl.glPushMatrix();
-					float scale = 0.7f;
+					float scale = 0.6f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(1f);
 					square.setColor(Colors.BLACK);
@@ -165,6 +165,8 @@ public class GLRenderer implements Renderer
 					gl.glPushMatrix();
 					float angle = figure.getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
+					scale = 1.2f;
+					gl.glScalef(scale, scale, scale);
 					triangle.setAlpha(1f);
 					triangle.setColor(figure.getColorArray());
 					triangle.draw(gl);

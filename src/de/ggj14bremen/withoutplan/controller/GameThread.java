@@ -90,7 +90,7 @@ public class GameThread extends Thread implements Game
 		figureStep = 0;
 		this.state = GameState.INIT;
 		figureTurn = new int[amountFigures];
-		this.timeScoreInfo = new TimeScoreInfo(stepTime, 0);
+		this.timeScoreInfo = new TimeScoreInfo(stepTime);
 		round = 0;
 		showedMoveTarget = false;
 		showedOrientation = false;
@@ -117,7 +117,7 @@ public class GameThread extends Thread implements Game
 		figureStep = 0;
 		this.state = GameState.INIT;
 		figureTurn = new int[amountFigures];
-		this.timeScoreInfo = new TimeScoreInfo(stepTime, 0);
+		this.timeScoreInfo = new TimeScoreInfo(stepTime);
 		showedMoveTarget = false;
 		showedOrientation = false;
 		round = 0;
@@ -220,7 +220,8 @@ public class GameThread extends Thread implements Game
 						if (!showedMoveTarget)
 						{
 							this.board.showMoveTarget(this.getCurrentFigure());
-							this.timeScoreInfo.addToLog("Turn of " + this.getCurrentFigure().getColor());
+							//this.timeScoreInfo.addToLog("Turn of " + this.getCurrentFigure().getColor());
+							this.timeScoreInfo.setCurrentColor(this.getCurrentFigure().getColor());
 							showedMoveTarget = true;
 						}
 						break;
@@ -235,7 +236,7 @@ public class GameThread extends Thread implements Game
 						this.analyseRound();
 						this.next = true;
 						// TODO show info of analysis result
-						this.timeScoreInfo.addToLog("Analysed board!");
+						//this.timeScoreInfo.addToLog("Analysed board!");
 						break;
 					case SPAWN:
 						final int additionalEnemies = this.round / roundsAfterSpeedup;
@@ -412,7 +413,12 @@ public class GameThread extends Thread implements Game
 					}
 				}
 			}
+			
 		}
+		
+		this.timeScoreInfo.addToLog("Score RED: " + this.timeScoreInfo.getRedScore());
+		this.timeScoreInfo.addToLog("Score BLUE: " + this.timeScoreInfo.getBlueScore());
+		this.timeScoreInfo.addToLog("Score GREEN: " + this.timeScoreInfo.getGreenScore());
 
 		boolean darkerSound = false;
 		boolean blackoutSound = false;
@@ -471,6 +477,8 @@ public class GameThread extends Thread implements Game
 						if(MainActivity.DEBUG)Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
 						this.board.removeEnemy(x, y);
 						this.timeScoreInfo.addScore();
+						this.timeScoreInfo.addColorScore(figure.getColor());
+						this.timeScoreInfo.addColorScore(figure.getColor().getContrary());
 						this.timeScoreInfo.addToLog("Enemy killed");
 						playSound = true;
 					}
