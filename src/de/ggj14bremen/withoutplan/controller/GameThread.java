@@ -455,6 +455,7 @@ public class GameThread extends Thread implements Game
 
 	private void spawnEnemies(int amountEnemies)
 	{
+		Log.i("SpawnEnemies", "amount: " + amountEnemies);
 		boolean soundForSpawn = false;
 		for (int i = 0; i < amountEnemies; i++)
 		{
