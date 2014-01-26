@@ -35,7 +35,8 @@ public class GameBoard implements Board
 	
 	public void spawnEnemy(int x, int y, int timeToKill)
 	{
-		cells[x][y].setEnemy(new Enemy(timeToKill));
+		Cell cell = cells[x][y];
+		cell.setEnemy(new Enemy(timeToKill, cell));
 	}
 	
 	@Deprecated
@@ -51,7 +52,9 @@ public class GameBoard implements Board
 	
 	public void removeEnemy(int x, int y)
 	{
-		cells[x][y].setEnemy(null);
+		Cell cell = cells[x][y];
+		cell.setEnemy(null);
+		cell.updateColorArray();
 	}
 	
 	public void moveFigure(Figure figure, int x, int y)
@@ -120,13 +123,13 @@ public class GameBoard implements Board
 
 				if (cell.hasFigure()) break;
 				
-				cell.getWatchingFigures().add(figure);
+				cell.addWatchingFigure(figure);
 				
 				if (cell.hasEnemy()) break;
 			}
 			else
 			{
-				cells[x][y].getWatchingFigures().remove(figure);
+				cells[x][y].removeWatchingFigure(figure);
 			}
 			
 			x += stepX;
