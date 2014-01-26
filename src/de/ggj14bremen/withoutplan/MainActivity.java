@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
@@ -57,6 +58,9 @@ public class MainActivity extends Activity implements OnClickListener
 		settingsFragment 	= new SettingsFragment();
 		gameFragment 		= new GameFragment();
 		
+		Button button = (Button) findViewById(R.id.buttonSkipSplash);
+		button.setOnClickListener(this);
+		FontHelper.setFont(button);
 		findViewById(R.id.layoutSplashScreen).setOnClickListener(this);
 		findViewById(R.id.buttonGame).setOnClickListener(this);
 		FontHelper.setFont(findViewById(R.id.buttonGame));
@@ -80,7 +84,17 @@ public class MainActivity extends Activity implements OnClickListener
 		Sounds.setMuted(false);
 		Sounds.playMusic();
 		showFragment(gameFragment);
-		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
+		showSplashScreen(true,"");
+	}
+	public void showSplashScreen(boolean b, String string)
+	{
+		if(b)
+		{
+			((TextView) findViewById(R.id.textViewResult)).setText(string);
+			FontHelper.setFont(findViewById(R.id.textViewResult));
+			findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
+		}
+		else findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
 	}
 
 	/** Also pause the glSurface */
@@ -128,9 +142,9 @@ public class MainActivity extends Activity implements OnClickListener
 		{
 			showFragment(gameFragment);
 		}
-		else if(v.getId() == R.id.layoutSplashScreen)
+		else if(v.getId() == R.id.buttonSkipSplash)
 		{
-			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
+			showSplashScreen(false, "");
 		}
 	}
 	private final void showFragment(BaseFragment fragment)
