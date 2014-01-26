@@ -60,7 +60,7 @@
                 android:id="@+id/editTextAmountFigures"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center_vertical|center"
                 android:text="3" />
@@ -85,7 +85,7 @@
                 android:id="@+id/seekBarVolume"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="1" />
 
         </TableRow>
 
