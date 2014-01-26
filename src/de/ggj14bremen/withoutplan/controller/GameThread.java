@@ -122,18 +122,21 @@ public class GameThread extends Thread implements Game
 
 	private void randomizeFigureTurn()
 	{
-		int index = 0;
-		final Set<Integer> alreadyInserted = new HashSet<Integer>();
-		while (index < amountFigures)
-		{
-			final int element = Generator.randomIntBetween(0, amountFigures - 1);
-			if (!alreadyInserted.contains(Integer.valueOf(element)))
-			{
-				alreadyInserted.add(Integer.valueOf(element));
-				figureTurn[index] = element;
-				index++;
-			}
-		}
+//		int index = 0;
+//		final Set<Integer> alreadyInserted = new HashSet<Integer>();
+//		while (index < amountFigures)
+//		{
+//			final int element = Generator.randomIntBetween(0, amountFigures - 1);
+//			if (!alreadyInserted.contains(Integer.valueOf(element)))
+//			{
+//				alreadyInserted.add(Integer.valueOf(element));
+//				figureTurn[index] = element;
+//				index++;
+//			}
+//		}
+		figureTurn[0] = 0;
+		figureTurn[1] = 1;
+		figureTurn[2] = 2;
 	}
 
 	private long lastSecondsRemaining = 0L;
@@ -211,7 +214,7 @@ public class GameThread extends Thread implements Game
 						if (!showedMoveTarget)
 						{
 							this.board.showMoveTarget(this.getCurrentFigure());
-							this.timeScoreInfo.addToLog("Turn of Figure " + (this.figureTurn[this.figureStep] + 1));
+							this.timeScoreInfo.addToLog("Turn of " + this.getCurrentFigure().getColor());
 							showedMoveTarget = true;
 						}
 						break;
