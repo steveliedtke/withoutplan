@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import de.ggj14bremen.withoutplan.R;
 import de.ggj14bremen.withoutplan.util.FontHelper;
 
 public class GameFragment extends BaseFragment implements OnClickListener
 {
+	private Button btnPause;
 	private TextView infoTextView;
 	private CountDownTimer timer;
 	private TextView textViewCountdown;
@@ -28,7 +30,8 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	{
 		View v = inflater.inflate(R.layout.fragment_game, container, false);
 		v.findViewById(R.id.buttonReset).setOnClickListener(this);
-		v.findViewById(R.id.buttonPause).setOnClickListener(this);
+		btnPause = (Button) v.findViewById(R.id.buttonPause);
+		btnPause.setOnClickListener(this);
 		infoTextView = (TextView) v.findViewById(R.id.infoTextView);
 		textViewCountdown = (TextView) v.findViewById(R.id.textViewCountdown);
 
@@ -56,6 +59,18 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		{
 			public void onTick(long millisUntilFinished)
 			{
+				if(!activity.gameThread.isRunning())
+				{
+					btnPause.setText("Start");
+				}
+				else if(activity.gameThread.isPaused())
+				{
+					btnPause.setText("Resume");
+				}
+				else
+				{
+					btnPause.setText("Pause");
+				}
 				if (activity.gameThread.getTimeScoreInfo().isTimeShowed())
 				{
 					final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
@@ -91,15 +106,22 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
+					activity.gameThread.setPause(true);
 					activity.gameThread.reset();
 					infoTextList.clear();
 					return;
 				}
 			});
 			builder.create().show();
-		} else if (v.getId() == R.id.buttonPause)
+		} 
+		else if (v.getId() == R.id.buttonPause)
 		{
-			activity.gameThread.togglePause();
+			if(!activity.gameThread.isRunning())
+			{
+				activity.gameThread.start();
+				activity.gameThread.setPause(false);
+			}
+			else activity.gameThread.togglePause();
 		}
 	}
 }

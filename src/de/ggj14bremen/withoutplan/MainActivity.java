@@ -110,7 +110,6 @@ public class MainActivity extends Activity implements OnClickListener
 		else if(v.getId() == R.id.layoutSplashScreen)
 		{
 			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
-			gameThread.setPause(false);
 		}
 	}
 	private final void showFragment(BaseFragment fragment)
