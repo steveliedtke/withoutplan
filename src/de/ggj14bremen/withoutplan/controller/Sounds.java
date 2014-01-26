@@ -76,5 +76,6 @@ public class Sounds
 	public static void setMuted(boolean b)
 	{
 		Sounds.muted = b;	
+		if(muted) pauseMusic();
 	}
 }

@@ -238,8 +238,7 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						break;
 					case END:
-						// TODO show end monitor
-						this.running = false;
+
 					}
 
 				}

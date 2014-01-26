@@ -142,6 +142,14 @@ public class GLRenderer implements Renderer
 					gl.glPopMatrix();
 					
 					gl.glPushMatrix();
+					scale = 1f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(1f);
+					square.setColor(figure.getAuraColorArray());
+					square.draw(gl);
+					gl.glPopMatrix();
+					
+					gl.glPushMatrix();
 					float angle = figure.getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
 					triangle.setAlpha(1f);

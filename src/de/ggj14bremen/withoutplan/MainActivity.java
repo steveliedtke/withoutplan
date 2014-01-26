@@ -78,6 +78,7 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onResume();
 		glSurfaceView.onResume();
 		Sounds.setMuted(false);
+		Sounds.playMusic();
 		showFragment(gameFragment);
 		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
 	}
