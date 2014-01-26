@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import android.os.SystemClock;
 import android.util.Log;
+import de.ggj14bremen.withoutplan.MainActivity;
 import de.ggj14bremen.withoutplan.R;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
@@ -280,7 +281,7 @@ public class GameThread extends Thread implements Game
 					cellNotFound = false;
 				}
 			}
-			Log.i("FigureINFO", "color: " + figure.getColor() + "; orientation: " + figure.getOrientation() + "; x: " + figure.getX() + "; y: " + figure.getY());
+			if(MainActivity.DEBUG)Log.i("FigureINFO", "color: " + figure.getColor() + "; orientation: " + figure.getOrientation() + "; x: " + figure.getX() + "; y: " + figure.getY());
 		}
 	}
 
@@ -376,7 +377,7 @@ public class GameThread extends Thread implements Game
 						{
 							colors.add(figure.getColor());
 						}
-						Log.i("ANALYZE", "checkPotentialKill - x:" + i + ";y:" + j);
+						if(MainActivity.DEBUG)Log.i("ANALYZE", "checkPotentialKill - x:" + i + ";y:" + j);
 						this.checkPotentialKill(cells, i, j, colors);
 					}
 				}
@@ -417,7 +418,7 @@ public class GameThread extends Thread implements Game
 	{
 		for (final WPColor color : colors)
 		{
-			Log.i("ANALYZE", x + "/" + y + " Color: " + color);
+			if(MainActivity.DEBUG)Log.i("ANALYZE", x + "/" + y + " Color: " + color);
 		}
 		boolean playSound = false;
 		for (int i = x - 1; i <= x + 1; i++)
@@ -426,11 +427,11 @@ public class GameThread extends Thread implements Game
 			{
 				if (this.lookForFigure(cells, i, j))
 				{
-					Log.i("ANALYZE", "Figur - x:" + i + ", y: " + j);
+					if(MainActivity.DEBUG)Log.i("ANALYZE", "Figur - x:" + i + ", y: " + j);
 					final Figure figure = cells[i][j].getFigure();
 					if (colors.contains(figure.getColor().getContrary()))
 					{
-						Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
+						if(MainActivity.DEBUG)Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
 						this.board.removeEnemy(x, y);
 						this.timeScoreInfo.addScore();
 						playSound = true;
