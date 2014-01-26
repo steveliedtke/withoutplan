@@ -21,7 +21,7 @@ import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
 
-	private static final int PAUSE_TIME = 2000;
+	private static final int PAUSE_TIME = 1500;
 
 	private final long SLEEP_TIME = 100L;
 	
@@ -372,7 +372,7 @@ public class GameThread extends Thread implements Game{
 		case MOVE:
 			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
-				Sounds.playSound(R.raw.movement_2);
+				Sounds.playSound(R.raw.movement);
 				this.nextState(false);
 			}
 			break;
