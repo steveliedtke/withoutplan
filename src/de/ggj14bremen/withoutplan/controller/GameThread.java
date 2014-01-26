@@ -85,7 +85,6 @@ public class GameThread extends Thread implements Game
 		round = 0;
 		showedMoveTarget = false;
 		showedOrientation = false;
-		this.start();
 	}
 
 	private void reinit()
@@ -145,7 +144,7 @@ public class GameThread extends Thread implements Game
 			
 			while (paused)
 			{
-				sleepFor(SLEEP_TIME);
+				sleepFor(PAUSE_TIME);
 				lastUpdate = SystemClock.elapsedRealtime();
 			};
 			
@@ -197,7 +196,6 @@ public class GameThread extends Thread implements Game
 						this.timeScoreInfo.setInfoText("Enemies spawned");
 						this.sleepFor(PAUSE_TIME);
 						this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
-						time = SystemClock.elapsedRealtime();
 						break;
 					case MOVE:
 						if (!showedMoveTarget)
