@@ -15,8 +15,8 @@ public class Figure extends ColoredItem
 			{
 				case TOP: 		return 0;
 				case BOTTOM: 	return 180;
-				case LEFT: 		return 270;
-				case RIGHT: 	return 90;
+				case LEFT: 		return 90;
+				case RIGHT: 	return 270;
 				default:		return 0;
 			}
 		}

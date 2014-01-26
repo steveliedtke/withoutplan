@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class MainActivity extends Activity implements OnClickListener
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
-		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);				
+		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);		
 	}
 	
 
@@ -77,6 +78,7 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onResume();
 		glSurfaceView.onResume();
 		Settings.setMuted(false);
+		showDebugToast("Colora");
 	}
 
 	/** Also pause the glSurface */
@@ -90,7 +92,15 @@ public class MainActivity extends Activity implements OnClickListener
 
 	public void showDebugToast(String string)
 	{
-		Toast.makeText(this, string, Toast.LENGTH_SHORT).show();		
+		//Toast.makeText(this, string, Toast.LENGTH_LONG).show();
+		Toast t = new Toast(this);
+		t.setDuration(Toast.LENGTH_LONG);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		//t.setGravity(gravity, xOffset, yOffset);
+		View v = View.inflate(this, R.layout.splash_screen, null);
+		FontHelper.setFont(v);
+		t.setView(v);
+		t.show();
 	}
 	@Override
 	public void onClick(View v)
@@ -105,6 +115,7 @@ public class MainActivity extends Activity implements OnClickListener
 				public void onClick(DialogInterface dialog, int id)
 				{
 					gameThread.reset();
+					showDebugToast("RESET");
 					return;
 				}
 			});
