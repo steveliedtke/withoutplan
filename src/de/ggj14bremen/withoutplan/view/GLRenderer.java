@@ -109,13 +109,14 @@ public class GLRenderer implements Renderer
 				square.setColor(cell.getColorArray());
 				square.setAlpha(1f);
 				square.draw(gl);
-				if(cell.isWalkable())
+				if(cell.getMoveOption() != null)
 				{
+					Figure figure = cell.getMoveOption();
 					gl.glPushMatrix();
 					float scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
-					square.setColor(Colors.YELLOW);
+					square.setColor(figure.getAuraColorArray());
 					square.draw(gl);
 					gl.glPopMatrix();
 				}		
