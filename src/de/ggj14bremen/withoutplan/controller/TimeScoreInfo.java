@@ -1,5 +1,7 @@
 package de.ggj14bremen.withoutplan.controller;
 
+import de.ggj14bremen.withoutplan.model.WPColor;
+
 public class TimeScoreInfo {
 
 	
@@ -7,13 +9,22 @@ public class TimeScoreInfo {
 	
 	private int score;
 	
+	private int blueScore;
+	
+	private int greenScore;
+	
+	private int redScore;
+	
 	private String log = "";
 	
 	private boolean timeShowed;
 	
-	public TimeScoreInfo(long stepTime, int score){
+	public TimeScoreInfo(long stepTime){
 		this.stepTime 	= stepTime;
-		this.score 		= score;
+		this.score 		= 0;
+		blueScore = 0;
+		redScore = 0;
+		greenScore = 0;
 		this.log 		= "";
 		this.timeShowed = false;
 	}
@@ -25,6 +36,22 @@ public class TimeScoreInfo {
 	
 	public void addScore(){
 		score++;
+	}
+	
+	public void addColorScore(WPColor color){
+		switch (color) {
+		case BLUE:
+			this.blueScore++;
+			break;
+		case GREEN:
+			this.greenScore++;
+			break;
+		case RED:
+			this.redScore++;
+			break;
+		default:
+			break;
+		}
 	}
 
 	public long getStepTime() {
@@ -48,6 +75,18 @@ public class TimeScoreInfo {
 	}
 	public boolean isTimeShowed() {
 		return timeShowed;
+	}
+
+	public int getBlueScore() {
+		return blueScore;
+	}
+
+	public int getGreenScore() {
+		return greenScore;
+	}
+
+	public int getRedScore() {
+		return redScore;
 	}
 
 	public void setTimeShowed(boolean timeShowed) {
