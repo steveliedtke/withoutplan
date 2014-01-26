@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.controller.Sounds;
+import de.ggj14bremen.withoutplan.util.FontHelper;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 import de.ggj14bremen.withoutplan.view.framents.GameFragment;
 import de.ggj14bremen.withoutplan.view.framents.SettingsFragment;
@@ -31,8 +32,6 @@ public class MainActivity extends Activity implements OnClickListener
 	private GameFragment gameFragment;
 	private SettingsFragment settingsFragment;
 
-	public Sounds sounds;
-
 	public static boolean DEBUG = true;
 	
 	/** Called when the activity is first created. */
@@ -48,17 +47,20 @@ public class MainActivity extends Activity implements OnClickListener
 		// set our renderer to be the main renderer with the current activity context
 		setContentView(R.layout.main);
 		
-		settingsFragment = new SettingsFragment();
-		gameFragment = new GameFragment();
+		Sounds.init(this);
+		FontHelper.init(this);
+		
+		settingsFragment 	= new SettingsFragment();
+		gameFragment 		= new GameFragment();
 		
 		findViewById(R.id.buttonGame).setOnClickListener(this);
+		FontHelper.setFont(findViewById(R.id.buttonGame));
 		findViewById(R.id.buttonSettings).setOnClickListener(this);	
-
+		FontHelper.setFont(findViewById(R.id.buttonSettings));
+		
 		//game stuff
 		gameSettings	= new GameSettings(this);
-
-		sounds 			= new Sounds(this);
-		gameThread 		=  new GameThread(gameSettings, sounds);
+		gameThread 		=  new GameThread(gameSettings);
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);

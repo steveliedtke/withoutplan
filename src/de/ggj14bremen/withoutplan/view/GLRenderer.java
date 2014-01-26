@@ -141,13 +141,10 @@ public class GLRenderer implements Renderer
 					float scale = 0.9f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
-					square.setColor(Colors.YELLOW);
+					square.setColor(cell.getOrientationOption().getColorArray());
 					square.draw(gl);
 					gl.glPopMatrix();
 				}
-				//else if (cells[col][row].)
-				//else 							square.setColor(1f, 0f, 1f, 1f);
-
 				gl.glPopMatrix();
 			}
 			gl.glPopMatrix();

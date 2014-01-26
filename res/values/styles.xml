@@ -34,5 +34,11 @@
     </style>
 	<color name="button_disabled">#111</color>
     <style name="ButtonBarButton" />
-
+    <dimen name="font_size_medium">30sp</dimen>
+	<dimen name="font_size_Hughe">60sp</dimen>
+	
+	<style name="Row">
+        <item name="android:padding">10dp</item>
+    </style>
+	
 </resources>

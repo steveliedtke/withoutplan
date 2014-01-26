@@ -10,21 +10,22 @@ import android.widget.TextView;
 
 public class FontHelper
 {
-	public	final Typeface 					font, fontBold;
+	public static Typeface 	font;
+	public static Typeface fontBold;
 	
-	FontHelper(Context context)
+	public static void init(Context context)
 	{
 		//TODO set correct font
 		//TODO make singleton
-		font 		= Typeface.createFromAsset(context.getAssets(), "fonts/OptimusPrinceps.ttf");
-    	fontBold	= Typeface.createFromAsset(context.getAssets(), "fonts/OptimusPrincepsSemiBold.ttf");
+		font 		= Typeface.createFromAsset(context.getAssets(), "EHSMB.TTF");
+    	fontBold	= Typeface.createFromAsset(context.getAssets(), "EHSMB.TTF");
    
 	}
 	
 	/**
 	 * Recursively iterates through the view hierarchie and sets the custom font
 	 */
-	public View setFont(View view)
+	public static View setFont(View view)
 	{
 		if(view instanceof ViewGroup)
 		{
