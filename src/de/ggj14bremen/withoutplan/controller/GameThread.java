@@ -483,7 +483,7 @@ public class GameThread extends Thread implements Game
 						this.timeScoreInfo.addScore();
 						this.timeScoreInfo.addColorScore(figure.getColor());
 						this.timeScoreInfo.addColorScore(figure.getColor().getContrary());
-						this.timeScoreInfo.addToLog("Enemy killed");
+						//this.timeScoreInfo.addToLog("Enemy killed");
 						playSound = true;
 					}
 				}

@@ -4,6 +4,5 @@
     <string name="app_name">Color Clash</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    
 </resources>
