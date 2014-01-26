@@ -250,7 +250,7 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						break;
 					case END:
-
+						this.getTimeScoreInfo().setGameEnded(true);
 					}
 
 				}

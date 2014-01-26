@@ -21,6 +21,8 @@ public class TimeScoreInfo {
 	
 	private WPColor color;
 	
+	private boolean gameEnded;
+	
 	public TimeScoreInfo(long stepTime){
 		this.stepTime 	= stepTime;
 		this.score 		= 0;
@@ -30,6 +32,7 @@ public class TimeScoreInfo {
 		color = null;
 		this.log 		= "";
 		this.timeShowed = false;
+		this.setGameEnded(false);
 	}
 	
 	public boolean reduceStepTime(long timeToReduce){
@@ -111,5 +114,13 @@ public class TimeScoreInfo {
 	
 	public WPColor getCurrentColor(){
 		return this.color;
+	}
+
+	public boolean isGameEnded() {
+		return gameEnded;
+	}
+
+	public void setGameEnded(boolean gameEnded) {
+		this.gameEnded = gameEnded;
 	}
 }
