@@ -50,16 +50,20 @@
 
             <TextView
                 android:id="@+id/textViewAmountFigures"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="AmountFigures"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
                 android:id="@+id/editTextAmountFigures"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10" />
+                android:layout_weight="2"
+                android:ems="10"
+                android:gravity="center_vertical|center"
+                android:text="3" />
 
         </TableRow>
 
@@ -71,15 +75,17 @@
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Volume"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <SeekBar
                 android:id="@+id/seekBarVolume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
 
         </TableRow>
 

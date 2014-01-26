@@ -32,7 +32,7 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
-	<color name="button_disabled">#111</color>
+
     <style name="ButtonBarButton" />
     <dimen name="font_size_medium">30sp</dimen>
 	<dimen name="font_size_Hughe">200sp</dimen>
@@ -40,5 +40,7 @@
 	<style name="Row">
         <item name="android:padding">10dp</item>
     </style>
-	
+	 <style name="Theme.Dim" parent="android:Theme">
+    <item name="android:backgroundDimEnabled">true</item>
+  </style>
 </resources>

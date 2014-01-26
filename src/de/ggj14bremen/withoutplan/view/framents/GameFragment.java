@@ -63,7 +63,7 @@ private void startTimer() {
 		    	 final String infoText = activity.gameThread.getTimeScoreInfo().getInfoText();
 		    	 if(!infoText.equals(lastInfoText)){
 		    		 if(infoTextList.size()>=7){
-		    			 infoTextList.remove(0);
+		    			 //infoTextList.remove(0);
 		    		 }
 		    		 infoTextList.add(infoText);
 		    		 this.displayInfoText();
