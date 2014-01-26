@@ -17,7 +17,7 @@ public class Settings {
 
 	private static boolean muted = false;
 	
-	private static float volume = 1f;
+	private static float volume = 0.1f;
 	
 	private static int roundsAfterSpeedUp = 10;
 	
