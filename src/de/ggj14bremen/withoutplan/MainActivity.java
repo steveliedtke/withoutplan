@@ -1,14 +1,18 @@
 package de.ggj14bremen.withoutplan;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.controller.Sounds;
@@ -61,10 +65,9 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		//game stuff
 		gameThread 		= new GameThread();
-	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
-		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);		
+		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
 	}
 	
 
@@ -88,10 +91,27 @@ public class MainActivity extends Activity implements OnClickListener
 		Settings.setMuted(true);
 		gameThread.setPause(true);
 	}
-	/*public void onBackPressed() 
+	public void onBackPressed() 
 	{
-		this.finish();
-	};*/
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// builder.setMessage("Reset game?");
+		TextView tv = new TextView(this);
+		tv.setText("Quit game?");
+		tv.setGravity(Gravity.CENTER);
+		FontHelper.setFont(tv);
+		builder.setView(tv);
+		builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int id)
+			{
+				MainActivity.this.finish();
+				return;
+			}
+		});
+		builder.setNegativeButton(android.R.string.no, null);
+		builder.create().show();
+	};
 	public void showDebugToast(String string)
 	{
 		Toast.makeText(this, string, Toast.LENGTH_LONG).show();
