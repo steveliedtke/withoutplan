@@ -110,21 +110,25 @@ public class GLRenderer implements Renderer
 				square.setAlpha(1f);
 				square.draw(gl);
 				
-				/*if(cells[col][row].hasEnemy()) 
+				if(cells[col][row].hasEnemy()) 
 				{
-					square.setAlpha(.5f);
-					square.setColor(Colors.RED);
+					gl.glPushMatrix();
+					float scale = 0.7f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(1f);
+					square.setColor(Colors.BLACK);
 					square.draw(gl);
-				}*/
+					gl.glPopMatrix();
+				}
 				if(cell.hasFigure()) 
 				{
 					gl.glPushMatrix();
 					float angle = cell.getFigure().getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
-					triangle.setAlpha(.7f);
+					triangle.setAlpha(.6f);
 					triangle.setColor(Colors.WHITE);
 					triangle.draw(gl);
-					gl.glPopMatrix();					
+					gl.glPopMatrix();
 				}
 				if(cell.isWalkable())
 				{
