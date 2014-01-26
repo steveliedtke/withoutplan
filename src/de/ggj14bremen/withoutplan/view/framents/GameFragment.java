@@ -59,13 +59,9 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		{
 			public void onTick(long millisUntilFinished)
 			{
-				if(!activity.gameThread.isRunning())
+				if(activity.gameThread.isPaused())
 				{
-					btnPause.setText("Start");
-				}
-				else if(activity.gameThread.isPaused())
-				{
-					btnPause.setText("Resume");
+					btnPause.setText("Play");
 				}
 				else
 				{

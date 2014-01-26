@@ -118,7 +118,7 @@ public class GLRenderer implements Renderer
 					square.setColor(Colors.YELLOW);
 					square.draw(gl);
 					gl.glPopMatrix();
-				}
+				}		
 				if(cells[col][row].hasEnemy()) 
 				{
 					gl.glPushMatrix();
@@ -126,6 +126,18 @@ public class GLRenderer implements Renderer
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(1f);
 					square.setColor(Colors.BLACK);
+					square.draw(gl);
+					gl.glPopMatrix();
+				}
+				if(cell.isVisible())
+				{
+					gl.glPushMatrix();
+					float scale = 1f;
+					gl.glScalef(scale, scale, scale);
+					square.setAlpha(.3f);
+					//FIXME
+					Figure figure = cell.getOrientationOption();
+					if(figure != null) square.setColor(figure.getColorArray());
 					square.draw(gl);
 					gl.glPopMatrix();
 				}
@@ -158,18 +170,7 @@ public class GLRenderer implements Renderer
 					gl.glPopMatrix();
 				}
 
-				if(cell.isVisible())
-				{
-					gl.glPushMatrix();
-					float scale = 1f;
-					gl.glScalef(scale, scale, scale);
-					square.setAlpha(.3f);
-					//FIXME
-					Figure figure = cell.getOrientationOption();
-					if(figure != null) square.setColor(figure.getColorArray());
-					square.draw(gl);
-					gl.glPopMatrix();
-				}
+
 				gl.glPopMatrix();
 			}
 			gl.glPopMatrix();

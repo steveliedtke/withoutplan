@@ -33,6 +33,11 @@ public class GameThread extends Thread implements Game
 
 	private GameState state;
 
+	public GameState getGameState()
+	{
+		return state;
+	}
+
 	private GameBoard board;
 
 	private boolean reset = false;
@@ -118,6 +123,7 @@ public class GameThread extends Thread implements Game
 		round = 0;
 		this.randomizeFigureTurn();
 		setPause(true);
+		
 	}
 
 	private void randomizeFigureTurn()
