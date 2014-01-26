@@ -279,7 +279,8 @@ public class GameThread extends Thread implements Game{
 		}else{
 			this.state = GameState.MOVE;
 		}
-		this.timeScoreInfo.setStepTime(stepTime);
+		final int subtractedTime = this.round/5;
+		this.timeScoreInfo.setStepTime(stepTime - subtractedTime);
 	}
 	
 	private Figure getCurrentFigure(){
