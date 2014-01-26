@@ -14,20 +14,6 @@ import de.ggj14bremen.withoutplan.model.Settings;
 
 public class Sounds 
 {
-	private MediaPlayer tick;
-	
-	private MediaPlayer finalTick;
-	
-	private MediaPlayer spawn;
-	
-	private MediaPlayer destroyed;
-	
-	private MediaPlayer blackout;
-	
-	private MediaPlayer darker;
-	
-	private MediaPlayer move;
-
 	private static MediaPlayer mediaPlayer;
 
 	private static SoundPool soundPool;
@@ -83,41 +69,5 @@ public class Sounds
 			if(!Settings.isMuted())	soundPool.play(soundID, Settings.getVolume(),  Settings.getVolume(), 1, 0, 1f);
 		}
 		else if(MainActivity.DEBUG) Log.e(MainActivity.TAG, "Error loading sound.");
-	}
-	@Deprecated
-	public void tick(){
-		tick.start();
-	}
-	@Deprecated
-	public void finalTick(){
-		finalTick.start();
-	}
-	@Deprecated
-	public void enemySpawned(){
-		this.spawn.start();
-	}
-	@Deprecated
-	public void start(){
-		// TODO
-	}
-	@Deprecated
-	public void enemyDestroyed(){
-		this.destroyed.start();
-	}
-	@Deprecated
-	public void nextFigure(){
-		// TODO 
-	}
-	@Deprecated
-	public void darker(){
-		this.darker.start();
-	}
-	@Deprecated
-	public void blackout(){
-		this.blackout.start();
-	}
-	@Deprecated
-	public void move(){
-		this.move.start();
 	}
 }
