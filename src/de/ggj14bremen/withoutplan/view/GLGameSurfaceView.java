@@ -14,14 +14,12 @@ public class GLGameSurfaceView extends GLSurfaceView
 	private GestureDetector gestureDetector;
 	private ScaleGestureDetector scaleDetector;
 	private GLRenderer glRenderer;
-	private	MainActivity activity;
 	private Game gameThread;
 	
 	public GLGameSurfaceView(MainActivity activity, Game gameThread)
 	{
 		super(activity);
 		this.gameThread			= gameThread;
-		this.activity			= activity;
 		this.gestureDetector 	= new GestureDetector(activity, new MyGestureListener());
 		this.scaleDetector 		= new ScaleGestureDetector(activity, new MyScaleListener());
 		glRenderer				= new GLRenderer(gameThread);

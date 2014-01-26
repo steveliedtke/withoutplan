@@ -26,7 +26,7 @@ public class GameThread extends Thread implements Game
 
 	private final long SLEEP_TIME = 100L;
 
-	private boolean running, paused;
+	private boolean running, paused = true;
 
 	private GameState state;
 
@@ -85,7 +85,7 @@ public class GameThread extends Thread implements Game
 		round = 0;
 		showedMoveTarget = false;
 		showedOrientation = false;
-		this.start();
+		start();
 	}
 
 	private void reinit()
@@ -145,7 +145,7 @@ public class GameThread extends Thread implements Game
 			
 			while (paused)
 			{
-				sleepFor(SLEEP_TIME);
+				sleepFor(PAUSE_TIME);
 				lastUpdate = SystemClock.elapsedRealtime();
 			};
 			
@@ -191,13 +191,10 @@ public class GameThread extends Thread implements Game
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
 						this.timeScoreInfo.setInfoText("Figures created!");
 						Sounds.playSound(R.raw.player_spawn);
-						this.sleepFor(PAUSE_TIME);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME);
 						this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
-						time = SystemClock.elapsedRealtime();
 						break;
 					case MOVE:
 						if (!showedMoveTarget)
@@ -219,14 +216,10 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						// TODO show info of analysis result
 						this.timeScoreInfo.setInfoText("Analysed board!");
-						this.sleepFor(PAUSE_TIME);
 						break;
 					case SPAWN:
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
-						// TODO show info of spawned enemies
-						this.sleepFor(PAUSE_TIME / 2);
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME / 2);
 						this.next = true;
 						break;
 					case END:
@@ -455,6 +448,7 @@ public class GameThread extends Thread implements Game
 
 	private void spawnEnemies(int amountEnemies)
 	{
+		Log.i("SpawnEnemies", "amount: " + amountEnemies);
 		boolean soundForSpawn = false;
 		for (int i = 0; i < amountEnemies; i++)
 		{
@@ -466,6 +460,7 @@ public class GameThread extends Thread implements Game
 				final Cell cell = this.board.getCell(x, y);
 				if (cell.getFigure() == null && cell.getEnemy() == null)
 				{
+					Log.i("SpawnEnemies", "Spawn enemy to x:" + x + ", y:" + y);
 					this.board.spawnEnemy(x, y, enemyLife);
 					cellNotFound = false;
 				}
