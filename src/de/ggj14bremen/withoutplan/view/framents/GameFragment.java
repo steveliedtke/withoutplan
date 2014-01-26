@@ -23,6 +23,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	private TextView infoTextView;
 	private CountDownTimer timer;
 	private TextView textViewCountdown;
+	private TextView tvRedScore, tvGreenScore, tvBlueScore;
 	private List<String> infoTextList = new ArrayList<String>();
 
 	@Override
@@ -30,9 +31,12 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	{
 		View v = inflater.inflate(R.layout.fragment_game, container, false);
 		v.findViewById(R.id.buttonReset).setOnClickListener(this);
-		btnPause = (Button) v.findViewById(R.id.buttonPause);
+		btnPause 		= (Button) v.findViewById(R.id.buttonPause);
 		btnPause.setOnClickListener(this);
-		infoTextView = (TextView) v.findViewById(R.id.infoTextView);
+		infoTextView 	= (TextView) v.findViewById(R.id.infoTextView);
+		tvRedScore 		= (TextView) v.findViewById(R.id.textViewScoreRed);
+		tvGreenScore 	= (TextView) v.findViewById(R.id.textViewScoreGreen);
+		tvBlueScore 	= (TextView) v.findViewById(R.id.textViewScoreBlue);
 		textViewCountdown = (TextView) v.findViewById(R.id.textViewCountdown);
 
 		return v;
@@ -77,6 +81,9 @@ public class GameFragment extends BaseFragment implements OnClickListener
 					textViewCountdown.setText("");
 				}
 				infoTextView.setText(activity.gameThread.getTimeScoreInfo().getInfoText());
+				tvBlueScore.setText(activity.gameThread.getTimeScoreInfo().getBlueScore()+"");
+				tvRedScore.setText(activity.gameThread.getTimeScoreInfo().getRedScore()+"");
+				tvGreenScore.setText(activity.gameThread.getTimeScoreInfo().getGreenScore()+"");
 			}
 			public void onFinish()
 			{
