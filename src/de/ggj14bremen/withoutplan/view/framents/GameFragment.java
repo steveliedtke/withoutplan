@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import de.ggj14bremen.withoutplan.R;
-import de.ggj14bremen.withoutplan.controller.Sounds;
 
 public class GameFragment extends BaseFragment implements OnClickListener
 {
@@ -23,8 +22,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	private String lastInfoText = "";
 	private TextView textViewCountdown;
 	private List<String> infoTextList = new ArrayList<String>(); 
-	private long lastSecondsRemaining;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -55,21 +53,11 @@ private void startTimer() {
 		long time = 21000;
 		timer = new CountDownTimer(time, 500) {
 
-		     
-
-			public void onTick(long millisUntilFinished) {
+		    public void onTick(long millisUntilFinished) {
 		    	 if(activity.gameThread.getTimeScoreInfo().isTimeShowed()){
 		    		 final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
-		    		 if(secondsRemaining!=lastSecondsRemaining){
-			    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
-			    		 if(secondsRemaining==0L){
-			    			 Sounds.playSound(R.raw.beep);
-			    		 }else if(secondsRemaining<=5L){
-			    			 Sounds.playSound(R.raw.beep);
-			    		 }
-			    		 lastSecondsRemaining = secondsRemaining;
-		    		 }
-		    	 }else{
+		    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
+			     }else{
 		    		 textViewCountdown.setText("");
 		    	 }
 		    	 final String infoText = activity.gameThread.getTimeScoreInfo().getInfoText();

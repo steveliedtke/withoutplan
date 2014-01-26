@@ -92,6 +92,7 @@ public class GameThread extends Thread implements Game{
 	}
 	
 	private long time;
+	private long lastSecondsRemaining = 0L;
 	
 	@Override
 	public void run(){
@@ -111,6 +112,15 @@ public class GameThread extends Thread implements Game{
 						this.board.moveFigure(this.getCurrentFigure(), this.getCurrentFigure().getX(), this.getCurrentFigure().getY());
 						this.board.orientateFigure(this.getCurrentFigure(), this.getCurrentFigure().getOrientation());
 					}
+					final long secondsRemaining = timeScoreInfo.getStepTime()/1000;
+					if(secondsRemaining!=lastSecondsRemaining){
+						if(secondsRemaining==0L){
+			    			 Sounds.playSound(R.raw.timer);
+			    		 }else if(secondsRemaining<=3L){
+			    			 Sounds.playSound(R.raw.timer_2);
+			    		 }
+			    		 lastSecondsRemaining = secondsRemaining;
+					}
 					time = newTime;
 				}
 				
@@ -121,7 +131,7 @@ public class GameThread extends Thread implements Game{
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
 						this.timeScoreInfo.setInfoText("Figures created!");
-						Sounds.playSound(R.raw.beep);
+						Sounds.playSound(R.raw.player_spawn);
 						this.sleepFor(PAUSE_TIME);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
@@ -231,7 +241,6 @@ public class GameThread extends Thread implements Game{
 			this.timeScoreInfo.setTimeShowed(false);
 		}else{
 			this.state = GameState.MOVE;
-			Sounds.playSound(R.raw.beep);
 		}
 		this.timeScoreInfo.setStepTime(settings.getStepTime());
 	}
@@ -291,9 +300,9 @@ public class GameThread extends Thread implements Game{
 		}
 		
 		if(blackoutSound){
-			Sounds.playSound(R.raw.beep);
+			Sounds.playSound(R.raw.fail);
 		}else if(darkerSound){
-			Sounds.playSound(R.raw.beep);
+			Sounds.playSound(R.raw.counter_fade);
 		}
 	}
 
@@ -313,7 +322,7 @@ public class GameThread extends Thread implements Game{
 			}
 		}
 		if(playSound)
-			Sounds.playSound(R.raw.beep);
+			Sounds.playSound(R.raw.destroy);
 	}
 	
 
@@ -343,7 +352,7 @@ public class GameThread extends Thread implements Game{
 			soundForSpawn = true;
 		}
 		if(soundForSpawn){
-			Sounds.playSound(R.raw.beep);
+			Sounds.playSound(R.raw.spawn);
 		}
 	}
 
@@ -363,6 +372,7 @@ public class GameThread extends Thread implements Game{
 		case MOVE:
 			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
+				Sounds.playSound(R.raw.movement_2);
 				this.nextState(false);
 			}
 			break;

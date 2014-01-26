@@ -59,13 +59,15 @@ public class Sounds
 		
     	soundPool 	= new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
 
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.beep, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.fail_2, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.spawn, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.destroy, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.fail, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.counter_fade, 1));
-    	sounds.put(R.raw.beep, soundPool.load(context, R.raw.movement, 1));
+    	sounds.put(R.raw.timer_2, soundPool.load(context, R.raw.timer_2, 1));
+    	sounds.put(R.raw.timer, soundPool.load(context, R.raw.timer, 1));
+    	sounds.put(R.raw.fail_2, soundPool.load(context, R.raw.fail_2, 1));
+    	sounds.put(R.raw.spawn, soundPool.load(context, R.raw.spawn, 1));
+    	sounds.put(R.raw.player_spawn, soundPool.load(context, R.raw.player_spawn, 1));
+    	sounds.put(R.raw.destroy, soundPool.load(context, R.raw.destroy, 1));
+    	sounds.put(R.raw.fail, soundPool.load(context, R.raw.fail, 1));
+    	sounds.put(R.raw.counter_fade, soundPool.load(context, R.raw.counter_fade, 1));
+    	sounds.put(R.raw.movement_2, soundPool.load(context, R.raw.movement_2, 1));
 	}
 	public static final void destroy()
 	{
