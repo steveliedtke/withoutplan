@@ -40,6 +40,7 @@ public class GameBoard implements Board
 		Cell cell = cells[x][y];
 		Enemy enemy = new Enemy(timeToKill, cell);
 		cell.setEnemy(enemy);
+		updateWatchingFigures(cell);
 		enemy.updateColorArray();
 	}
 	
@@ -58,6 +59,7 @@ public class GameBoard implements Board
 	{
 		Cell cell = cells[x][y];
 		cell.setEnemy(null);
+		updateWatchingFigures(cell);
 		cell.updateColorArray();
 	}
 	
@@ -65,14 +67,21 @@ public class GameBoard implements Board
 	{
 		if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.moveFigure(%s %d, %d to %d, %d)", getClass().getSimpleName(), figure.getColorString(), figure.getX(), figure.getY(), x, y));
 		
+		Cell cell;
+		
 		if (figure.hasValidPosition())
 		{
 			setWalkable(figure, false);
 			setFigureOrientation(figure, false);
-			cells[figure.getX()][figure.getY()].setFigure(null);			
+			cell = cells[figure.getX()][figure.getY()];
+			cell.setFigure(null);
+			updateWatchingFigures(cell);
 		}
-		cells[x][y].setFigure(figure);
+		cell = cells[x][y];
+		cell.setFigure(figure);
+		updateWatchingFigures(cell);
 		figure.setPosition(x, y);
+		
 		setFigureOrientation(figure, true);
 	}
 
@@ -82,6 +91,20 @@ public class GameBoard implements Board
 		if(MainActivity.DEBUG) Log.d(TAG, String.format("%s.orientateFigure(%s %s)", getClass().getSimpleName(), figure.getColorString(), getOrientationString(orientation)));
 		setOrientationOptions(figure, false);
 		figure.setOrientation(orientation);
+		setFigureOrientation(figure, true);
+	}
+	
+	private void updateWatchingFigures(Cell cell)
+	{
+		for (Figure figure: cell.getWatchingFigures())
+		{
+			updateFigureOrientation(figure);
+		}
+	}
+	
+	private void updateFigureOrientation(Figure figure)
+	{
+		setFigureOrientation(figure, false);
 		setFigureOrientation(figure, true);
 	}
 	
@@ -235,5 +258,10 @@ public class GameBoard implements Board
 						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= 2);
 			}
 		}
+	}
+	
+	private void setWalkable2(Figure figure, boolean walkable)
+	{
+		
 	}
 }
