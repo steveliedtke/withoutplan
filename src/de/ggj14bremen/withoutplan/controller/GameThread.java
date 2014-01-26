@@ -434,6 +434,7 @@ public class GameThread extends Thread implements Game
 						if(MainActivity.DEBUG)Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
 						this.board.removeEnemy(x, y);
 						this.timeScoreInfo.addScore();
+						this.timeScoreInfo.addToLog("Enemy killed");
 						playSound = true;
 					}
 				}
