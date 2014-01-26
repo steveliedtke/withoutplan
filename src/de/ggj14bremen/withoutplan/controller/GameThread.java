@@ -431,7 +431,7 @@ public class GameThread extends Thread implements Game
 					if (colors.contains(figure.getColor().getContrary()))
 					{
 						Log.i("ANALYZE", "Remove enemy x:" + i + ", y:" + j);
-						this.board.removeEnemy(i, j);
+						this.board.removeEnemy(x, y);
 						this.timeScoreInfo.addScore();
 						playSound = true;
 					}
