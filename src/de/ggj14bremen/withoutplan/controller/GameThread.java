@@ -345,7 +345,7 @@ public class GameThread extends Thread implements Game{
 				final int y = Generator.randomIntBetween(0, this.settings.getBoardSizeY()-1);
 				final Cell cell = this.board.getCell(x, y);
 				if(cell.getFigure()== null && cell.getEnemy()==null){
-					this.board.spawnEnemy(x, y);
+					this.board.spawnEnemy(x, y, 5);//TODO use setting value enemyLife
 					cellNotFound = false;
 				}
 			}
@@ -372,7 +372,7 @@ public class GameThread extends Thread implements Game{
 		case MOVE:
 			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
-				Sounds.playSound(R.raw.movement);
+				Sounds.playSound(R.raw.movement_5);
 				this.nextState(false);
 			}
 			break;
