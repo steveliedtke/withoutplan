@@ -416,9 +416,9 @@ public class GameThread extends Thread implements Game
 			
 		}
 		
-		this.timeScoreInfo.addToLog("Score RED: " + this.timeScoreInfo.getRedScore());
-		this.timeScoreInfo.addToLog("Score BLUE: " + this.timeScoreInfo.getBlueScore());
-		this.timeScoreInfo.addToLog("Score GREEN: " + this.timeScoreInfo.getGreenScore());
+//		this.timeScoreInfo.addToLog("Score RED: " + this.timeScoreInfo.getRedScore());
+//		this.timeScoreInfo.addToLog("Score BLUE: " + this.timeScoreInfo.getBlueScore());
+//		this.timeScoreInfo.addToLog("Score GREEN: " + this.timeScoreInfo.getGreenScore());
 
 		boolean darkerSound = false;
 		boolean blackoutSound = false;
