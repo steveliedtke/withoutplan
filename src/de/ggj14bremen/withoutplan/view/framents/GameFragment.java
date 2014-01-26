@@ -73,7 +73,7 @@ private void startTimer() {
 
 		     private void displayInfoText() {
 				StringBuilder text = new StringBuilder();
-		    	for(int i=0;i<infoTextList.size();i++){
+		    	for(int i=infoTextList.size()-1;i>=0;i--){
 					text.append(infoTextList.get(i));
 					text.append("\n");
 				}
@@ -98,7 +98,7 @@ private void startTimer() {
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					activity.gameThread.reset(activity.gameSettings);
+					activity.gameThread.reset();
 					infoTextList.clear();
 					return;
 				}

@@ -62,8 +62,7 @@ public class MainActivity extends Activity implements OnClickListener
 		FontHelper.setFont(findViewById(R.id.buttonSettings));
 		
 		//game stuff
-		gameSettings	= new Settings(this);
-		gameThread 		= new GameThread(gameSettings);
+		gameThread 		= new GameThread();
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
@@ -105,8 +104,7 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameSettings = new Settings(MainActivity.this);
-					gameThread.reset(gameSettings);
+					gameThread.reset();
 					return;
 				}
 			});
