@@ -33,10 +33,6 @@ public class GameThread extends Thread implements Game{
 	
 	private boolean reset = false;
 	
-	private Settings settings;
-	
-	private Settings newSettings;
-	
 	private List<Figure> figures;
 	
 	private int[] figureTurn;
@@ -45,44 +41,74 @@ public class GameThread extends Thread implements Game{
 	
 	private TimeScoreInfo timeScoreInfo;
 	
+	private int boardSizeX;
+	
+	private int boardSizeY;
+	
+	private int amountFigures;
+	
+	private long stepTime;
+	
+	private int enemyLife;
+	
+	private boolean showedMoveTarget;
+	
+	private boolean showedOrientation;
+	
 	/**
 	 * should be changed to true if end of state 
 	 * is reached through timer or through event.
 	 */
 	private boolean next;
 	
-	public GameThread(Settings gameSettings){
-		settings = gameSettings;
+	private int round;
+	
+	public GameThread(){
 		running = true;
-		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
+		boardSizeX = Settings.getBoardSizeX();
+		boardSizeY = Settings.getBoardSizeY();
+		enemyLife = Settings.getEnemyLife();
+		amountFigures = Settings.getAmountFigures();
+		stepTime = Settings.getStepTime();
+		board = new GameBoard(boardSizeX, boardSizeY);
 		next = false;
-		figures = new ArrayList<Figure>(settings.getAmountFigures());
+		figures = new ArrayList<Figure>();
 		figureStep = 0;
 		this.state = GameState.INIT;
-		figureTurn = new int[settings.getAmountFigures()];
-		this.timeScoreInfo = new TimeScoreInfo(settings.getStepTime(), 0);
+		figureTurn = new int[amountFigures];
+		this.timeScoreInfo = new TimeScoreInfo(stepTime, 0);
+		round = 0;
+		showedMoveTarget = false;
+		showedOrientation = false;
 		this.start();
 	}
 	
 	private void reinit(){
-		this.settings = newSettings;
 		this.reset = false;
 		running = true;
-		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
+		boardSizeX = Settings.getBoardSizeX();
+		boardSizeY = Settings.getBoardSizeY();
+		amountFigures = Settings.getAmountFigures();
+		stepTime = Settings.getStepTime();
+		enemyLife = Settings.getEnemyLife();
+		board = new GameBoard(boardSizeX, boardSizeY);
 		next = false;
-		figures = new ArrayList<Figure>(settings.getAmountFigures());
+		figures = new ArrayList<Figure>();
 		figureStep = 0;
 		this.state = GameState.INIT;
-		figureTurn = new int[settings.getAmountFigures()];
-		this.timeScoreInfo = new TimeScoreInfo(settings.getStepTime(), 0);
+		figureTurn = new int[amountFigures];
+		this.timeScoreInfo = new TimeScoreInfo(stepTime, 0);
+		showedMoveTarget = false;
+		showedOrientation = false;
+		round = 0;
 		this.randomizeFigureTurn();
 	}
 
 	private void randomizeFigureTurn() {
 		int index = 0;
 		final Set<Integer> alreadyInserted = new HashSet<Integer>();
-		while(index<settings.getAmountFigures()){
-			final int element = Generator.randomIntBetween(0, settings.getAmountFigures()-1);
+		while(index<amountFigures){
+			final int element = Generator.randomIntBetween(0, amountFigures-1);
 			if(!alreadyInserted.contains(Integer.valueOf(element))){
 				alreadyInserted.add(Integer.valueOf(element));
 				figureTurn[index] = element;
@@ -137,14 +163,21 @@ public class GameThread extends Thread implements Game{
 						this.next = true;
 						this.timeScoreInfo.setInfoText("Enemies spawned");
 						this.sleepFor(PAUSE_TIME);
+						this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
 						time = SystemClock.elapsedRealtime();
 						break;
 					case MOVE:
-						this.board.showMoveTarget(this.getCurrentFigure());
-						this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+						if(!showedMoveTarget){
+							this.board.showMoveTarget(this.getCurrentFigure());
+							this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep]+1));
+							showedMoveTarget = true;
+						}
 						break;
 					case ORIENTATE:
-						this.board.showOrientation(this.getCurrentFigure());
+						if(!showedOrientation){
+							this.board.showOrientation(this.getCurrentFigure());
+							showedOrientation = true;
+						}
 						break;
 					case ANALYSIS:
 						this.analyseRound();
@@ -152,6 +185,7 @@ public class GameThread extends Thread implements Game{
 						// TODO show info of analysis result
 						this.timeScoreInfo.setInfoText("Analysed board!");
 						this.sleepFor(PAUSE_TIME);
+						this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
 						break;
 					case SPAWN:
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
@@ -185,15 +219,15 @@ public class GameThread extends Thread implements Game{
 	}
 
 	private void initFigures() {
-		for(int i=0; i<settings.getAmountFigures(); i++){
+		for(int i=0; i<amountFigures; i++){
 			final Figure figure = new Figure();
 			figure.setColor(WPColor.values()[i%3]);
 			figure.setOrientation(Orientation.values()[Generator.randomIntBetween(0, 3)]);
 			figures.add(figure);
 			boolean cellNotFound = true;
 			while(cellNotFound){
-				final int x = Generator.randomIntBetween(0, settings.getBoardSizeX()-1);
-				final int y = Generator.randomIntBetween(0, settings.getBoardSizeY()-1);
+				final int x = Generator.randomIntBetween(0, boardSizeX-1);
+				final int y = Generator.randomIntBetween(0, boardSizeY-1);
 				if(this.board.getCell(x, y).getFigure()==null){
 					this.board.moveFigure(figure, x, y);
 					cellNotFound = false;
@@ -215,9 +249,11 @@ public class GameThread extends Thread implements Game{
 			}else{
 				this.state = GameState.ORIENTATE;
 			}
+			this.showedMoveTarget = false;
 			break;
 		case ORIENTATE:
 			afterOrientate();
+			this.showedOrientation = false;
 			break;
 		case ANALYSIS:
 			this.state = GameState.SPAWN;
@@ -242,7 +278,7 @@ public class GameThread extends Thread implements Game{
 		}else{
 			this.state = GameState.MOVE;
 		}
-		this.timeScoreInfo.setStepTime(settings.getStepTime());
+		this.timeScoreInfo.setStepTime(stepTime);
 	}
 	
 	private Figure getCurrentFigure(){
@@ -252,7 +288,7 @@ public class GameThread extends Thread implements Game{
 	
 	private boolean nextFigure(){
 		final boolean allFiguresMoved;
-		if(figureStep+1>=settings.getAmountFigures()){
+		if(figureStep+1>=amountFigures){
 			figureStep = 0;
 			randomizeFigureTurn();
 			allFiguresMoved = true;
@@ -328,7 +364,7 @@ public class GameThread extends Thread implements Game{
 
 	private boolean lookForFigure(Cell[][] cells, int x, int y) {
 		final boolean result;
-		if(x<0 || x>=settings.getBoardSizeX() || y<0 || y>=settings.getBoardSizeY()){
+		if(x<0 || x>=boardSizeX || y<0 || y>=boardSizeY){
 			result = false;
 		}else{
 			result = (cells[x][y].getFigure() != null);
@@ -341,11 +377,11 @@ public class GameThread extends Thread implements Game{
 		for(int i=0; i<amountEnemies;i++){
 			boolean cellNotFound = true;
 			while(cellNotFound){
-				final int x = Generator.randomIntBetween(0, this.settings.getBoardSizeX()-1);
-				final int y = Generator.randomIntBetween(0, this.settings.getBoardSizeY()-1);
+				final int x = Generator.randomIntBetween(0, boardSizeX-1);
+				final int y = Generator.randomIntBetween(0, boardSizeY-1);
 				final Cell cell = this.board.getCell(x, y);
 				if(cell.getFigure()== null && cell.getEnemy()==null){
-					this.board.spawnEnemy(x, y, 5);//TODO use setting value enemyLife
+					this.board.spawnEnemy(x, y, enemyLife);
 					cellNotFound = false;
 				}
 			}
@@ -379,6 +415,7 @@ public class GameThread extends Thread implements Game{
 		case ORIENTATE:
 			if(this.board.getCell(event.getX(), event.getY()).isVisible()){
 				final Orientation orientation;
+				boolean soundOrientate = true;
 				if(event.getX()<this.getCurrentFigure().getX()){
 					orientation = Orientation.RIGHT;
 				}else if(event.getX()>this.getCurrentFigure().getX()){
@@ -389,8 +426,12 @@ public class GameThread extends Thread implements Game{
 					orientation = Orientation.TOP;
 				}else{
 					orientation = this.getCurrentFigure().getOrientation();
+					soundOrientate = false;
 				}
 				this.board.orientateFigure(this.getCurrentFigure(), orientation);
+				if(soundOrientate){
+					Sounds.playSound(R.raw.orientation_3);
+				}
 				this.nextState(false);
 			}
 			break;
@@ -399,9 +440,8 @@ public class GameThread extends Thread implements Game{
 		}
 	}
 
-	public void reset(final Settings settings)
+	public void reset()
 	{
 		reset = true;
-		newSettings = settings;
 	}
 }
