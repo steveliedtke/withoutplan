@@ -20,7 +20,7 @@ import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
 
-	private static final int PAUSE_TIME = 3000;
+	private static final int PAUSE_TIME = 2000;
 
 	private final long SLEEP_TIME = 100L;
 	
@@ -233,7 +233,7 @@ public class GameThread extends Thread implements Game{
 			this.timeScoreInfo.setTimeShowed(false);
 		}else{
 			this.state = GameState.MOVE;
-			this.sounds.nextPlayer();
+			this.sounds.nextFigure();
 		}
 		this.timeScoreInfo.setStepTime(settings.getStepTime());
 	}
@@ -274,6 +274,28 @@ public class GameThread extends Thread implements Game{
 					}
 				}
 			}
+		}
+		
+		boolean darkerSound = false;
+		boolean blackoutSound = false;
+		for(int i=0;i<cells.length;i++){
+			for(int j=0;j<cells[i].length;j++){
+				final Cell cell = cells[i][j];
+				if(cell.hasEnemy() && cell.getEnemy().isAlive()){
+					cell.getEnemy().increaseAge();
+					if(cell.getEnemy().isAlive()){
+						darkerSound = true;
+					}else{
+						blackoutSound = true;
+					}
+				}
+			}
+		}
+		
+		if(blackoutSound){
+			sounds.blackout();
+		}else if(darkerSound){
+			sounds.darker();
 		}
 	}
 

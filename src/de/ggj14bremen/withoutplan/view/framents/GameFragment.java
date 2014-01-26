@@ -83,11 +83,12 @@ private void startTimer() {
 		     }
 
 		     private void displayInfoText() {
-				String text = "";
+				StringBuilder text = new StringBuilder();
 		    	for(int i=0;i<infoTextList.size();i++){
-					text+=infoTextList.get(i)+"\n";
+					text.append(infoTextList.get(i));
+					text.append("\n");
 				}
-		    	 infoTextView.setText(text);
+		    	 infoTextView.setText(text.toString());
 			}
 
 			public void onFinish() {
