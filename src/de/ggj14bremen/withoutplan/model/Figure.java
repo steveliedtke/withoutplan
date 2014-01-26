@@ -26,12 +26,16 @@ public class Figure extends ColoredItem
 	private int y;
 	private Orientation orientation;
 	private WPColor color;
+	private float[] auraColorArray;
 	
 	public Figure()
 	{
 		super(1f, 0f, 0f, 1f);
 		this.x = -1;
 		this.y = -1;
+		this.auraColorArray = new float[]{0f, 1f, 0f, 1f};
+		// TODO color param
+		setColor(WPColor.RED);
 	}
 	
 	public boolean hasValidPosition()
@@ -74,12 +78,33 @@ public class Figure extends ColoredItem
 			case BLUE: setColorArray(0f, 0f, 1f, 1f); break;
 			default: setColorArray(1f, 0f, 0f, 1f); break; // TODO log/exception
 		}
+
+		switch (color.getContrary())
+		{
+			case RED: setAuraColorArray(1f, 0f, 0f, 1f); break;
+			case GREEN: setAuraColorArray(0f, 1f, 0f, 1f); break;
+			case BLUE: setAuraColorArray(0f, 0f, 1f, 1f); break;
+			default: setAuraColorArray(1f, 0f, 0f, 1f); break; // TODO log/exception
+		}
 	}
 	
+	protected void setAuraColorArray(float r, float g, float b, float a)
+	{
+		auraColorArray[0] = r;
+		auraColorArray[1] = g;
+		auraColorArray[2] = b;
+		auraColorArray[3] = a;
+	}
+
 	public void setPosition(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
+	}
+	
+	public float[] getAuraColorArray()
+	{
+		return auraColorArray;
 	}
 	
 	public float[] getColorArray()
