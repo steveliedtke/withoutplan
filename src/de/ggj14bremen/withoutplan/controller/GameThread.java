@@ -320,7 +320,7 @@ public class GameThread extends Thread implements Game
 			break;
 		case END:
 			// TODO show end monitor
-			this.running = false;
+			this.timeScoreInfo.addToLog("You scored: " + this.timeScoreInfo.getScore() + " Points!");
 		}
 	}
 
@@ -389,11 +389,15 @@ public class GameThread extends Thread implements Game
 
 		boolean darkerSound = false;
 		boolean blackoutSound = false;
+		int blackedOutCells = 0;
 		for (int i = 0; i < cells.length; i++)
 		{
 			for (int j = 0; j < cells[i].length; j++)
 			{
 				final Cell cell = cells[i][j];
+				if(!cell.getEnemy().isAlive()){
+					blackedOutCells++;
+				}
 				if (cell.hasEnemy() && cell.getEnemy().isAlive())
 				{
 					cell.getEnemy().increaseAge();
@@ -408,7 +412,9 @@ public class GameThread extends Thread implements Game
 			}
 		}
 
-		if (blackoutSound)
+		if(blackedOutCells>=2){
+			this.state = GameState.END;
+		}if (blackoutSound)
 		{
 			Sounds.playSound(R.raw.fail);
 		} else if (darkerSound)
