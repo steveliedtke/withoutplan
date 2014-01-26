@@ -80,7 +80,7 @@ public class Sounds
 		Integer soundID = sounds.get(resID);
 		if(soundID != null) 
 		{
-			if(!GameSettings.isMuted())	soundPool.play(soundID, 1f, 1, 1, 0, 1f);
+			if(!GameSettings.isMuted())	soundPool.play(soundID, GameSettings.getVolume(),  GameSettings.getVolume(), 1, 0, 1f);
 		}
 		else if(MainActivity.DEBUG) Log.e(MainActivity.TAG, "Error loading sound.");
 	}
