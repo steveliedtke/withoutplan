@@ -91,4 +91,16 @@ public class Figure extends ColoredItem
 	{
 		return;
 	}
+	
+	public String getColorString()
+	{
+		switch (color)
+		{
+			case RED: return "RED";
+			case GREEN: return "GREEN";
+			case BLUE: return "BLUE";
+			default: return "DEFAULT";
+		}
+	}
+	
 }

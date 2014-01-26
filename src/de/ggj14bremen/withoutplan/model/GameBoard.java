@@ -1,8 +1,12 @@
 package de.ggj14bremen.withoutplan.model;
 
+import android.util.Log;
+import de.ggj14bremen.withoutplan.MainActivity;
+
 
 public class GameBoard implements Board
 {
+	public static final String TAG = "BOARD";
 	public static final int MOVE_RANGE = 2;
 
 	private Cell[][] cells;
@@ -73,9 +77,22 @@ public class GameBoard implements Board
 	public void orientateFigure(Figure figure, Figure.Orientation orientation)
 	{
 		// done in showOrientationOptions: setFigureOrientation(figure, false);
+		if(MainActivity.DEBUG) Log.d(TAG, String.format("%s.orientateFigure(%s %s)", getClass().getSimpleName(), figure.getColorString(), getOrientationString(orientation)));
 		setOrientationOptions(figure, false);
 		figure.setOrientation(orientation);
 		setFigureOrientation(figure, true);
+	}
+	
+	private String getOrientationString(Figure.Orientation orientation)
+	{
+		switch (orientation)
+		{
+			case TOP: return "TOP";
+			case BOTTOM: return "BOTTOM";
+			case LEFT: return "LEFT";
+			case RIGHT: return "RIGHT";
+			default: return "DEFAULT";
+		}
 	}
 	
 	public void showOrientation(Figure figure)
@@ -91,6 +108,8 @@ public class GameBoard implements Board
 	
 	private void setFigureOrientation(Figure figure, boolean add)
 	{
+		if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.setFigureOrientation(%s %s %s)", getClass().getSimpleName(), add ? "add" : "remove", figure.getColorString(), getOrientationString(figure.getOrientation())));
+		
 		int stepX = 0;
 		int stepY = 0;
 		
@@ -124,12 +143,16 @@ public class GameBoard implements Board
 
 				if (cell.hasFigure()) break;
 				
+				if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.setFigureOrientation(add %s %d, %d)", getClass().getSimpleName(), figure.getColorString(), x, y));
+				
 				cell.addWatchingFigure(figure);
 				
 				if (cell.hasEnemy()) break;
 			}
 			else
 			{
+				if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.setFigureOrientation(remove %s %d, %d)", getClass().getSimpleName(), figure.getColorString(), x, y));
+				
 				cells[x][y].removeWatchingFigure(figure);
 			}
 			
