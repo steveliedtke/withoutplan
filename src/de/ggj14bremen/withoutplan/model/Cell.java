@@ -8,7 +8,8 @@ public class Cell extends ColoredItem
 	private Figure figure;
 	private Enemy enemy;
 	private Set<Figure> watchingFigures;
-	private boolean walkable;
+	//private boolean walkable;
+	private Figure moveOption;
 	private Figure orientationOption;
 	//private float[] colorArray;
 	
@@ -162,14 +163,24 @@ public class Cell extends ColoredItem
 	
 	public boolean isWalkable()
 	{
-		return walkable;
+		return moveOption != null;
 	}
 	
-	public void setWalkable(boolean walkable)
+//	public void setWalkable(boolean walkable)
+//	{
+//		this.walkable = walkable;
+//	}
+	
+	public Figure getMoveOption()
 	{
-		this.walkable = walkable;
+		return moveOption;
 	}
-	
+
+	public void setMoveOption(Figure moveOption)
+	{
+		this.moveOption = moveOption;
+	}
+
 	public Figure getOrientationOption()
 	{
 		return orientationOption;
