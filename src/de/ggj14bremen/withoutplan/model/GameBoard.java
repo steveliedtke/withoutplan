@@ -88,6 +88,7 @@ public class GameBoard implements Board
 	{
 		setWalkable(figure, true);
 	}
+	
 	private void setFigureOrientation(Figure figure, boolean add)
 	{
 		int stepX = 0;
@@ -178,6 +179,7 @@ public class GameBoard implements Board
 			{
 				Cell cell = cells[x][y];
 
+				if (!cell.isAlive()) break;
 				if (cell.hasFigure()) break;
 				
 				cell.setOrientationOption(figure);
