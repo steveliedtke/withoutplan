@@ -21,7 +21,7 @@ import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
 
-	private static final int PAUSE_TIME = 2000;
+	private static final int PAUSE_TIME = 1500;
 
 	private final long SLEEP_TIME = 100L;
 	
