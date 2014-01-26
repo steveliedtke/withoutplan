@@ -71,7 +71,6 @@ public class GLGameSurfaceView extends GLSurfaceView
 			{
 				 gameThread.dispatchEvent(new CellClicked(cellX, cellY));
 			}
-			
 			return true;
 		}
 		@Override

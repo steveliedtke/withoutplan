@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.util.Log;
 import de.ggj14bremen.withoutplan.MainActivity;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.model.Settings;
 
 public class Sounds 
 {
@@ -67,7 +68,7 @@ public class Sounds
     	sounds.put(R.raw.destroy, soundPool.load(context, R.raw.destroy, 1));
     	sounds.put(R.raw.fail, soundPool.load(context, R.raw.fail, 1));
     	sounds.put(R.raw.counter_fade, soundPool.load(context, R.raw.counter_fade, 1));
-    	sounds.put(R.raw.movement_2, soundPool.load(context, R.raw.movement_2, 1));
+    	sounds.put(R.raw.movement_5, soundPool.load(context, R.raw.movement_5, 1));
 	}
 	public static final void destroy()
 	{
@@ -77,7 +78,10 @@ public class Sounds
 	public static void playSound(int resID)
 	{
 		Integer soundID = sounds.get(resID);
-		if(soundID != null) soundPool.play(soundID, 1f, 1, 1, 0, 1f);
+		if(soundID != null) 
+		{
+			if(!Settings.isMuted())	soundPool.play(soundID, Settings.getVolume(),  Settings.getVolume(), 1, 0, 1f);
+		}
 		else if(MainActivity.DEBUG) Log.e(MainActivity.TAG, "Error loading sound.");
 	}
 	@Deprecated

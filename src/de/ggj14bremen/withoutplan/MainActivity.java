@@ -14,8 +14,10 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.controller.Sounds;
+import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.util.FontHelper;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
+import de.ggj14bremen.withoutplan.view.framents.BaseFragment;
 import de.ggj14bremen.withoutplan.view.framents.GameFragment;
 import de.ggj14bremen.withoutplan.view.framents.SettingsFragment;
 
@@ -26,7 +28,7 @@ public class MainActivity extends Activity implements OnClickListener
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
 	public GameThread gameThread;
-	public GameSettings gameSettings;
+	public Settings gameSettings;
 	
 	//UI elements
 	private GameFragment gameFragment;
@@ -52,6 +54,7 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		settingsFragment 	= new SettingsFragment();
 		gameFragment 		= new GameFragment();
+		showFragment(gameFragment);
 		
 		findViewById(R.id.buttonGame).setOnClickListener(this);
 		FontHelper.setFont(findViewById(R.id.buttonGame));
@@ -59,13 +62,12 @@ public class MainActivity extends Activity implements OnClickListener
 		FontHelper.setFont(findViewById(R.id.buttonSettings));
 		
 		//game stuff
-		gameSettings	= new GameSettings(this);
-		gameThread 		=  new GameThread(gameSettings);
+		gameSettings	= new Settings(this);
+		gameThread 		= new GameThread(gameSettings);
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
-		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
-				
+		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);				
 	}
 	
 
@@ -75,6 +77,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onResume();
 		glSurfaceView.onResume();
+		Settings.setMuted(false);
 	}
 
 	/** Also pause the glSurface */
@@ -83,6 +86,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onPause();
 		glSurfaceView.onPause();
+		Settings.setMuted(true);
 	}
 
 	public void showDebugToast(String string)
@@ -101,7 +105,7 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameSettings = new GameSettings(MainActivity.this);
+					gameSettings = new Settings(MainActivity.this);
 					gameThread.reset(gameSettings);
 					return;
 				}
@@ -110,19 +114,19 @@ public class MainActivity extends Activity implements OnClickListener
 		}
 		else if(v.getId() == R.id.buttonSettings)
 		{
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
-			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.replace(R.id.layoutRight, settingsFragment);
-			fragmentTransaction.commit();
+			showFragment(settingsFragment);
 		}
 		else if(v.getId() == R.id.buttonGame)
 		{
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
-			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.replace(R.id.layoutRight, gameFragment);
-			fragmentTransaction.commit();
+			showFragment(gameFragment);
 		}
+	}
+	private final void showFragment(BaseFragment fragment)
+	{
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
+		fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.replace(R.id.layoutRight, fragment);
+		fragmentTransaction.commit();
 	}
 }

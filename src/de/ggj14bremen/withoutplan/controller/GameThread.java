@@ -7,12 +7,12 @@ import java.util.Set;
 
 import android.os.SystemClock;
 import android.util.Log;
-import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.R;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
 import de.ggj14bremen.withoutplan.model.Figure;
+import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.model.Figure.Orientation;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
@@ -21,7 +21,7 @@ import de.ggj14bremen.withoutplan.util.Generator;
 
 public class GameThread extends Thread implements Game{
 
-	private static final int PAUSE_TIME = 2000;
+	private static final int PAUSE_TIME = 1500;
 
 	private final long SLEEP_TIME = 100L;
 	
@@ -33,9 +33,9 @@ public class GameThread extends Thread implements Game{
 	
 	private boolean reset = false;
 	
-	private GameSettings settings;
+	private Settings settings;
 	
-	private GameSettings newSettings;
+	private Settings newSettings;
 	
 	private List<Figure> figures;
 	
@@ -51,7 +51,7 @@ public class GameThread extends Thread implements Game{
 	 */
 	private boolean next;
 	
-	public GameThread(GameSettings gameSettings){
+	public GameThread(Settings gameSettings){
 		settings = gameSettings;
 		running = true;
 		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
@@ -345,7 +345,7 @@ public class GameThread extends Thread implements Game{
 				final int y = Generator.randomIntBetween(0, this.settings.getBoardSizeY()-1);
 				final Cell cell = this.board.getCell(x, y);
 				if(cell.getFigure()== null && cell.getEnemy()==null){
-					this.board.spawnEnemy(x, y);
+					this.board.spawnEnemy(x, y, 5);//TODO use setting value enemyLife
 					cellNotFound = false;
 				}
 			}
@@ -372,7 +372,7 @@ public class GameThread extends Thread implements Game{
 		case MOVE:
 			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
-				Sounds.playSound(R.raw.movement_2);
+				Sounds.playSound(R.raw.movement_5);
 				this.nextState(false);
 			}
 			break;
@@ -399,7 +399,7 @@ public class GameThread extends Thread implements Game{
 		}
 	}
 
-	public void reset(final GameSettings settings)
+	public void reset(final Settings settings)
 	{
 		reset = true;
 		newSettings = settings;
