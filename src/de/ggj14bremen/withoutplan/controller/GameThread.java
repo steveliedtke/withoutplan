@@ -451,6 +451,7 @@ public class GameThread extends Thread implements Game
 		{
 			this.state = GameState.END;
 			this.getTimeScoreInfo().setGameEnded(true);
+//			Sounds.playSound(R.raw.fail_2);
 		}
 		if (blackoutSound)
 		{
