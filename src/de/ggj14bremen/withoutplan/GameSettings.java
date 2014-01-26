@@ -12,12 +12,9 @@ public class GameSettings {
 	
 	private long stepTime = 10000;
 
-	public float getVolume()
-	{
-		return volume;
-	}
-
-	private float volume;
+	private static boolean muted;
+	
+	private static float volume;
 	
 	public GameSettings(final Context context)
 	{
@@ -60,10 +57,23 @@ public class GameSettings {
 		this.stepTime = stepTime;
 	}
 
-	public void setVolume(float volume)
+	public static void setVolume(float volume)
 	{
-		this.volume = volume;
-		
+		GameSettings.volume = volume;
+	}
+	public static float getVolume()
+	{
+		return GameSettings.volume;
+	}
+
+	public static boolean isMuted()
+	{
+		return muted;
+	}
+
+	public static void setMuted(boolean muted)
+	{
+		GameSettings.muted = muted;
 	}
 
 	

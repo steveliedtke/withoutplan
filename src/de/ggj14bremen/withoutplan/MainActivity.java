@@ -16,6 +16,7 @@ import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.controller.Sounds;
 import de.ggj14bremen.withoutplan.util.FontHelper;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
+import de.ggj14bremen.withoutplan.view.framents.BaseFragment;
 import de.ggj14bremen.withoutplan.view.framents.GameFragment;
 import de.ggj14bremen.withoutplan.view.framents.SettingsFragment;
 
@@ -52,6 +53,7 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		settingsFragment 	= new SettingsFragment();
 		gameFragment 		= new GameFragment();
+		showFragment(gameFragment);
 		
 		findViewById(R.id.buttonGame).setOnClickListener(this);
 		FontHelper.setFont(findViewById(R.id.buttonGame));
@@ -64,8 +66,7 @@ public class MainActivity extends Activity implements OnClickListener
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
-		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);
-				
+		((ViewGroup)findViewById(R.id.glContainer)).addView(glSurfaceView);				
 	}
 	
 
@@ -75,6 +76,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onResume();
 		glSurfaceView.onResume();
+		GameSettings.setMuted(false);
 	}
 
 	/** Also pause the glSurface */
@@ -83,6 +85,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onPause();
 		glSurfaceView.onPause();
+		GameSettings.setMuted(true);
 	}
 
 	public void showDebugToast(String string)
@@ -110,19 +113,19 @@ public class MainActivity extends Activity implements OnClickListener
 		}
 		else if(v.getId() == R.id.buttonSettings)
 		{
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
-			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.replace(R.id.layoutRight, settingsFragment);
-			fragmentTransaction.commit();
+			showFragment(settingsFragment);
 		}
 		else if(v.getId() == R.id.buttonGame)
 		{
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
-			fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.replace(R.id.layoutRight, gameFragment);
-			fragmentTransaction.commit();
+			showFragment(gameFragment);
 		}
+	}
+	private final void showFragment(BaseFragment fragment)
+	{
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
+		fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.replace(R.id.layoutRight, fragment);
+		fragmentTransaction.commit();
 	}
 }
