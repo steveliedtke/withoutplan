@@ -465,6 +465,7 @@ public class GameThread extends Thread implements Game
 				final Cell cell = this.board.getCell(x, y);
 				if (cell.getFigure() == null && cell.getEnemy() == null)
 				{
+					Log.i("SpawnEnemies", "Spawn enemy to x:" + x + ", y:" + y);
 					this.board.spawnEnemy(x, y, enemyLife);
 					cellNotFound = false;
 				}
