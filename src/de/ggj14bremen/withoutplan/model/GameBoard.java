@@ -166,12 +166,12 @@ public class GameBoard implements Board
 			{
 				Cell cell = cells[x][y];
 
-				if (cell.hasFigure()) break;
 				
 				if(MainActivity.DEBUG)Log.d(TAG, String.format("%s.setFigureOrientation(add %s %d, %d)", getClass().getSimpleName(), figure.getColorString(), x, y));
 				
 				cell.addWatchingFigure(figure);
 				
+				if (cell.hasFigure()) break;
 				if (cell.hasEnemy()) break;
 			}
 			else
