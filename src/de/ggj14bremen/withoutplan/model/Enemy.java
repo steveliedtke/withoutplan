@@ -4,12 +4,14 @@ public class Enemy extends ColoredItem
 {
 	private int age;
 	private int timeToKill;
+	private Cell cell;
 	
-	public Enemy(int killAge)
+	public Enemy(int killAge, Cell cell)
 	{
 		super(0f, 0f, 0f, 0f);
 		this.age = 0;
 		this.timeToKill = killAge;
+		this.cell = cell;
 		updateColorArray();
 	}
 
@@ -42,9 +44,10 @@ public class Enemy extends ColoredItem
 		return colorArray;
 	}
 	
-	private void updateColorArray()
+	public void updateColorArray()
 	{
 		float color = 1.0f - ((float)age + 1) / (timeToKill + 1);
 		setColorArray(color, color, color, 1.0f);
+		cell.updateColorArray();
 	}
 }

@@ -45,8 +45,6 @@ public class Cell extends ColoredItem
 	
 	public float[] getColorArray()
 	{
-		// TODO aura
-		
 		if (!isAlive())
 		{
 			return enemy.getColorArray();
@@ -56,6 +54,23 @@ public class Cell extends ColoredItem
 		{
 			return figure.getColorArray();
 		}
+		
+		return colorArray;
+	}
+	
+	public void updateColorArray()
+	{
+		// TODO aura
+		
+//		if (!isAlive())
+//		{
+//			return;
+//		}
+//		
+//		if (hasFigure())
+//		{
+//			return;
+//		}
 		
 		int colorCount = 1 + watchingFigures.size();
 		float alpha = 1.0f / colorCount;
@@ -76,9 +91,7 @@ public class Cell extends ColoredItem
 		{
 			colorPart = figure.getColorArray();
 			addColorPart(colorPart, alpha);
-		}
-		
-		return colorArray;
+		}		
 	}
 	
 //	private void setColor(float r, float g, float b, float a)
@@ -120,6 +133,18 @@ public class Cell extends ColoredItem
 	public void setEnemy(Enemy enemy)
 	{
 		this.enemy = enemy;
+	}
+	
+	public void addWatchingFigure(Figure figure)
+	{
+		watchingFigures.add(figure);
+		updateColorArray();
+	}
+	
+	public void removeWatchingFigure(Figure figure)
+	{
+		watchingFigures.remove(figure);
+		updateColorArray();
 	}
 	
 	public Set<Figure> getWatchingFigures()

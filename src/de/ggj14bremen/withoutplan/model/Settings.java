@@ -1,8 +1,7 @@
 package de.ggj14bremen.withoutplan.model;
 
-import de.ggj14bremen.withoutplan.MainActivity;
-import android.content.Context;
 import android.util.Log;
+import de.ggj14bremen.withoutplan.MainActivity;
 
 public class Settings {
 
@@ -13,18 +12,16 @@ public class Settings {
 	private static int amountFigures = 3;
 	
 	private static long stepTime = 10000;
+	
+	private static int enemyLife = 5;
 
 	private static boolean muted = false;
 	
 	private static float volume = 1f;
 	
-	public Settings(final Context context)
+	private Settings()
 	{
-		/*SharedPreferences settings = context.getSharedPreferences("WithoutPlanPreferences", 0);
-		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
-		this.setBoardSizeY(settings.getInt("boardSizeY", 6));
-		this.setAmountFigures(settings.getInt("amountFigures", 3));*/
-		//this.setStepTime(settings.getLong("stepTime", 10000));
+		// private
 	}
 
 	public static int getBoardSizeX() {
@@ -78,6 +75,14 @@ public class Settings {
 	public static void setMuted(boolean muted)
 	{
 		Settings.muted = muted;
+	}
+
+	public static int getEnemyLife() {
+		return enemyLife;
+	}
+
+	public static void setEnemyLife(int enemyLife) {
+		Settings.enemyLife = enemyLife;
 	}
 
 	

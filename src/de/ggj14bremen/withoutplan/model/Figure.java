@@ -86,4 +86,9 @@ public class Figure extends ColoredItem
 	{
 		return colorArray;
 	}
+	
+	public void updateColorArray()
+	{
+		return;
+	}
 }

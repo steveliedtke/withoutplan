@@ -11,6 +11,8 @@ public abstract class ColoredItem
 	
 	public abstract float[] getColorArray();
 	
+	public abstract void updateColorArray();
+	
 	protected void setColorArray(float r, float g, float b, float a)
 	{
 		colorArray[0] = r;
