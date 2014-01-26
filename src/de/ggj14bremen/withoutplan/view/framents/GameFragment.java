@@ -86,7 +86,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				}
 				if(scoreInfo.isGameEnded()) 
 				{
-					activity.showSplashScreen(true,scoreInfo.getScore()+"");
+					activity.showSplashScreen(true, "Score: "+scoreInfo.getScore()+"   Round: "+scoreInfo.getRound());
 					scoreInfo.setGameEnded(false);
 				}
 				infoTextView.setText(activity.gameThread.getTimeScoreInfo().getInfoText());

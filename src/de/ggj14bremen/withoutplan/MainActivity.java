@@ -90,8 +90,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		if(b)
 		{
-			if(string == "")((TextView) findViewById(R.id.textViewResult)).setText("");
-			else 			((TextView) findViewById(R.id.textViewResult)).setText("Score: "+string);
+			((TextView) findViewById(R.id.textViewResult)).setText(string);
 			FontHelper.setFont(findViewById(R.id.textViewResult));
 			findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
 		}
