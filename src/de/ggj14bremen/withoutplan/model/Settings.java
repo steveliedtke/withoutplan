@@ -1,9 +1,10 @@
-package de.ggj14bremen.withoutplan;
+package de.ggj14bremen.withoutplan.model;
 
+import de.ggj14bremen.withoutplan.MainActivity;
 import android.content.Context;
 import android.util.Log;
 
-public class GameSettings {
+public class Settings {
 
 	private static int boardSizeX = 6;
 	
@@ -13,11 +14,11 @@ public class GameSettings {
 	
 	private static long stepTime = 10000;
 
-	private static boolean muted;
+	private static boolean muted = false;
 	
-	private static float volume;
+	private static float volume = 1f;
 	
-	public GameSettings(final Context context)
+	public Settings(final Context context)
 	{
 		/*SharedPreferences settings = context.getSharedPreferences("WithoutPlanPreferences", 0);
 		this.setBoardSizeX(settings.getInt("boardSizeX", 6));
@@ -31,7 +32,7 @@ public class GameSettings {
 	}
 
 	public static void setBoardSizeX(int boardSizeX) {
-		GameSettings.boardSizeX = boardSizeX;
+		Settings.boardSizeX = boardSizeX;
 	}
 
 	public static int getBoardSizeY() {
@@ -39,7 +40,7 @@ public class GameSettings {
 	}
 
 	public static void setBoardSizeY(int boardSizeY) {
-		GameSettings.boardSizeY = boardSizeY;
+		Settings.boardSizeY = boardSizeY;
 	}
 
 	public static  int getAmountFigures() {
@@ -47,7 +48,7 @@ public class GameSettings {
 	}
 
 	public static void setAmountFigures(int amountFigures) {
-		GameSettings.amountFigures = amountFigures;
+		Settings.amountFigures = amountFigures;
 	}
 
 	public static long getStepTime() {
@@ -55,18 +56,18 @@ public class GameSettings {
 	}
 
 	public static void setStepTime(long stepTime) {
-		GameSettings.stepTime = stepTime;
+		Settings.stepTime = stepTime;
 	}
 
 	public static void setVolume(float volume)
 	{
 		if(MainActivity.DEBUG) Log.d(MainActivity.TAG, "GameSettings.setVolume() "+volume);
 		
-		GameSettings.volume = volume;
+		Settings.volume = volume;
 	}
 	public static float getVolume()
 	{
-		return GameSettings.volume;
+		return Settings.volume;
 	}
 
 	public static boolean isMuted()
@@ -76,7 +77,7 @@ public class GameSettings {
 
 	public static void setMuted(boolean muted)
 	{
-		GameSettings.muted = muted;
+		Settings.muted = muted;
 	}
 
 	

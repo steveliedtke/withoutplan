@@ -7,23 +7,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
-import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.model.Settings;
 
 public class SettingsFragment extends BaseFragment implements OnClickListener
 {
 	private EditText etAmount, etCols, etRows;
+	private SeekBar seekBarVolume;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_settings, container, false);
 		v.findViewById(R.id.buttonApplySettings).setOnClickListener(this);
 		etAmount 	= (EditText)v.findViewById(R.id.editTextAmountFigures);
-		etAmount.setText(GameSettings.getAmountFigures()+"");
+		etAmount.setText(Settings.getAmountFigures()+"");
 		etCols 		= ((EditText)v.findViewById(R.id.editTextColumns));
-		etCols.setText(GameSettings.getBoardSizeX()+"");
+		etCols.setText(Settings.getBoardSizeX()+"");
 		etRows 		= ((EditText)v.findViewById(R.id.editTextRows));
-		etRows.setText(GameSettings.getBoardSizeY()+"");
+		etRows.setText(Settings.getBoardSizeY()+"");
+		seekBarVolume = ((SeekBar)v.findViewById(R.id.seekBarVolume));
+		seekBarVolume.setProgress((int) (Settings.getVolume()*100));
 		return v;
 	}
 
@@ -34,11 +37,9 @@ public class SettingsFragment extends BaseFragment implements OnClickListener
 		int nrOfFigures = Integer.valueOf(etAmount.getText().toString());
 		int cols 		= Integer.valueOf(etCols.getText().toString());
 		int rows 		= Integer.valueOf(etRows.getText().toString());
-		GameSettings.setBoardSizeX(cols);
-		GameSettings.setBoardSizeX(rows);
-		GameSettings.setAmountFigures(nrOfFigures);
-		GameSettings.setVolume(((SeekBar)getView().findViewById(R.id.seekBarVolume)).getProgress()/100f);
-		// TODO set in game settings
-		
+		Settings.setBoardSizeX(cols);
+		Settings.setBoardSizeX(rows);
+		Settings.setAmountFigures(nrOfFigures);
+		Settings.setVolume(seekBarVolume.getProgress()/100f);
 	}
 }

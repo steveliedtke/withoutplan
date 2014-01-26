@@ -7,12 +7,12 @@ import java.util.Set;
 
 import android.os.SystemClock;
 import android.util.Log;
-import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.R;
 import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
 import de.ggj14bremen.withoutplan.model.Figure;
+import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.model.Figure.Orientation;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
@@ -33,9 +33,9 @@ public class GameThread extends Thread implements Game{
 	
 	private boolean reset = false;
 	
-	private GameSettings settings;
+	private Settings settings;
 	
-	private GameSettings newSettings;
+	private Settings newSettings;
 	
 	private List<Figure> figures;
 	
@@ -51,7 +51,7 @@ public class GameThread extends Thread implements Game{
 	 */
 	private boolean next;
 	
-	public GameThread(GameSettings gameSettings){
+	public GameThread(Settings gameSettings){
 		settings = gameSettings;
 		running = true;
 		board = new GameBoard(settings.getBoardSizeX(), settings.getBoardSizeY());
@@ -399,7 +399,7 @@ public class GameThread extends Thread implements Game{
 		}
 	}
 
-	public void reset(final GameSettings settings)
+	public void reset(final Settings settings)
 	{
 		reset = true;
 		newSettings = settings;

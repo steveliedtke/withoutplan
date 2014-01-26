@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
 import de.ggj14bremen.withoutplan.controller.Sounds;
+import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.util.FontHelper;
 import de.ggj14bremen.withoutplan.view.GLGameSurfaceView;
 import de.ggj14bremen.withoutplan.view.framents.BaseFragment;
@@ -27,7 +28,7 @@ public class MainActivity extends Activity implements OnClickListener
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
 	public GameThread gameThread;
-	public GameSettings gameSettings;
+	public Settings gameSettings;
 	
 	//UI elements
 	private GameFragment gameFragment;
@@ -61,8 +62,8 @@ public class MainActivity extends Activity implements OnClickListener
 		FontHelper.setFont(findViewById(R.id.buttonSettings));
 		
 		//game stuff
-		gameSettings	= new GameSettings(this);
-		gameThread 		=  new GameThread(gameSettings);
+		gameSettings	= new Settings(this);
+		gameThread 		= new GameThread(gameSettings);
 	
 		// Initiate the Open GL view and create an instance with this activity
 		glSurfaceView = new GLGameSurfaceView(this, gameThread);
@@ -76,7 +77,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onResume();
 		glSurfaceView.onResume();
-		GameSettings.setMuted(false);
+		Settings.setMuted(false);
 	}
 
 	/** Also pause the glSurface */
@@ -85,7 +86,7 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onPause();
 		glSurfaceView.onPause();
-		GameSettings.setMuted(true);
+		Settings.setMuted(true);
 	}
 
 	public void showDebugToast(String string)
@@ -104,7 +105,7 @@ public class MainActivity extends Activity implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					gameSettings = new GameSettings(MainActivity.this);
+					gameSettings = new Settings(MainActivity.this);
 					gameThread.reset(gameSettings);
 					return;
 				}

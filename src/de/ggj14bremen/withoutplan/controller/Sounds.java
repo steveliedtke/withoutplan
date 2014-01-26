@@ -8,9 +8,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.Log;
-import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.MainActivity;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.model.Settings;
 
 public class Sounds 
 {
@@ -80,7 +80,7 @@ public class Sounds
 		Integer soundID = sounds.get(resID);
 		if(soundID != null) 
 		{
-			if(!GameSettings.isMuted())	soundPool.play(soundID, GameSettings.getVolume(),  GameSettings.getVolume(), 1, 0, 1f);
+			if(!Settings.isMuted())	soundPool.play(soundID, Settings.getVolume(),  Settings.getVolume(), 1, 0, 1f);
 		}
 		else if(MainActivity.DEBUG) Log.e(MainActivity.TAG, "Error loading sound.");
 	}
