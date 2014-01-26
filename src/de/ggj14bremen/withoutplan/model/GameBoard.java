@@ -118,10 +118,10 @@ public class GameBoard implements Board
 		switch(figure.getOrientation())
 		{
 			case TOP:
-				stepY = -1;
+				stepY = 1;
 				break;
 			case BOTTOM:
-				stepY = 1;
+				stepY = -1;
 				break;
 			case LEFT:
 				stepX = -1;
