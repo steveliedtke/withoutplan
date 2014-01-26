@@ -31,10 +31,22 @@ public class GameBoard implements Board
 		return cells[x][y];
 	}
 	
+	// TODO add timeToKill param
+	
+	public void spawnEnemy(int x, int y, int timeToKill)
+	{
+		cells[x][y].setEnemy(new Enemy(timeToKill));
+	}
+	
+	@Deprecated
+	/**
+	 * Please use spawnEnemy(int x, int y, int timeToKill)
+	 * @param x x position
+	 * @param y y position
+	 */
 	public void spawnEnemy(int x, int y)
 	{
-		// TODO set maxAge from settings or randomly
-		cells[x][y].setEnemy(new Enemy(2));
+		spawnEnemy(x, y, 3);
 	}
 	
 	public void removeEnemy(int x, int y)

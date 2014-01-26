@@ -33,6 +33,11 @@ public class Cell extends ColoredItem
 		return enemy == null || enemy.isAlive(); 
 	}
 	
+	@Deprecated
+	/**
+	 * Please use getColorArray()
+	 * @return rgba color array
+	 */
 	public float[] getColor()
 	{
 		return getColorArray();
