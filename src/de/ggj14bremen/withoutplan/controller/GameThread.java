@@ -12,10 +12,10 @@ import de.ggj14bremen.withoutplan.event.CellClicked;
 import de.ggj14bremen.withoutplan.model.Board;
 import de.ggj14bremen.withoutplan.model.Cell;
 import de.ggj14bremen.withoutplan.model.Figure;
-import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.model.Figure.Orientation;
 import de.ggj14bremen.withoutplan.model.GameBoard;
 import de.ggj14bremen.withoutplan.model.GameState;
+import de.ggj14bremen.withoutplan.model.Settings;
 import de.ggj14bremen.withoutplan.model.WPColor;
 import de.ggj14bremen.withoutplan.util.Generator;
 
@@ -25,7 +25,7 @@ public class GameThread extends Thread implements Game{
 
 	private final long SLEEP_TIME = 100L;
 	
-	private boolean running;
+	private boolean running, paused;
 	
 	private GameState state;
 	
@@ -126,6 +126,10 @@ public class GameThread extends Thread implements Game{
 		while(running){
 			
 			boolean skipSwitch = false;
+			while(paused)
+			{
+				sleepFor(SLEEP_TIME);
+			};
 			
 			if(reset){
 				this.reinit();
@@ -444,5 +448,17 @@ public class GameThread extends Thread implements Game{
 	public void reset()
 	{
 		reset = true;
+	}
+
+	public void togglePause()
+	{
+		this.paused = !paused;
+		
+	}
+
+	public void setPause(boolean pause)
+	{
+		this.paused = pause;
+
 	}
 }

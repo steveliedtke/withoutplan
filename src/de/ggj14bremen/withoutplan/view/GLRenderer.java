@@ -105,7 +105,7 @@ public class GLRenderer implements Renderer
 				gl.glPushMatrix();
 				gl.glTranslatef(0, row + row * padding, 0.0f);
 				//draw basic color	
-				square.setColor(cell.getColor());
+				square.setColor(cell.getColorArray());
 				square.setAlpha(1f);
 				square.draw(gl);
 				

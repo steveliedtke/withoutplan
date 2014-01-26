@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -57,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener
 		gameFragment 		= new GameFragment();
 		showFragment(gameFragment);
 		
+		findViewById(R.id.layoutSplashScreen).setOnClickListener(this);
 		findViewById(R.id.buttonGame).setOnClickListener(this);
 		FontHelper.setFont(findViewById(R.id.buttonGame));
 		findViewById(R.id.buttonSettings).setOnClickListener(this);	
@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onResume();
 		glSurfaceView.onResume();
 		Settings.setMuted(false);
-		showDebugToast("Colora");
+		gameThread.setPause(false);
 	}
 
 	/** Also pause the glSurface */
@@ -88,19 +88,15 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onPause();
 		glSurfaceView.onPause();
 		Settings.setMuted(true);
+		gameThread.setPause(true);
 	}
-
+	public void onBackPressed() 
+	{
+		this.finish();
+	};
 	public void showDebugToast(String string)
 	{
-		//Toast.makeText(this, string, Toast.LENGTH_LONG).show();
-		Toast t = new Toast(this);
-		t.setDuration(Toast.LENGTH_LONG);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		//t.setGravity(gravity, xOffset, yOffset);
-		View v = View.inflate(this, R.layout.splash_screen, null);
-		FontHelper.setFont(v);
-		t.setView(v);
-		t.show();
+		Toast.makeText(this, string, Toast.LENGTH_LONG).show();
 	}
 	@Override
 	public void onClick(View v)
@@ -128,6 +124,10 @@ public class MainActivity extends Activity implements OnClickListener
 		else if(v.getId() == R.id.buttonGame)
 		{
 			showFragment(gameFragment);
+		}
+		else if(v.getId() == R.id.layoutSplashScreen)
+		{
+			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
 		}
 	}
 	private final void showFragment(BaseFragment fragment)

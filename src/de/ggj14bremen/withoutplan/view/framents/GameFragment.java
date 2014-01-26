@@ -28,8 +28,9 @@ public class GameFragment extends BaseFragment implements OnClickListener
 	{
 		View v = inflater.inflate(R.layout.fragment_game, container, false);
 		v.findViewById(R.id.buttonReset).setOnClickListener(this);
-		infoTextView = (TextView) v.findViewById(R.id.infoTextView);
-		textViewCountdown = (TextView) v.findViewById(R.id.textViewCountdown);
+		v.findViewById(R.id.buttonPause).setOnClickListener(this);
+		infoTextView 		= (TextView) v.findViewById(R.id.infoTextView);
+		textViewCountdown 	= (TextView) v.findViewById(R.id.textViewCountdown);
 
 		return v;
 	}
@@ -104,6 +105,10 @@ private void startTimer() {
 				}
 			});
 			builder.create().show();
+		}
+		else if (v.getId() == R.id.buttonPause)
+		{
+			activity.gameThread.togglePause();
 		}
 
 	}
