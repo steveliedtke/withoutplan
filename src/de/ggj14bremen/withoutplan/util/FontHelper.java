@@ -16,8 +16,8 @@ public class FontHelper
 	{
 		//TODO set correct font
 		//TODO make singleton
-		font 		= Typeface.createFromAsset(context.getAssets(), "fonts/OptimusPrinceps.ttf");
-    	fontBold	= Typeface.createFromAsset(context.getAssets(), "fonts/OptimusPrincepsSemiBold.ttf");
+		font 		= Typeface.createFromAsset(context.getAssets(), "EHSMB.TTF");
+    	fontBold	= Typeface.createFromAsset(context.getAssets(), "EHSMB.TTF");
    
 	}
 	
