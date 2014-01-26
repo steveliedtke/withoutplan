@@ -1,16 +1,17 @@
 package de.ggj14bremen.withoutplan;
 
 import android.content.Context;
+import android.util.Log;
 
 public class GameSettings {
 
-	private int boardSizeX = 6;
+	private static int boardSizeX = 6;
 	
-	private int boardSizeY = 6;
+	private static int boardSizeY = 6;
 	
-	private int amountFigures = 3;
+	private static int amountFigures = 3;
 	
-	private long stepTime = 10000;
+	private static long stepTime = 10000;
 
 	private static boolean muted;
 	
@@ -25,40 +26,42 @@ public class GameSettings {
 		//this.setStepTime(settings.getLong("stepTime", 10000));
 	}
 
-	public int getBoardSizeX() {
+	public static int getBoardSizeX() {
 		return boardSizeX;
 	}
 
-	public void setBoardSizeX(int boardSizeX) {
-		this.boardSizeX = boardSizeX;
+	public static void setBoardSizeX(int boardSizeX) {
+		GameSettings.boardSizeX = boardSizeX;
 	}
 
-	public int getBoardSizeY() {
+	public static int getBoardSizeY() {
 		return boardSizeY;
 	}
 
-	public void setBoardSizeY(int boardSizeY) {
-		this.boardSizeY = boardSizeY;
+	public static void setBoardSizeY(int boardSizeY) {
+		GameSettings.boardSizeY = boardSizeY;
 	}
 
-	public int getAmountFigures() {
+	public static  int getAmountFigures() {
 		return amountFigures;
 	}
 
-	public void setAmountFigures(int amountFigures) {
-		this.amountFigures = amountFigures;
+	public static void setAmountFigures(int amountFigures) {
+		GameSettings.amountFigures = amountFigures;
 	}
 
-	public long getStepTime() {
+	public static long getStepTime() {
 		return stepTime;
 	}
 
-	public void setStepTime(long stepTime) {
-		this.stepTime = stepTime;
+	public static void setStepTime(long stepTime) {
+		GameSettings.stepTime = stepTime;
 	}
 
 	public static void setVolume(float volume)
 	{
+		if(MainActivity.DEBUG) Log.d(MainActivity.TAG, "GameSettings.setVolume() "+volume);
+		
 		GameSettings.volume = volume;
 	}
 	public static float getVolume()

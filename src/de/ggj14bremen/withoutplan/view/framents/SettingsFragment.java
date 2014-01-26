@@ -7,16 +7,23 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import de.ggj14bremen.withoutplan.GameSettings;
 import de.ggj14bremen.withoutplan.R;
 
 public class SettingsFragment extends BaseFragment implements OnClickListener
 {
+	private EditText etAmount, etCols, etRows;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_settings, container, false);
 		v.findViewById(R.id.buttonApplySettings).setOnClickListener(this);
-		
+		etAmount 	= (EditText)v.findViewById(R.id.editTextAmountFigures);
+		etAmount.setText(GameSettings.getAmountFigures()+"");
+		etCols 		= ((EditText)v.findViewById(R.id.editTextColumns));
+		etCols.setText(GameSettings.getBoardSizeX()+"");
+		etRows 		= ((EditText)v.findViewById(R.id.editTextRows));
+		etRows.setText(GameSettings.getBoardSizeY()+"");
 		return v;
 	}
 
@@ -24,13 +31,13 @@ public class SettingsFragment extends BaseFragment implements OnClickListener
 	public void onClick(View v)
 	{
 		//FIXME handle invalid input
-		int nrOfFigures = Integer.valueOf(((EditText)getView().findViewById(R.id.editTextAmountFigures)).getText().toString());
-		int cols 		= Integer.valueOf(((EditText)getView().findViewById(R.id.editTextColumns)).getText().toString());
-		int rows 		= Integer.valueOf(((EditText)getView().findViewById(R.id.editTextRows)).getText().toString());
-		activity.gameSettings.setBoardSizeX(cols);
-		activity.gameSettings.setBoardSizeX(rows);
-		activity.gameSettings.setAmountFigures(nrOfFigures);
-		activity.gameSettings.setVolume(((SeekBar)getView().findViewById(R.id.seekBarVolume)).getProgress()/100f);
+		int nrOfFigures = Integer.valueOf(etAmount.getText().toString());
+		int cols 		= Integer.valueOf(etCols.getText().toString());
+		int rows 		= Integer.valueOf(etRows.getText().toString());
+		GameSettings.setBoardSizeX(cols);
+		GameSettings.setBoardSizeX(rows);
+		GameSettings.setAmountFigures(nrOfFigures);
+		GameSettings.setVolume(((SeekBar)getView().findViewById(R.id.seekBarVolume)).getProgress()/100f);
 		// TODO set in game settings
 		
 	}
