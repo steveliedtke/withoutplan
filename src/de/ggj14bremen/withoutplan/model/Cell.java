@@ -8,16 +8,12 @@ public class Cell extends ColoredItem
 	private Figure figure;
 	private Enemy enemy;
 	private Set<Figure> watchingFigures;
-	//private boolean walkable;
 	private Figure moveOption;
 	private Figure orientationOption;
-	//private float[] colorArray;
 	
 	public Cell()
 	{
 		super(1f, 1f, 1f, 1f);
-		//this.watchingFigures = Collections.synchronizedSet(new HashSet<Figure>());
-		//this.watchingFigures = new HashSet<Figure>();
 		this.watchingFigures = new ConcurrentSkipListSet<Figure>(); // TODO remove get calls inside cell
 	}
 	
@@ -63,18 +59,6 @@ public class Cell extends ColoredItem
 	
 	public void updateColorArray()
 	{
-		// TODO aura
-		
-//		if (!isAlive())
-//		{
-//			return;
-//		}
-//		
-//		if (hasFigure())
-//		{
-//			return;
-//		}
-		
 		int colorCount = 1 + getWatchingFigures().size();
 		float alpha = 1.0f / colorCount;
 		float[] colorPart;
@@ -97,14 +81,6 @@ public class Cell extends ColoredItem
 		}		
 	}
 	
-//	private void setColor(float r, float g, float b, float a)
-//	{
-//		colorArray[0] = r;
-//		colorArray[1] = g;
-//		colorArray[2] = b;
-//		colorArray[3] = a;
-//	}
-		
 	private void addColorPart(float[] colorPart, float alpha)
 	{
 		for (int i = 0; i < colorArray.length && i < colorPart.length; i++)
@@ -155,22 +131,12 @@ public class Cell extends ColoredItem
 	{
 		return watchingFigures;
 	}
-	
-//	public void setWatchingFigures(Set<Figure> watchingFigures)
-//	{
-//		this.watchingFigures = watchingFigures;
-//	}
-	
+		
 	public boolean isWalkable()
 	{
 		return moveOption != null;
 	}
-	
-//	public void setWalkable(boolean walkable)
-//	{
-//		this.walkable = walkable;
-//	}
-	
+		
 	public Figure getMoveOption()
 	{
 		return moveOption;

@@ -71,7 +71,7 @@ public class GameBoard implements Board
 		
 		if (figure.hasValidPosition())
 		{
-			setWalkable(figure, false);
+			setWalkable2(figure, false);
 			setFigureOrientation(figure, false);
 			cell = cells[figure.getX()][figure.getY()];
 			cell.setFigure(null);
@@ -128,7 +128,7 @@ public class GameBoard implements Board
 	
 	public void showMoveTarget(Figure figure)
 	{
-		setWalkable(figure, true);
+		setWalkable2(figure, true);
 	}
 	
 	private void setFigureOrientation(Figure figure, boolean add)
@@ -253,10 +253,6 @@ public class GameBoard implements Board
 			for (int y = 0; y < cells[x].length; y++)
 			{
 				cell = cells[x][y];
-//				cell.setWalkable(walkable &&
-//						!cell.hasEnemy() &&
-//						(!cell.hasFigure() || figure.equals(cell.getFigure())) &&
-//						Math.abs(figure.getX() - x) + Math.abs(figure.getY() - y) <= MOVE_RANGE);
 				cell.setMoveOption(walkable &&
 						!cell.hasEnemy() &&
 						(!cell.hasFigure() || figure.equals(cell.getFigure())) &&
@@ -265,10 +261,44 @@ public class GameBoard implements Board
 		}
 	}
 	
-//	private void setWalkable2(Figure figure, boolean walkable)
-//	{
-//		// TODO avoid jump - use steps
-//	}
+	private void setWalkable2(Figure figure, boolean walkable)
+	{
+		if (walkable)
+		{
+			// step through
+			makeStep(figure, figure.getX(), figure.getY(), MOVE_RANGE);
+		}
+		else
+		{
+			// clear all move options
+			for (int x = 0; x < cells.length; x++)
+			{
+				for (int y = 0; y < cells[x].length; y++)
+				{
+					cells[x][y].setMoveOption(null);
+				}
+			}
+		}
+	}
 	
-	//private void makeStep(Figure figure, Cell cell, )
+	private void makeStep(Figure figure, int x, int y, int steps)
+	{
+		if (x < 0 || x >= cells.length || y < 0 || y >= cells[0].length) return;
+		
+		Cell cell = cells[x][y];
+		cell.setMoveOption(!cell.hasEnemy() &&
+				(!cell.hasFigure() || figure.equals(cell.getFigure())) ? figure : null);
+		
+		if (steps > 0 && cell.isWalkable())
+		{
+			makeStep(figure, x - 1, y + 1, steps - 1);
+			makeStep(figure, x, y + 1, steps - 1);
+			makeStep(figure, x + 1, y + 1, steps - 1);
+			makeStep(figure, x - 1, y, steps - 1);
+			makeStep(figure, x + 1, y, steps - 1);
+			makeStep(figure, x - 1, y - 1, steps - 1);
+			makeStep(figure, x, y - 1, steps - 1);
+			makeStep(figure, x + 1, y - 1, steps - 1);
+		}
+	}
 }
