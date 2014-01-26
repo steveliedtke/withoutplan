@@ -85,7 +85,7 @@ public class GLRenderer implements Renderer
 		
 		gl.glTranslatef(1, 1, 0.0f);
 
-		drawBoard(gl);
+		if(!game.isPaused()) drawBoard(gl);
 	}
 	/**
 	 * 

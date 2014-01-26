@@ -412,7 +412,8 @@ public class GameThread extends Thread implements Game
 			}
 		}
 
-		if(blackedOutCells>=2){
+		if(blackedOutCells>=2)
+		{
 			this.state = GameState.END;
 		}if (blackoutSound)
 		{
@@ -568,14 +569,14 @@ public class GameThread extends Thread implements Game
 
 	public void togglePause()
 	{
-		this.paused = !paused;
-
+		setPause(!paused);
 	}
 
 	public void setPause(boolean pause)
 	{
 		this.paused = pause;
-
+		if(paused) 	Sounds.playMusic();
+		else		Sounds.pauseMusic();
 	}
 
 	public boolean isPaused()

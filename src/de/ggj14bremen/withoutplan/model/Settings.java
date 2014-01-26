@@ -14,8 +14,6 @@ public class Settings {
 	private static long stepTime = 10000;
 	
 	private static int enemyLife = 5;
-
-	private static boolean muted = false;
 	
 	private static float volume = 0.1f;
 	
@@ -68,17 +66,6 @@ public class Settings {
 	{
 		return Settings.volume;
 	}
-
-	public static boolean isMuted()
-	{
-		return muted;
-	}
-
-	public static void setMuted(boolean muted)
-	{
-		Settings.muted = muted;
-	}
-
 	public static int getEnemyLife() {
 		return enemyLife;
 	}
