@@ -250,7 +250,7 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						break;
 					case END:
-						this.getTimeScoreInfo().setGameEnded(true);
+						
 					}
 
 				}
@@ -448,7 +448,9 @@ public class GameThread extends Thread implements Game
 		if(blackedOutCells>=3)
 		{
 			this.state = GameState.END;
-		}if (blackoutSound)
+			this.getTimeScoreInfo().setGameEnded(true);
+		}
+		if (blackoutSound)
 		{
 			Sounds.playSound(R.raw.fail);
 		} else if (darkerSound)

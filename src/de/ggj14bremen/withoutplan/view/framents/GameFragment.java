@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.controller.TimeScoreInfo;
 import de.ggj14bremen.withoutplan.util.FontHelper;
 
 public class GameFragment extends BaseFragment implements OnClickListener
@@ -63,6 +64,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		{
 			public void onTick(long millisUntilFinished)
 			{
+				TimeScoreInfo scoreInfo = activity.gameThread.getTimeScoreInfo();
 				if(activity.gameThread.isPaused())
 				{
 					btnPause.setText("Play");
@@ -81,6 +83,11 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				else
 				{
 					textViewCountdown.setText("");
+				}
+				if(scoreInfo.isGameEnded()) 
+				{
+					activity.showSplashScreen(true,scoreInfo.getScore()+"");
+					scoreInfo.setGameEnded(false);
 				}
 				infoTextView.setText(activity.gameThread.getTimeScoreInfo().getInfoText());
 				tvBlueScore.setText(activity.gameThread.getTimeScoreInfo().getBlueScore()+"");

@@ -80,7 +80,17 @@ public class MainActivity extends Activity implements OnClickListener
 		Sounds.setMuted(false);
 		Sounds.playMusic();
 		showFragment(gameFragment);
-		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
+		showSplashScreen(true,"");
+	}
+	public void showSplashScreen(boolean b, String string)
+	{
+		if(b)
+		{
+			((TextView) findViewById(R.id.textViewResult)).setText(string);
+			FontHelper.setFont(findViewById(R.id.textViewResult));
+			findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
+		}
+		else findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
 	}
 
 	/** Also pause the glSurface */
@@ -130,7 +140,7 @@ public class MainActivity extends Activity implements OnClickListener
 		}
 		else if(v.getId() == R.id.layoutSplashScreen)
 		{
-			findViewById(R.id.layoutSplashScreen).setVisibility(View.GONE);
+			showSplashScreen(false, "");
 		}
 	}
 	private final void showFragment(BaseFragment fragment)
