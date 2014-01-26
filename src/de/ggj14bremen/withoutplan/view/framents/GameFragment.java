@@ -7,12 +7,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import de.ggj14bremen.withoutplan.R;
+import de.ggj14bremen.withoutplan.util.FontHelper;
 
 public class GameFragment extends BaseFragment implements OnClickListener
 {
@@ -93,7 +95,12 @@ private void startTimer() {
 		if (v.getId() == R.id.buttonReset)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setMessage("Reset game?");
+			//builder.setMessage("Reset game?");
+			TextView tv = new TextView(GameFragment.this.getActivity());
+			tv.setText("Reset game?");
+			tv.setGravity(Gravity.CENTER);
+			FontHelper.setFont(tv);
+			builder.setView(tv);
 			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
 			{
 				@Override

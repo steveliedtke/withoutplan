@@ -191,11 +191,9 @@ public class GameThread extends Thread implements Game
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
 						this.timeScoreInfo.setInfoText("Figures created!");
 						Sounds.playSound(R.raw.player_spawn);
-						this.sleepFor(PAUSE_TIME);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME);
 						this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
 						break;
 					case MOVE:
@@ -218,14 +216,10 @@ public class GameThread extends Thread implements Game
 						this.next = true;
 						// TODO show info of analysis result
 						this.timeScoreInfo.setInfoText("Analysed board!");
-						this.sleepFor(PAUSE_TIME);
 						break;
 					case SPAWN:
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
-						// TODO show info of spawned enemies
-						this.sleepFor(PAUSE_TIME / 2);
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME / 2);
 						this.next = true;
 						break;
 					case END:

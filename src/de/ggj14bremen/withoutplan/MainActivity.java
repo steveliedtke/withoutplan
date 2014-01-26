@@ -1,9 +1,7 @@
 package de.ggj14bremen.withoutplan;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.View;
@@ -54,7 +52,6 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		settingsFragment 	= new SettingsFragment();
 		gameFragment 		= new GameFragment();
-		showFragment(gameFragment);
 		
 		findViewById(R.id.layoutSplashScreen).setOnClickListener(this);
 		findViewById(R.id.buttonGame).setOnClickListener(this);
@@ -78,8 +75,8 @@ public class MainActivity extends Activity implements OnClickListener
 		super.onResume();
 		glSurfaceView.onResume();
 		Settings.setMuted(false);
+		showFragment(gameFragment);
 		findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
-		//gameThread.setPause(false);
 	}
 
 	/** Also pause the glSurface */
@@ -102,23 +99,7 @@ public class MainActivity extends Activity implements OnClickListener
 	@Override
 	public void onClick(View v)
 	{
-		if(v.getId() == R.id.buttonReset)
-		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Reset game?");
-			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int id)
-				{
-					gameThread.reset();
-					showDebugToast("RESET");
-					return;
-				}
-			});
-			builder.create().show();
-		}
-		else if(v.getId() == R.id.buttonSettings)
+		if(v.getId() == R.id.buttonSettings)
 		{
 			showFragment(settingsFragment);
 		}
@@ -135,7 +116,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private final void showFragment(BaseFragment fragment)
 	{
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();	
-		fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		//fragmentTransaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.replace(R.id.layoutRight, fragment);
 		fragmentTransaction.commit();
