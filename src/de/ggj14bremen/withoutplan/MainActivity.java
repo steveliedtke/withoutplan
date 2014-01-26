@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ggj14bremen.withoutplan.controller.GameThread;
@@ -57,6 +58,9 @@ public class MainActivity extends Activity implements OnClickListener
 		settingsFragment 	= new SettingsFragment();
 		gameFragment 		= new GameFragment();
 		
+		Button button = (Button) findViewById(R.id.buttonSkipSplash);
+		button.setOnClickListener(this);
+		FontHelper.setFont(button);
 		findViewById(R.id.layoutSplashScreen).setOnClickListener(this);
 		findViewById(R.id.buttonGame).setOnClickListener(this);
 		FontHelper.setFont(findViewById(R.id.buttonGame));
@@ -86,7 +90,8 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		if(b)
 		{
-			((TextView) findViewById(R.id.textViewResult)).setText(string);
+			if(string == "")((TextView) findViewById(R.id.textViewResult)).setText("");
+			else 			((TextView) findViewById(R.id.textViewResult)).setText("Score: "+string);
 			FontHelper.setFont(findViewById(R.id.textViewResult));
 			findViewById(R.id.layoutSplashScreen).setVisibility(View.VISIBLE);
 		}
@@ -138,7 +143,7 @@ public class MainActivity extends Activity implements OnClickListener
 		{
 			showFragment(gameFragment);
 		}
-		else if(v.getId() == R.id.layoutSplashScreen)
+		else if(v.getId() == R.id.buttonSkipSplash)
 		{
 			showSplashScreen(false, "");
 		}
