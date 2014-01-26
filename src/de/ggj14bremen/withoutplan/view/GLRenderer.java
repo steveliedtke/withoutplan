@@ -117,7 +117,7 @@ public class GLRenderer implements Renderer
 					float scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
-					square.setColor(figure.getAuraColorArray());
+					square.setColor(figure.getColorArray()); //figure.getAuraColorArray()
 					square.draw(gl);
 					gl.glPopMatrix();
 				}		
@@ -147,34 +147,26 @@ public class GLRenderer implements Renderer
 				{
 					final Figure figure = cell.getFigure();
 					
-					gl.glPushMatrix();
-					float scale = 1f;
-					gl.glScalef(scale, scale, scale);
-					square.setAlpha(1f);
-					square.setColor(figure.getAuraColorArray());
-					square.draw(gl);
-					gl.glPopMatrix();
-					
+					//basic square
 					gl.glPushMatrix();
 					scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(1f);
-					square.setColor(figure.getAuraColorArray());
+					square.setColor(figure.getColorArray());
 					square.draw(gl);
 					gl.glPopMatrix();
 					
+					//orientation marker
 					gl.glPushMatrix();
 					float angle = figure.getOrientation().getAngle();
 					gl.glRotatef(angle, 0f, 0f, 1f);
 					scale = 1.2f;
 					gl.glScalef(scale, scale, scale);
 					triangle.setAlpha(1f);
-					triangle.setColor(figure.getColorArray());
+					triangle.setColor(figure.getAuraColorArray());
 					triangle.draw(gl);
 					gl.glPopMatrix();
 				}
-
-
 				gl.glPopMatrix();
 			}
 			gl.glPopMatrix();

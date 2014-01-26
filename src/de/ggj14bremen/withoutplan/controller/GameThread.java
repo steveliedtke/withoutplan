@@ -209,11 +209,11 @@ public class GameThread extends Thread implements Game
 					case INIT:
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
-						timeScoreInfo.addToLog("Figures created!");
+						//timeScoreInfo.addToLog("Figures created!");
 						Sounds.playSound(R.raw.player_spawn);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
-						timeScoreInfo.addToLog("Enemies spawned");
+						//timeScoreInfo.addToLog("Enemies spawned");
 						timeScoreInfo.addToLog("- ROUND " + ++round + " -");
 						timeScoreInfo.setRound(round);
 						break;
@@ -248,7 +248,7 @@ public class GameThread extends Thread implements Game
 						}else{
 							this.spawnEnemies(Generator.randomIntBetween(0+additionalEnemies, 2+additionalEnemies));
 						}
-						this.timeScoreInfo.addToLog("Enemies spawned");
+						//this.timeScoreInfo.addToLog("Enemies spawned");
 						this.next = true;
 						break;
 					case END:
