@@ -3,7 +3,9 @@ package de.ggj14bremen.withoutplan.controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -55,6 +57,8 @@ public class GameThread extends Thread implements Game
 	private boolean showedMoveTarget;
 
 	private boolean showedOrientation;
+	
+	private Queue<CellClicked> events = new ConcurrentLinkedQueue<CellClicked>();
 
 	/**
 	 * should be changed to true if end of state is reached through timer or
@@ -65,7 +69,7 @@ public class GameThread extends Thread implements Game
 	private int round;
 
 	private int roundsAfterSpeedup;
-
+	
 	public GameThread()
 	{
 		running = true;
@@ -151,7 +155,9 @@ public class GameThread extends Thread implements Game
 			
 			boolean skipSwitch = false;
 
-
+			// process events within game thread!
+			processEvents();
+			
 			if (reset)
 			{
 				this.reinit();
@@ -189,18 +195,18 @@ public class GameThread extends Thread implements Game
 					case INIT:
 						this.initFigures();
 						final int amountEnemies = Generator.randomIntBetween(1, 3);
-						this.timeScoreInfo.setInfoText("Figures created!");
+						timeScoreInfo.addToLog("Figures created!");
 						Sounds.playSound(R.raw.player_spawn);
 						this.spawnEnemies(amountEnemies);
 						this.next = true;
-						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
+						timeScoreInfo.addToLog("Enemies spawned");
+						timeScoreInfo.addToLog("- ROUND " + ++round + " -");
 						break;
 					case MOVE:
 						if (!showedMoveTarget)
 						{
 							this.board.showMoveTarget(this.getCurrentFigure());
-							this.timeScoreInfo.setInfoText("Turn of Figure " + (this.figureTurn[this.figureStep] + 1));
+							this.timeScoreInfo.addToLog("Turn of Figure " + (this.figureTurn[this.figureStep] + 1));
 							showedMoveTarget = true;
 						}
 						break;
@@ -215,11 +221,12 @@ public class GameThread extends Thread implements Game
 						this.analyseRound();
 						this.next = true;
 						// TODO show info of analysis result
-						this.timeScoreInfo.setInfoText("Analysed board!");
+						this.timeScoreInfo.addToLog("Analysed board!");
 						break;
 					case SPAWN:
+						this.timeScoreInfo.addToLog("- ROUND " + ++round + " -");
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
-						this.timeScoreInfo.setInfoText("Enemies spawned");
+						this.timeScoreInfo.addToLog("Enemies spawned");
 						this.next = true;
 						break;
 					case END:
@@ -279,7 +286,6 @@ public class GameThread extends Thread implements Game
 		{
 		case INIT:
 			this.state = GameState.MOVE;
-			this.timeScoreInfo.setInfoText("");
 			this.timeScoreInfo.setTimeShowed(true);
 			break;
 		case MOVE:
@@ -298,7 +304,6 @@ public class GameThread extends Thread implements Game
 			break;
 		case ANALYSIS:
 			this.state = GameState.SPAWN;
-			this.timeScoreInfo.setInfoText("- ROUND " + ++round + " -");
 			// TODO if game ended this.state = GameState.END
 			break;
 		case SPAWN:
@@ -488,45 +493,56 @@ public class GameThread extends Thread implements Game
 	@Override
 	public void dispatchEvent(CellClicked event)
 	{
-		switch (this.state)
+		events.add(event);
+	}
+	/**
+	 * 
+	 */
+	private void processEvents()
+	{	
+		CellClicked event = events.poll();
+		if(event != null)
 		{
-		case MOVE:
-			if (this.board.getCell(event.getX(), event.getY()).isWalkable())
+			switch (this.state)
 			{
-				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
-				Sounds.playSound(R.raw.movement_5);
-				this.nextState(false);
-			}
-			break;
-		case ORIENTATE:
-			if (this.board.getCell(event.getX(), event.getY()).isVisible())
-			{
-				final Orientation orientation;
-				boolean soundOrientate = true;
-				if(event.getX()<this.getCurrentFigure().getX()){
-					orientation = Orientation.LEFT;
-				}else if(event.getX()>this.getCurrentFigure().getX()){
-					orientation = Orientation.RIGHT;
-				}else if(event.getY()<this.getCurrentFigure().getY()){
-					orientation = Orientation.BOTTOM;
-				} else if (event.getY() > this.getCurrentFigure().getY())
+			case MOVE:
+				if (this.board.getCell(event.getX(), event.getY()).isWalkable())
 				{
-					orientation = Orientation.TOP;
-				} else
-				{
-					orientation = this.getCurrentFigure().getOrientation();
-					soundOrientate = false;
+					this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
+					Sounds.playSound(R.raw.movement_5);
+					this.nextState(false);
 				}
-				this.board.orientateFigure(this.getCurrentFigure(), orientation);
-				if (soundOrientate)
+				break;
+			case ORIENTATE:
+				if (this.board.getCell(event.getX(), event.getY()).isVisible())
 				{
-					Sounds.playSound(R.raw.orientation_3);
+					final Orientation orientation;
+					boolean soundOrientate = true;
+					if(event.getX()<this.getCurrentFigure().getX()){
+						orientation = Orientation.LEFT;
+					}else if(event.getX()>this.getCurrentFigure().getX()){
+						orientation = Orientation.RIGHT;
+					}else if(event.getY()<this.getCurrentFigure().getY()){
+						orientation = Orientation.BOTTOM;
+					} else if (event.getY() > this.getCurrentFigure().getY())
+					{
+						orientation = Orientation.TOP;
+					} else
+					{
+						orientation = this.getCurrentFigure().getOrientation();
+						soundOrientate = false;
+					}
+					this.board.orientateFigure(this.getCurrentFigure(), orientation);
+					if (soundOrientate)
+					{
+						Sounds.playSound(R.raw.orientation_3);
+					}
+					this.nextState(false);
 				}
-				this.nextState(false);
+				break;
+			default:
+				// not allowed
 			}
-			break;
-		default:
-			// not allowed
 		}
 	}
 
