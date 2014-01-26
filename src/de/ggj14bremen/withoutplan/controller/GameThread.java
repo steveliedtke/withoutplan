@@ -185,13 +185,13 @@ public class GameThread extends Thread implements Game{
 						// TODO show info of analysis result
 						this.timeScoreInfo.setInfoText("Analysed board!");
 						this.sleepFor(PAUSE_TIME);
-						this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
 						break;
 					case SPAWN:
 						this.spawnEnemies(Generator.randomIntBetween(0, 2));
 						// TODO show info of spawned enemies
+						this.sleepFor(PAUSE_TIME/2);
 						this.timeScoreInfo.setInfoText("Enemies spawned");
-						this.sleepFor(PAUSE_TIME);
+						this.sleepFor(PAUSE_TIME/2);
 						this.next = true;
 						break;
 					case END:
@@ -257,6 +257,7 @@ public class GameThread extends Thread implements Game{
 			break;
 		case ANALYSIS:
 			this.state = GameState.SPAWN;
+			this.timeScoreInfo.setInfoText("- ROUND "+ ++round + " -" );
 			// TODO if game ended this.state = GameState.END
 			break;
 		case SPAWN:
