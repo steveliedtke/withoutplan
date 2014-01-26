@@ -106,7 +106,6 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				@Override
 				public void onClick(DialogInterface dialog, int id)
 				{
-					activity.gameThread.setPause(true);
 					activity.gameThread.reset();
 					infoTextList.clear();
 					return;
