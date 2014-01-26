@@ -35,7 +35,7 @@
 
     <style name="ButtonBarButton" />
     <dimen name="font_size_medium">20sp</dimen>
-    <dimen name="font_size_big">40sp</dimen>
+    <dimen name="font_size_big">60sp</dimen>
 	<dimen name="font_size_Hughe">200sp</dimen>
 	
 	<style name="Row">

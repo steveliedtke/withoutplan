@@ -76,6 +76,7 @@ public class GLRenderer implements Renderer
 		// Reset the Modelview Matrix
 		gl.glLoadIdentity();
 
+		//TODO check width
 		int nrOfCells = game.getBoard().getCells().length;
 		scale = height/(nrOfCells + nrOfCells*padding);
 		

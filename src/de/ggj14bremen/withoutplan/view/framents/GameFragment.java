@@ -75,6 +75,8 @@ public class GameFragment extends BaseFragment implements OnClickListener
 				{
 					final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
 					textViewCountdown.setText(String.valueOf(secondsRemaining));
+					if(activity.gameThread.getTimeScoreInfo().getCurrentColor() != null)
+						textViewCountdown.setTextColor(activity.gameThread.getTimeScoreInfo().getCurrentColor().getColorAsInt());				
 				}
 				else
 				{

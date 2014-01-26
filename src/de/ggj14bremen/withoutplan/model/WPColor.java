@@ -1,5 +1,7 @@
 package de.ggj14bremen.withoutplan.model;
 
+import android.graphics.Color;
+
 public enum WPColor {
 	RED,
 	BLUE,
@@ -19,5 +21,16 @@ public enum WPColor {
 			break;
 		}
 		return result;
+	}
+
+	public int getColorAsInt()
+	{
+		switch (this)
+		{
+			case RED: return Color.RED;
+			case BLUE:return Color.BLUE;	
+			case GREEN:return Color.GREEN;
+			default: return Color.MAGENTA;
+		}
 	}
 }
