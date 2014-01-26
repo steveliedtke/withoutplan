@@ -7,14 +7,14 @@ public class TimeScoreInfo {
 	
 	private int score;
 	
-	private String infoText;
+	private String log = "";
 	
 	private boolean timeShowed;
 	
 	public TimeScoreInfo(long stepTime, int score){
-		this.stepTime = stepTime;
-		this.score = score;
-		this.infoText = "";
+		this.stepTime 	= stepTime;
+		this.score 		= score;
+		this.log 		= "";
 		this.timeShowed = false;
 	}
 	
@@ -44,18 +44,22 @@ public class TimeScoreInfo {
 	}
 
 	public String getInfoText() {
-		return infoText;
+		return log;
 	}
-
-	public void setInfoText(String infoText) {
-		this.infoText = infoText;
-	}
-
 	public boolean isTimeShowed() {
 		return timeShowed;
 	}
 
 	public void setTimeShowed(boolean timeShowed) {
 		this.timeShowed = timeShowed;
+	}
+
+	public void clearLog()
+	{
+		log = "";	
+	}
+	public void addToLog(String string)
+	{
+		log = string+"\n"+log;
 	}
 }

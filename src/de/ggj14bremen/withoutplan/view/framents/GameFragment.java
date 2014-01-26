@@ -18,21 +18,19 @@ import de.ggj14bremen.withoutplan.util.FontHelper;
 
 public class GameFragment extends BaseFragment implements OnClickListener
 {
-
 	private TextView infoTextView;
 	private CountDownTimer timer;
-	private String lastInfoText = "";
 	private TextView textViewCountdown;
-	private List<String> infoTextList = new ArrayList<String>(); 
-	
+	private List<String> infoTextList = new ArrayList<String>();
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View v = inflater.inflate(R.layout.fragment_game, container, false);
 		v.findViewById(R.id.buttonReset).setOnClickListener(this);
 		v.findViewById(R.id.buttonPause).setOnClickListener(this);
-		infoTextView 		= (TextView) v.findViewById(R.id.infoTextView);
-		textViewCountdown 	= (TextView) v.findViewById(R.id.textViewCountdown);
+		infoTextView = (TextView) v.findViewById(R.id.infoTextView);
+		textViewCountdown = (TextView) v.findViewById(R.id.textViewCountdown);
 
 		return v;
 	}
@@ -51,42 +49,29 @@ public class GameFragment extends BaseFragment implements OnClickListener
 		timer.cancel();
 	}
 
-private void startTimer() {
-		
+	private void startTimer()
+	{
 		long time = 21000;
-		timer = new CountDownTimer(time, 500) {
-
-		    public void onTick(long millisUntilFinished) {
-		    	 if(activity.gameThread.getTimeScoreInfo().isTimeShowed()){
-		    		 final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
-		    		 textViewCountdown.setText(String.valueOf(secondsRemaining));
-			     }else{
-		    		 textViewCountdown.setText("");
-		    	 }
-		    	 final String infoText = activity.gameThread.getTimeScoreInfo().getInfoText();
-		    	 if(!infoText.equals(lastInfoText)){
-		    		 /*if(infoTextList.size()>=7){
-		    			 infoTextList.remove(0);
-		    		 }*/
-		    		 infoTextList.add(infoText);
-		    		 this.displayInfoText();
-		    		 lastInfoText = infoText;
-		    	 }
-		     }
-
-		     private void displayInfoText() {
-				StringBuilder text = new StringBuilder();
-		    	for(int i=infoTextList.size()-1;i>=0;i--){
-					text.append(infoTextList.get(i));
-					text.append("\n");
+		timer = new CountDownTimer(time, 500)
+		{
+			public void onTick(long millisUntilFinished)
+			{
+				if (activity.gameThread.getTimeScoreInfo().isTimeShowed())
+				{
+					final long secondsRemaining = activity.gameThread.getTimeScoreInfo().getStepTime() / 1000;
+					textViewCountdown.setText(String.valueOf(secondsRemaining));
 				}
-		    	 infoTextView.setText(text.toString());
+				else
+				{
+					textViewCountdown.setText("");
+				}
+				infoTextView.setText(activity.gameThread.getTimeScoreInfo().getInfoText());
 			}
-
-			public void onFinish() {
-		    	 startTimer();
-		     }
-		  }.start();
+			public void onFinish()
+			{
+				startTimer();
+			}
+		}.start();
 	}
 
 	@Override
@@ -95,7 +80,7 @@ private void startTimer() {
 		if (v.getId() == R.id.buttonReset)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			//builder.setMessage("Reset game?");
+			// builder.setMessage("Reset game?");
 			TextView tv = new TextView(GameFragment.this.getActivity());
 			tv.setText("Reset game?");
 			tv.setGravity(Gravity.CENTER);
@@ -112,11 +97,9 @@ private void startTimer() {
 				}
 			});
 			builder.create().show();
-		}
-		else if (v.getId() == R.id.buttonPause)
+		} else if (v.getId() == R.id.buttonPause)
 		{
 			activity.gameThread.togglePause();
 		}
-
 	}
 }
