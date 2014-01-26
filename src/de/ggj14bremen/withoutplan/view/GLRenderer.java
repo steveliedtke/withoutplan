@@ -117,7 +117,7 @@ public class GLRenderer implements Renderer
 					float scale = 1f;
 					gl.glScalef(scale, scale, scale);
 					square.setAlpha(.3f);
-					square.setColor(figure.getAuraColorArray());
+					square.setColor(figure.getColorArray()); //figure.getAuraColorArray()
 					square.draw(gl);
 					gl.glPopMatrix();
 				}		

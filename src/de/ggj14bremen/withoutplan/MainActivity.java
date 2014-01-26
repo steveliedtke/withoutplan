@@ -110,7 +110,8 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setMessage("Reset game?");
-		TextView tv = new TextView(this);
+		View v = View.inflate(this, R.layout.dialog_layout, null);
+		TextView tv = (TextView) v.findViewById(R.id.textViewDialog);
 		tv.setText("Quit game?");
 		tv.setGravity(Gravity.CENTER);
 		FontHelper.setFont(tv);

@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -110,7 +109,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 			// builder.setMessage("Reset game?");
 			TextView tv = new TextView(GameFragment.this.getActivity());
 			tv.setText("Reset game?");
-			tv.setGravity(Gravity.CENTER);
+			//tv.setGravity(Gravity.CENTER);
 			FontHelper.setFont(tv);
 			builder.setView(tv);
 			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
@@ -123,6 +122,7 @@ public class GameFragment extends BaseFragment implements OnClickListener
 					return;
 				}
 			});
+			builder.setNegativeButton(android.R.string.no, null);
 			builder.create().show();
 		} 
 		else if (v.getId() == R.id.buttonPause)
