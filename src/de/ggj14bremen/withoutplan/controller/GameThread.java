@@ -372,7 +372,7 @@ public class GameThread extends Thread implements Game{
 		case MOVE:
 			if(this.board.getCell(event.getX(), event.getY()).isWalkable()){
 				this.board.moveFigure(this.getCurrentFigure(), event.getX(), event.getY());
-				Sounds.playSound(R.raw.movement_2);
+				Sounds.playSound(R.raw.movement);
 				this.nextState(false);
 			}
 			break;
