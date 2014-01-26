@@ -133,6 +133,7 @@ public class Cell extends ColoredItem
 	public void setEnemy(Enemy enemy)
 	{
 		this.enemy = enemy;
+		updateColorArray();
 	}
 	
 	public void addWatchingFigure(Figure figure)
