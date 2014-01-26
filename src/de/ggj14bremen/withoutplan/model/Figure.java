@@ -13,13 +13,9 @@ public class Figure extends ColoredItem
 		{
 			switch (this)
 			{
-//				case TOP: 		return 0;
-//				case BOTTOM: 	return 180;
-//				case LEFT: 		return 270;
-//				case RIGHT: 	return 90;
-				case TOP: 		return 180;
-				case BOTTOM: 	return 0;
-				case LEFT: 		return 00;
+				case TOP: 		return 0;
+				case BOTTOM: 	return 180;
+				case LEFT: 		return 90;
 				case RIGHT: 	return 270;
 				default:		return 0;
 			}

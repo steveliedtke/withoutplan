@@ -429,9 +429,9 @@ public class GameThread extends Thread implements Game{
 				final Orientation orientation;
 				boolean soundOrientate = true;
 				if(event.getX()<this.getCurrentFigure().getX()){
-					orientation = Orientation.RIGHT;
-				}else if(event.getX()>this.getCurrentFigure().getX()){
 					orientation = Orientation.LEFT;
+				}else if(event.getX()>this.getCurrentFigure().getX()){
+					orientation = Orientation.RIGHT;
 				}else if(event.getY()<this.getCurrentFigure().getY()){
 					orientation = Orientation.BOTTOM;
 				}else if(event.getY()>this.getCurrentFigure().getY()){
