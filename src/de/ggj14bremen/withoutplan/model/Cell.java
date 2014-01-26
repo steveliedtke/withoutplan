@@ -1,5 +1,6 @@
 package de.ggj14bremen.withoutplan.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class Cell extends ColoredItem
 	public Cell()
 	{
 		super(1f, 1f, 1f, 1f);
-		this.watchingFigures = new HashSet<Figure>();
+		this.watchingFigures = Collections.synchronizedSet(new HashSet<Figure>());
 	}
 	
 	public boolean hasFigure()
@@ -153,10 +154,10 @@ public class Cell extends ColoredItem
 		return watchingFigures;
 	}
 	
-	public void setWatchingFigures(Set<Figure> watchingFigures)
-	{
-		this.watchingFigures = watchingFigures;
-	}
+//	public void setWatchingFigures(Set<Figure> watchingFigures)
+//	{
+//		this.watchingFigures = watchingFigures;
+//	}
 	
 	public boolean isWalkable()
 	{
